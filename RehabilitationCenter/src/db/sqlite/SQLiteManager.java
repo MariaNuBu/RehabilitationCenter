@@ -52,9 +52,30 @@ public class SQLiteManager implements DBManager {
 		try {
 			Statement st1=c.createStatement();
 			String sq1= "CREATE TABLE patients " 
-					+	"(ID	INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ 	" Name 	TEXT NOT NULL)";
-
+					+	"(ID	      INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ 	"Name 	      TEXT  NOT NULL,"
+					+   "Adress       TEXT  NOT NULL,"
+					+   "DOB          DATE  NOT NULL,"
+					+   "Phone 		  FLOAT NOT NULL,"
+					+   "Email 		  TEXT  NOT NULL,"
+					+   "SportType    TEXT,"
+					+   "Disability   TEXT,"
+					+   "MHID         INTEGER,"
+					+   "PTID         INTEGER,"
+					+   "FOREIGN KEY MHID REFERENCES medicalHistory(1),"
+					+   "FOREIGN KEY PTID REFERENCES physicalTherapist(1)";
+			Statement st2=c.createStatement();
+			String sq2="CREATE TABLE medicalHistory " 
+					+	"(ID	      INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ 	"Name 	      TEXT  NOT NULL,"
+					+   "DOB          DATE  NOT NULL,"					
+					+   "Diseases	  TEXT,"
+					+   "Allergies    TEXT,"
+					+   "Surgeries    TEXT,"
+					+   "WeightKg     FLOAT,"
+					+   "HeightCm     INTEGER,"
+					+   "FOREIGN KEY MHID REFERENCES medicalHistory(1),"
+					+   "FOREIGN KEY PTID REFERENCES physicalTherapist(1)";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
