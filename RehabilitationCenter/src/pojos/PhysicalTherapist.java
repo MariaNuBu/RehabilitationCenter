@@ -15,12 +15,12 @@ public class PhysicalTherapist implements Serializable {
 	private Integer phoneNumber;
 	private String eMail;
 	private String typeSport;
-	private Float salary;
+	private Double salary;
 	
 	
 	
 	public PhysicalTherapist(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail,
-			String typeSport, Float salary) {
+			String typeSport, Double salary) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -108,10 +108,10 @@ public class PhysicalTherapist implements Serializable {
 	public void setTypeSport(String typeSport) {
 		this.typeSport = typeSport;
 	}
-	public Float getSalary() {
+	public Double getSalary() {
 		return salary;
 	}
-	public void setSalary(Float salary) {
+	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
 	

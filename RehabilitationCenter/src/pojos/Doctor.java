@@ -14,14 +14,14 @@ public class Doctor implements Serializable{
 	private Integer phoneNumber;
 	private String eMail;
 	private String speciality;
-	private Float salary;
+	private Double salary;
 	
 	public Doctor() {
 		super();
 	}
 	
 	public Doctor(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail,
-			String speciality, Float salary) {
+			String speciality, Double salary) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -104,10 +104,10 @@ public class Doctor implements Serializable{
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}
-	public Float getSalary() {
+	public Double getSalary() {
 		return salary;
 	}
-	public void setSalary(Float salary) {
+	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
 		
