@@ -7,9 +7,10 @@ public class Patient implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	//TODO check if the atributes of the foreign keys are necesary
 	private Integer id;
 	private String  name;
-	private String  address;
+	private String  adress;
 	private Date    dob;
 	private Integer phoneNumber;
 	private String  eMail;
@@ -21,12 +22,12 @@ public class Patient implements Serializable {
 	}
 	
 	
-	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
+	public Patient(Integer id, String name, String adress, Date dob, Integer phoneNumber, String eMail, String sport,
 			String disability) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.address = address;
+		this.adress = adress;
 		this.dob = dob;
 		this.phoneNumber = phoneNumber;
 		this.eMail = eMail;
@@ -54,12 +55,12 @@ public class Patient implements Serializable {
 		this.name = name;
 	}
 	
-	public String getAddress() {
-		return address;
+	public String getAdress() {
+		return adress;
 	}
 	
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAdress(String adress) {
+		this.adress = adress;
 	}
 	
 	public Date getDob() {
