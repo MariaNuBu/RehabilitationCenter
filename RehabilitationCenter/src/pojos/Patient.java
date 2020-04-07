@@ -2,6 +2,7 @@ package pojos;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 public class Patient implements Serializable {
 	
@@ -16,12 +17,44 @@ public class Patient implements Serializable {
 	private String  eMail;
 	private String  sport;
 	private String  disability;
-
+	private MedicalHistory medicalHistory;
+	private PhysicalTherapist physicalTerapist;
+	private List<Doctor> doctors;
 	
 	public Patient() {
 		super();
 	}
 	
+
+	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
+			String disability,MedicalHistory mh,PhysicalTherapist pt,List<Doctor> docs)
+	{
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.dob = dob;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.sport = sport;
+		this.disability = disability;
+		this.medicalHistory=mh;
+		this.physicalTerapist=pt;
+		this.doctors=docs;
+	}
+
+	public Patient(String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
+			String disability) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.dob = dob;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.sport = sport;
+		this.disability = disability;
+	}
+
 
 	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
 			String disability) {
@@ -35,9 +68,6 @@ public class Patient implements Serializable {
 		this.sport = sport;
 		this.disability = disability;
 	}
-
-
-
 
 
 	public Integer getId() {
@@ -103,7 +133,43 @@ public class Patient implements Serializable {
 	public void setDisability(String disability) {
 		this.disability = disability;
 	}
+	
+	public MedicalHistory getMedicalHistory() {
+		return medicalHistory;
+	}
 
+
+	public void setMedicalHistory(MedicalHistory medicalHistory) {
+		this.medicalHistory = medicalHistory;
+	}
+
+
+	public PhysicalTherapist getPhysicalTerapist() {
+		return physicalTerapist;
+	}
+
+
+	public void setPhysicalTerapist(PhysicalTherapist physicalTerapist) {
+		this.physicalTerapist = physicalTerapist;
+	}
+
+
+	public List<Doctor> getDoctors() {
+		return doctors;
+	}
+
+
+	public void setDoctors(List<Doctor> doctors) {
+		this.doctors = doctors;
+	}
+
+
+	public String toString()
+	{
+		String s= "ID: "+this.id+"\nName: "+this.name+"\nAddress: "+this.address+"\nDOB: "+this.dob+"\nEmail: "+this.eMail+
+				"\nTypeSport: "+this.sport+"\nDisability: "+this.disability;
+		return s;
+	}
 	
 	@Override
 	public int hashCode() {

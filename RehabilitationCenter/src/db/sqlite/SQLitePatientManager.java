@@ -54,13 +54,27 @@ public class SQLitePatientManager implements PatientManager {
 	}
 
 	@Override
-	public void addPatient (Patient p,PhysicalTherapist pt,MedicalHistory mh)
+	public void addPatientandMedicalHistory (Patient p,PhysicalTherapist pt,MedicalHistory mh)
 	{
 		try
 		{
-			String sql="INSERT INTO patient (Name, Address, DOB, Phone, Email, SportType,Disability) "
-					+  "VALUES (?,?,?,?,?,?,?";
-			PreparedStatement prep=c.prepareStatement(sql);
+			String sqlMedicalHistory="INSERT INTO medicalHistory (Name,DOB,Diseases,Allergies,Surgeries,WeightKg,HeightKg)"
+					+  "VALUES (?,?,?,?,?,?,?)";
+			PreparedStatement ps=c.prepareStatement(sqlMedicalHistory);
+			ps.setInt(1, 0);
+			ps.setString(2,mh.getName());
+			ps.setDate(3,mh.getDOB());
+			ps.setString(4,mh.getDiseases());			
+			ps.setString(5,mh.getAllergies());
+			ps.setString(6, mh.getSurgeries());
+			ps.setFloat(7,mh.getWeightKg());
+			ps.setInt(8, mh.getHeightKg());
+			ps.executeUpdate();
+			ps.close();
+		
+			String sqlpatient="INSERT INTO patient (Name, Address, DOB, Phone, Email, SportType,Disability) "
+					+  "VALUES (?,?,?,?,?,?,?)";
+			PreparedStatement prep=c.prepareStatement(sqlpatient);
 			//TODO see how to do the autoincrement
 			//prep.setInt(1, p.getId());
 			prep.setString(1,p.getName());
@@ -81,32 +95,7 @@ public class SQLitePatientManager implements PatientManager {
 		}
 	}
 	
-	@Override
-	public void createMH(MedicalHistory mh)
-	{
-		try
-		{
-			String sql="INSERT INTO medicalHistory (ID,Name,DOB,Diseases,Allergies,Surgeries,WeightKg,HeightKg)"
-					+  "VALUES (?,?,?,?,?,?,?,?)";
-			PreparedStatement prep=c.prepareStatement(sql);
-			//TODO see how to do the autoincrement
-			prep.setInt(1, 0);
-			prep.setString(2,mh.getName());
-			prep.setDate(3,mh.getDOB());
-			prep.setString(4,mh.getDiseases());			
-			prep.setString(5,mh.getAllergies());
-			prep.setString(6, mh.getSurgeries());
-			prep.setFloat(7,mh.getWeightKg());
-			prep.setInt(8, mh.getHeightKg());
-			prep.executeUpdate();
-			prep.close();
-			
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
+	
 	
 	@Override
 	public List<Treatment> listTreatment(Patient patient)
@@ -173,6 +162,8 @@ public class SQLitePatientManager implements PatientManager {
 		return patient;
 		
 	}
+	
+	
 
 }
 

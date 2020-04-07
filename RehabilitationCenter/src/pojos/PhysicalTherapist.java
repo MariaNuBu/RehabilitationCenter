@@ -2,6 +2,7 @@ package pojos;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 public class PhysicalTherapist implements Serializable {
 
@@ -16,9 +17,23 @@ public class PhysicalTherapist implements Serializable {
 	private String eMail;
 	private String typeSport;
 	private Double salary;
+	private List <Patient> patients;
 	
 	
 	
+	public PhysicalTherapist(Integer id,String name, String address, Integer phoneNumber, String eMail, String typeSport,
+			Double salary) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.typeSport = typeSport;
+		this.salary = salary;
+	}
+
+
 	public PhysicalTherapist(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail,
 			String typeSport, Double salary) {
 		super();
@@ -33,12 +48,47 @@ public class PhysicalTherapist implements Serializable {
 	}
 	
 	
-	
+	public PhysicalTherapist(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail,
+			String typeSport, Double salary, List<Patient> patients) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.dob = dob;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.typeSport = typeSport;
+		this.salary = salary;
+		this.patients = patients;
+	}
+
+
+	public PhysicalTherapist(String name, String address, Date dob, Integer phoneNumber, String eMail, String typeSport,
+			Double salary) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.dob = dob;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.typeSport = typeSport;
+		this.salary = salary;
+	}
+
+
+
 	public PhysicalTherapist() {
 		super();
 	}
 
-
+	public String toString()
+	{
+		String s= "ID: "+this.id+"\nName: "+this.name+"\nAddress: "+this.address+
+				//"\nDOB: "+this.dob+
+				"\nEmail: "+this.eMail+
+				"\nTypeSport: "+this.typeSport+"\nSalary: "+this.salary+"\nPhone: "+this.phoneNumber;
+		return s;
+	}
 
 	@Override
 	public int hashCode() {
