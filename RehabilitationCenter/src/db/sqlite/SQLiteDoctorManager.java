@@ -1,5 +1,6 @@
 package db.sqlite;
 
+import java.sql.Connection;
 import java.util.List;
 
 import db.interfaces.DoctorManager;
@@ -7,6 +8,12 @@ import pojos.Treatment;
 
 public class SQLiteDoctorManager implements DoctorManager {
 
+	Connection c;
+	
+	public SQLiteDoctorManager(Connection c) 
+	{
+		this.c = c;
+	}
 	@Override
 	public void readMH(Integer ID) {
 		// TODO Auto-generated method stub

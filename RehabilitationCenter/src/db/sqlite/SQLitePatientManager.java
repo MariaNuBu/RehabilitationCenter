@@ -35,16 +35,16 @@ public class SQLitePatientManager implements PatientManager {
 			{
 				int id=rs.getInt("ID");
 				String name=rs.getString("Name");
-				String adress=rs.getString("Adress");
+				String address=rs.getString("Address");
 				Date DOB=rs.getDate("DOB");
 				Integer phone = rs.getInt("Phone");
 				String email=rs.getString("Email");
 				String sportType=rs.getString("SportType");
 				String disability=rs.getString("Disability");
-				Patient pat = new Patient(id,name,adress,DOB,phone,email,sportType,disability);
+				
+				Patient pat = new Patient(id,name,address,DOB,phone,email,sportType,disability);
 				p.add(pat);
 			}
-			
 		}
 		catch(SQLException e)
 		{
@@ -54,25 +54,25 @@ public class SQLitePatientManager implements PatientManager {
 	}
 
 	@Override
-	public void addPatient (Patient p,Doctor d,MedicalHistory mh)
+	public void addPatient (Patient p,PhysicalTherapist pt,MedicalHistory mh)
 	{
 		try
 		{
-			String sql="INSERT INTO patient (ID,Name, Adress, DOB, Phone, Email, SportType,Disability,MHID,PTID) "
-					+  "VALUES (?,?,?,?,?,?,?,?,?,?)";
+			String sql="INSERT INTO patient (Name, Address, DOB, Phone, Email, SportType,Disability) "
+					+  "VALUES (?,?,?,?,?,?,?";
 			PreparedStatement prep=c.prepareStatement(sql);
 			//TODO see how to do the autoincrement
-			prep.setInt(1, 0);
-			prep.setString(2,p.getName());
-			prep.setString(3,p.getAdress());
-			prep.setDate(4,p.getDob());
-			prep.setInt(5, p.getPhoneNumber());
-			prep.setString(6, p.getEmail());
-			prep.setString(7, p.getSport());
-			prep.setString(8, p.getDisability());
-			prep.setInt(9, mh.getID());
-			prep.setInt(10, d.getId());		
-			prep.executeUpdate(sql);
+			//prep.setInt(1, p.getId());
+			prep.setString(1,p.getName());
+			prep.setString(2,p.getAddress());
+			prep.setDate(3,p.getDob());
+			prep.setInt(4, p.getPhoneNumber());
+			prep.setString(5, p.getEmail());
+			prep.setString(6, p.getSport());
+			prep.setString(7, p.getDisability());
+			//prep.setInt(8, mh.getID());
+			//prep.setInt(9,pt.getId());		
+			prep.executeUpdate();
 			prep.close();
 		}
 		catch (SQLException e)
@@ -152,17 +152,15 @@ public class SQLitePatientManager implements PatientManager {
 			{
 				if(!patientCreated)
 				{
-					Integer patID=rs.getInt(1);
-					String name=rs.getString(2);
-					String adress=rs.getString(3);
-					Date DOB=rs.getDate(4);
-					Integer phone=rs.getInt(5);
-					String email=rs.getString(6);
-					String sportType=rs.getString(7);
-					String disability=rs.getString(8);
-					//Integer mhid=rs.getInt(9);
-					//Integer ptid=rs.getInt(10);
-					patient = new Patient(patID, name, adress,DOB,phone,email,sportType,disability);
+					Integer patID=rs.getInt("ID");
+					String name=rs.getString("Name");
+					String address=rs.getString("Address");
+					Date DOB=rs.getDate("DOB");
+					Integer phone=rs.getInt("Phone");
+					String email=rs.getString("Email");
+					String sportType=rs.getString("SportType");
+					String disability=rs.getString("Disability");
+					patient = new Patient(patID, name, address,DOB,phone,email,sportType,disability);
 					patientCreated=true;
 				}
 			}
