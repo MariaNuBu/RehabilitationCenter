@@ -19,7 +19,7 @@ public class MainTest
 	public static void main(String [] args) 
 	{
 		java.sql.Date d = new java.sql.Date(new Date().getTime());
-		Patient p= new Patient(1,"Maria","AntonioLopez",d,123,"email","tennis","none");
+		Patient p= new Patient("Maria","AntonioLopez",d,123,"email","tennis","none");
 		PhysicalTherapist pt1=new PhysicalTherapist("Pablo","Antonio López",d,678907283,"pablo@gmail.com","Tennis",1324.22);
 		PhysicalTherapist pt3=new PhysicalTherapist("Gabs","Montecarmelo",d,678907283,"gabs@gmail.com","Tennis",1324.22);
 		PhysicalTherapist pt2=new PhysicalTherapist("Alberto","Serrano",d,678123173,"alberto@gmail.com","WeightLifting",34456.0);
@@ -41,17 +41,21 @@ public class MainTest
 		}
 		*/
 		// esto SI FUNCIONA!!!
-		pm.addPatientandMedicalHistory(p, ptm.getPhysicalTherapist(1), mh);
+		//pm.addPatientandMedicalHistory(p, ptm.getPhysicalTherapist(1), mh);
 		//ESTO TAMBIEN FUNCIONA LO BUSCA BIEN!!
+		/*
 		ArrayList<Patient> searched=pm.searchPatientName("Maria");
 		for (Patient patient : searched) 
 		{
 			System.out.println(patient);
 		}
+		*/
 		//ESTO TAMBIEN FUNCIONA
 		Patient get=pm.getPatient(1);
 		System.out.println("conseguido\n"+get);
 		PhysicalTherapist pget=ptm.getPhysicalTherapist(3);
 		System.out.println("physical\n"+pget);
+		MedicalHistory getmh=pm.getMedicalHistory(get);
+		System.out.println("MH "+getmh);
 	}
 }

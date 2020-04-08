@@ -12,5 +12,6 @@ public interface PatientManager {
 	public ArrayList<Treatment> listTreatment(Patient patient);
 	public Patient getPatient(Integer id);
 	public int getLastId();
+	public MedicalHistory getMedicalHistory(Patient p);
 	
 }

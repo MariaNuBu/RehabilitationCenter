@@ -168,7 +168,39 @@ public class SQLitePatientManager implements PatientManager {
 			e.printStackTrace();
 		}
 		return patient;		
-	}	
+	}
+
+	@Override
+	public MedicalHistory getMedicalHistory(Patient p)
+	{
+		MedicalHistory mh=null;
+		try
+		{
+			String sql="SELECT * FROM medicalHistory AS mh JOIN patient AS p ON mh.ID=p.MHID WHERE p.id=?";
+			PreparedStatement ps=c.prepareStatement(sql);
+			ps.setInt(1, p.getId());
+			ResultSet rs=ps.executeQuery();
+			while(rs.next())
+			{
+				Integer id=rs.getInt(1);
+				String name=rs.getString(2);
+				Date dob=rs.getDate(3);
+				String diseases=rs.getString(4);
+				String allergies=rs.getString(5);
+				String surgeries=rs.getString(6);
+				Float weight=rs.getFloat(7);
+				Integer height=rs.getInt(8);
+				mh=new MedicalHistory(id,name,dob,diseases,allergies,surgeries,weight,height);
+			}	
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return mh;
+	}
+	
+	
 	
 
 }
