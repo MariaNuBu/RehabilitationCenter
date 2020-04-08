@@ -27,7 +27,7 @@ public class SQLitePatientManager implements PatientManager {
 		ArrayList <Patient> p = new ArrayList<Patient>();
 		try 
 		{
-			String sql="SELECT * FROM patients WHERE name LIKE ?";
+			String sql="SELECT * FROM patient WHERE name LIKE ?";
 			PreparedStatement prep=c.prepareStatement(sql);
 			prep.setString(1,  "%" + patientName + "%");
 			ResultSet rs=prep.executeQuery();
@@ -52,31 +52,45 @@ public class SQLitePatientManager implements PatientManager {
 		}
 		return p;
 	}
-
+	
+	@Override
+	public int getLastId() 
+	{
+		int id = 0;
+		try {
+			String query = "SELECT last_insert_rowid() AS lastId";
+			PreparedStatement p = c.prepareStatement(query);
+			ResultSet rs = p.executeQuery();
+			id = rs.getInt("lastId");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
 	@Override
 	public void addPatientandMedicalHistory (Patient p,PhysicalTherapist pt,MedicalHistory mh)
 	{
 		try
 		{
-			String sqlMedicalHistory="INSERT INTO medicalHistory (Name,DOB,Diseases,Allergies,Surgeries,WeightKg,HeightKg)"
+			String sqlMedicalHistory="INSERT INTO medicalHistory (Name,DOB,Diseases,Allergies,Surgeries,WeightKg,HeightCm)"
 					+  "VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement ps=c.prepareStatement(sqlMedicalHistory);
-			ps.setInt(1, 0);
-			ps.setString(2,mh.getName());
-			ps.setDate(3,mh.getDOB());
-			ps.setString(4,mh.getDiseases());			
-			ps.setString(5,mh.getAllergies());
-			ps.setString(6, mh.getSurgeries());
-			ps.setFloat(7,mh.getWeightKg());
-			ps.setInt(8, mh.getHeightKg());
+			//TODO cambiar los numeros 
+			ps.setString(1,mh.getName());
+			ps.setDate(2,mh.getDOB());
+			ps.setString(3,mh.getDiseases());			
+			ps.setString(4,mh.getAllergies());
+			ps.setString(5, mh.getSurgeries());
+			ps.setFloat(6,mh.getWeightKg());
+			ps.setInt(7,mh.getHeightCm());
 			ps.executeUpdate();
 			ps.close();
-		
-			String sqlpatient="INSERT INTO patient (Name, Address, DOB, Phone, Email, SportType,Disability) "
-					+  "VALUES (?,?,?,?,?,?,?)";
+			//acordarme de coger la ID para hacer el patient
+			int mhid=getLastId();
+			String sqlpatient="INSERT INTO patient (Name, Address, DOB, Phone, Email, SportType,Disability,MHID,PTID)"
+					+  "VALUES (?,?,?,?,?,?,?,?,?)";
 			PreparedStatement prep=c.prepareStatement(sqlpatient);
-			//TODO see how to do the autoincrement
-			//prep.setInt(1, p.getId());
 			prep.setString(1,p.getName());
 			prep.setString(2,p.getAddress());
 			prep.setDate(3,p.getDob());
@@ -84,8 +98,8 @@ public class SQLitePatientManager implements PatientManager {
 			prep.setString(5, p.getEmail());
 			prep.setString(6, p.getSport());
 			prep.setString(7, p.getDisability());
-			//prep.setInt(8, mh.getID());
-			//prep.setInt(9,pt.getId());		
+			prep.setInt(8, mhid);
+			prep.setInt(9,pt.getId());		
 			prep.executeUpdate();
 			prep.close();
 		}
@@ -98,7 +112,7 @@ public class SQLitePatientManager implements PatientManager {
 	
 	
 	@Override
-	public List<Treatment> listTreatment(Patient patient)
+	public ArrayList<Treatment> listTreatment(Patient patient)
 	{
 		ArrayList<Treatment> treatments=new ArrayList <Treatment>();
 		try 

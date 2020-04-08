@@ -44,7 +44,8 @@ public class SQLiteManager implements DBManager {
 		try
 		{
 			Class.forName("org.sqlite.JDBC");
-			this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/msmar/OneDrive/Documentos/UNI/2º_2ºCuatri/Bases de datos/Práctica/Test.db");
+			//this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/msmar/OneDrive/Documentos/UNI/2º_2ºCuatri/Bases de datos/Práctica/Test.db");
+			this.c=DriverManager.getConnection("jdbc:sqlite:./db/RehabilitationCenter.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON"); 
 			patient = new SQLitePatientManager(c);
 			doctor = new SQLiteDoctorManager(c);
@@ -56,10 +57,6 @@ public class SQLiteManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-
-	
-
-	
 	@Override
 	public void disconnect() 
 	{	
@@ -73,7 +70,7 @@ public class SQLiteManager implements DBManager {
 		}
 
 	}
-
+	
 	@Override
 	public void createTables()
 	{
@@ -145,6 +142,7 @@ public class SQLiteManager implements DBManager {
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ " Type			TEXT NOT NULL,"
 					+ " Length			INTEGER NOT NULL,"
+					+ " DOCID			INTEGER NOT NULL,"			
 					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID)	"
 					+ ")";
 			st4.executeUpdate(sq4);
@@ -153,6 +151,9 @@ public class SQLiteManager implements DBManager {
 			String sq5="CREATE TABLE  IF NOT EXISTS  appointment"
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "	DateTime		DATETIME NOT NULL,"
+					+ " PATID			INTEGER NOT NULL,"
+					+ " DOCID			INTEGER NOT NULL,"
+					+ " PTID			INTEGER NOT NULL,"					
 					+ " FOREIGN KEY (PATID) REFERENCES patient(ID),"
 					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID),"
 					+ "	FOREIGN KEY (PTID) REFERENCES physicalTherapist(ID)"

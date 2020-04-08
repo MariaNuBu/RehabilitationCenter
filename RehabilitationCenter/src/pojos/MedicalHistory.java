@@ -12,12 +12,12 @@ public class MedicalHistory implements Serializable
 	private String Allergies;
 	private String Surgeries;
 	private Float WeightKg;
-	private Integer HeightKg;
+	private Integer HeightCm;
 	
 	
 	
 	public MedicalHistory(Integer iD, String name, Date dOB, String diseases, String allergies, String surgeries,
-			Float weightKg, Integer heightKg) 
+			Float weightKg, Integer heightCm) 
 	{
 		ID = iD;
 		Name = name;
@@ -26,8 +26,24 @@ public class MedicalHistory implements Serializable
 		Allergies = allergies;
 		Surgeries = surgeries;
 		WeightKg = weightKg;
-		HeightKg = heightKg;
+		HeightCm = heightCm;
 	}
+	
+	public MedicalHistory(String name, Date dOB, String diseases, String allergies, String surgeries, Float weightKg,
+			Integer heightCm) {
+		super();
+		Name = name;
+		DOB = dOB;
+		Diseases = diseases;
+		Allergies = allergies;
+		Surgeries = surgeries;
+		WeightKg = weightKg;
+		HeightCm = heightCm;
+	}
+
+
+
+
 	public MedicalHistory() {
 		super();
 	}
@@ -45,8 +61,8 @@ public class MedicalHistory implements Serializable
 	public void setSurgeries(String surgeries) {Surgeries = surgeries;	}
 	public Float getWeightKg() {return WeightKg;	}
 	public void setWeightKg(Float weightKg) {	WeightKg = weightKg;	}
-	public Integer getHeightKg() {	return HeightKg;	}
-	public void setHeightKg(Integer heightKg) {	HeightKg = heightKg;}
+	public Integer getHeightCm() {	return HeightCm;	}
+	public void setHeightCm(Integer heightCm) {	HeightCm = heightCm;}
 
 	@Override
 	public int hashCode() {
@@ -71,6 +87,13 @@ public class MedicalHistory implements Serializable
 		} else if (!ID.equals(other.ID))
 			return false;
 		return true;
+	}
+	
+	public String toString()
+	{
+		String s= "ID: "+this.ID+"\nName: "+this.Name+"\nDOB: "+this.DOB+"\nDiseases: "+this.Diseases+
+				"\nAllergies: "+this.Allergies+"\nSurgeries: "+this.Surgeries+"\nWeight(kg): "+this.WeightKg+"\nHeight(cm): "+this.HeightCm;
+		return s;
 	}
 	
 	

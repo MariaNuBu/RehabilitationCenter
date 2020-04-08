@@ -23,27 +23,34 @@ public class MainTest
 		PhysicalTherapist pt1=new PhysicalTherapist("Pablo","Antonio López",d,678907283,"pablo@gmail.com","Tennis",1324.22);
 		PhysicalTherapist pt3=new PhysicalTherapist("Gabs","Montecarmelo",d,678907283,"gabs@gmail.com","Tennis",1324.22);
 		PhysicalTherapist pt2=new PhysicalTherapist("Alberto","Serrano",d,678123173,"alberto@gmail.com","WeightLifting",34456.0);
-		MedicalHistory mh=new MedicalHistory(1, "in",d, "diseases", "allergies", "surgeries", (float)123, 123);
+		MedicalHistory mh=new MedicalHistory("Maria",d, "diseases", "allergies", "surgeries", (float)123, 123);
 		db= new SQLiteManager();
 		db.connect();
-		//"jdbc:sqlite:C:/Users/msmar/OneDrive/Documentos/UNI/2º_2ºCuatri/Bases de datos/Práctica/Test.db"
 		db.createTables();
 		pm = db.getPatient();
 		ptm=db.getPhysicalTherapist();
-		//TODO esto no funciona
-		pm.addPatientandMedicalHistory(p, pt1, mh);
-		//Funciona el insert
-		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la lista
+		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
 		/*
 		ptm.insert(pt1);
 		ptm.insert(pt2);
 		ptm.insert(pt3);
 		ArrayList<PhysicalTherapist> pts=ptm.showPhisicalTherapists("Tennis");
-		for(int i=0;i<pts.size();i++)
+		for (PhysicalTherapist physicalTherapist : pts) 
 		{
-			System.out.println(pts.get(i));			
+			System.out.println(physicalTherapist);	
 		}
 		*/
+		//TODO esto no funciona
+		pm.addPatientandMedicalHistory(p, ptm.getPhysicalTherapist(1), mh);
+		//Funciona el insert de los physical therapists y el show ponuendo el deporte		
+		
+		
+		
+		ArrayList<Patient> searched=pm.searchPatientName("Maria");
+		for (Patient patient : searched) 
+		{
+			System.out.println(patient);
+		}
 		
 		
 	}

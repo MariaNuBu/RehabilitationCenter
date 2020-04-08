@@ -102,6 +102,34 @@ private Connection c;
 		}
 		return physicalTherapists;
 	}
+	public PhysicalTherapist getPhysicalTherapist(int id)
+	{
+		PhysicalTherapist pt=null;
+		try
+		{
+			String sql="SELECT * FROM physicalTherapist WHERE ID=?";
+			PreparedStatement ps=c.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next())
+			{
+				int ID=rs.getInt(1);
+				String name=rs.getString(2);
+				String address=rs.getString(3);
+				Date dob=rs.getDate(4);
+				Integer phone=rs.getInt(5);
+				String email=rs.getString(6);
+				String sport=rs.getString(7);
+				Double salary=rs.getDouble(8);
+				pt= new PhysicalTherapist(ID,name,address,dob,phone,email,sport,salary);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return pt;
+	}
 	
 	
 

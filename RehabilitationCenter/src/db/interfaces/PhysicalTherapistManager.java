@@ -10,4 +10,5 @@ public interface PhysicalTherapistManager {
 	public void readTreatment (Integer ID);
 	public void insert(PhysicalTherapist pt);
 	public ArrayList<PhysicalTherapist> showPhisicalTherapists(String sport);
+	public PhysicalTherapist getPhysicalTherapist(int id);
 }
