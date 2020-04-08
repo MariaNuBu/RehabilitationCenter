@@ -7,7 +7,7 @@ import pojos.*;
 public interface PhysicalTherapistManager {
 
 	
-	public void readTreatment (Integer ID);
+	public Treatment readTreatment (Treatment t);
 	public void insertPhysicalTherapist(PhysicalTherapist pt);
 	public ArrayList<PhysicalTherapist> showPhisicalTherapists(String sport);
 	public PhysicalTherapist getPhysicalTherapist(Integer id);

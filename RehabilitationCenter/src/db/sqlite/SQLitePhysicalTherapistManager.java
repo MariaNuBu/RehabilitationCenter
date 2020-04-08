@@ -21,28 +21,28 @@ private Connection c;
 	}
 	
 	@Override
-	public void readTreatment(Integer ID) 
+	public Treatment readTreatment(Treatment t) 
 	{
-		Treatment t=null;
+		Treatment treatment=null;
 		try
 		{
 			String sql="SELECT * FROM treatment WHERE ID=?";
 			PreparedStatement ps=c.prepareStatement(sql);
-			ps.setInt(1,ID);
+			ps.setInt(1,t.getId());
 			ResultSet rs=ps.executeQuery();
 			while(rs.next())
 			{
 				Integer id=rs.getInt(1);
 				String type=rs.getString(2);
 				Integer lenght=rs.getInt(3);
-				t = new Treatment(id,type,lenght);
+				treatment = new Treatment(id,type,lenght);
 			}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-
+     return treatment;
 	}
 	
 	@Override
