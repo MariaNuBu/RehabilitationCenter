@@ -7,7 +7,7 @@ import pojos.*;
 public interface DoctorManager {
 
 	public void readMH  (Integer ID);
-	public void modifyMH(Integer ID);
+	public void modifyMH(MedicalHistory MH);
 	public void createTreatment (Treatment t);
 	public void modifyTreatment (Treatment t);
 	public void deleteTreatment (Integer IDPat,Integer IDTreat);
