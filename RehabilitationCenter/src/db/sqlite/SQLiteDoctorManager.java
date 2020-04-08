@@ -21,7 +21,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 	}
 	@Override
 	public void readMH(Integer ID) {
-		MedicalHistory mh = null;
+		MedicalHistory m = null;
 		try {
 			String sql = "SELECT * FROM medicalhistory WHERE ID=?";
 			PreparedStatement ps = c.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 				Float weightKg = rs.getFloat("weightKg");
 				Integer heightCm = rs.getInt("heightCm");
 						
-				mh = new MedicalHistory(id,name,DOB,desease,allergies,surgeries,weightKg,heightCm);
+				m = new MedicalHistory(id,name,DOB,desease,allergies,surgeries,weightKg,heightCm);
 			}
 			rs.close();
 			ps.close();
