@@ -76,7 +76,6 @@ public class SQLitePatientManager implements PatientManager {
 			String sqlMedicalHistory="INSERT INTO medicalHistory (Name,DOB,Diseases,Allergies,Surgeries,WeightKg,HeightCm)"
 					+  "VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement ps=c.prepareStatement(sqlMedicalHistory);
-			//TODO cambiar los numeros 
 			ps.setString(1,mh.getName());
 			ps.setDate(2,mh.getDOB());
 			ps.setString(3,mh.getDiseases());			
@@ -86,7 +85,6 @@ public class SQLitePatientManager implements PatientManager {
 			ps.setInt(7,mh.getHeightCm());
 			ps.executeUpdate();
 			ps.close();
-			//acordarme de coger la ID para hacer el patient
 			int mhid=getLastId();
 			String sqlpatient="INSERT INTO patient (Name, Address, DOB, Phone, Email, SportType,Disability,MHID,PTID)"
 					+  "VALUES (?,?,?,?,?,?,?,?,?)";
@@ -108,8 +106,6 @@ public class SQLitePatientManager implements PatientManager {
 			e.printStackTrace();
 		}
 	}
-	
-	
 	
 	@Override
 	public ArrayList<Treatment> listTreatment(Patient patient)
@@ -136,8 +132,6 @@ public class SQLitePatientManager implements PatientManager {
 			e.printStackTrace();
 		}
 		return treatments;
-		
-		
 	}
 	
 	@Override
@@ -173,10 +167,8 @@ public class SQLitePatientManager implements PatientManager {
 		{
 			e.printStackTrace();
 		}
-		return patient;
-		
-	}
-	
+		return patient;		
+	}	
 	
 
 }

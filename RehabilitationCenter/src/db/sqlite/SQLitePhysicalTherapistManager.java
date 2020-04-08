@@ -46,7 +46,7 @@ private Connection c;
 	}
 	
 	@Override
-	public void insert(PhysicalTherapist pt)
+	public void insertPhysicalTherapist(PhysicalTherapist pt)
 	{
 		try 
 		{
@@ -102,7 +102,7 @@ private Connection c;
 		}
 		return physicalTherapists;
 	}
-	public PhysicalTherapist getPhysicalTherapist(int id)
+	public PhysicalTherapist getPhysicalTherapist(Integer id)
 	{
 		PhysicalTherapist pt=null;
 		try

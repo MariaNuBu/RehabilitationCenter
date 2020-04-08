@@ -31,27 +31,27 @@ public class MainTest
 		ptm=db.getPhysicalTherapist();
 		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
 		/*
-		ptm.insert(pt1);
-		ptm.insert(pt2);
-		ptm.insert(pt3);
+		ptm.insertPhysicalTherapist(pt1);
+		ptm.insertPhysicalTherapist(pt2);
+		ptm.insertPhysicalTherapist(pt3);
 		ArrayList<PhysicalTherapist> pts=ptm.showPhisicalTherapists("Tennis");
 		for (PhysicalTherapist physicalTherapist : pts) 
 		{
 			System.out.println(physicalTherapist);	
 		}
 		*/
-		//TODO esto no funciona
+		// esto SI FUNCIONA!!!
 		pm.addPatientandMedicalHistory(p, ptm.getPhysicalTherapist(1), mh);
-		//Funciona el insert de los physical therapists y el show ponuendo el deporte		
-		
-		
-		
+		//ESTO TAMBIEN FUNCIONA LO BUSCA BIEN!!
 		ArrayList<Patient> searched=pm.searchPatientName("Maria");
 		for (Patient patient : searched) 
 		{
 			System.out.println(patient);
 		}
-		
-		
+		//ESTO TAMBIEN FUNCIONA
+		Patient get=pm.getPatient(1);
+		System.out.println("conseguido\n"+get);
+		PhysicalTherapist pget=ptm.getPhysicalTherapist(3);
+		System.out.println("physical\n"+pget);
 	}
 }
