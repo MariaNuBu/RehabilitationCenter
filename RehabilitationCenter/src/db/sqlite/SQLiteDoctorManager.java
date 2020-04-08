@@ -47,6 +47,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 				s.setInt(2, t.getLenght());
 				s.executeUpdate();
 				s.close();
+		
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
