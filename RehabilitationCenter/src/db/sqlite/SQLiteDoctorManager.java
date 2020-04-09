@@ -21,7 +21,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 	}
 	@Override
 	public void readMH(Integer ID) {
-		MedicalHistory mh = null;
+		MedicalHistory mh = null; //prueba
 		try {
 			String sql = "SELECT * FROM medicalhistory WHERE ID=?";
 			PreparedStatement ps = c.prepareStatement(sql);
