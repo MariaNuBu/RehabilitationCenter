@@ -14,22 +14,22 @@ public class SQLiteManager implements DBManager {
 	private PatientManager patient;
 	private DoctorManager doctor;
 	private PhysicalTherapistManager physicalTherapist;
-		
-	public SQLiteManager() 
+
+	public SQLiteManager()
 	{
 		super();
 	}
-	
-	public Connection getConnection() 
+
+	public Connection getConnection()
 	{
 		return c;
 	}
-	public PatientManager getPatient() 
+	public PatientManager getPatient()
 	{
 		return patient;
-	}	
+	}
 
-	public DoctorManager getDoctor() 
+	public DoctorManager getDoctor()
 	{
 		return doctor;
 	}
@@ -46,11 +46,11 @@ public class SQLiteManager implements DBManager {
 			Class.forName("org.sqlite.JDBC");
 			//this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/msmar/OneDrive/Documentos/UNI/2º_2ºCuatri/Bases de datos/Práctica/Test.db");
 			this.c=DriverManager.getConnection("jdbc:sqlite:./db/RehabilitationCenter.db");
-			c.createStatement().execute("PRAGMA foreign_keys=ON"); 
+			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			patient = new SQLitePatientManager(c);
 			doctor = new SQLiteDoctorManager(c);
 			physicalTherapist = new SQLitePhysicalTherapistManager(c);
-		
+
 		}
 		catch (Exception e)
 		{
@@ -58,8 +58,8 @@ public class SQLiteManager implements DBManager {
 		}
 	}
 	@Override
-	public void disconnect() 
-	{	
+	public void disconnect()
+	{
 		try
 		{
 			c.close();
@@ -70,11 +70,11 @@ public class SQLiteManager implements DBManager {
 		}
 
 	}
-	
+
 	@Override
 	public void createTables()
 	{
-		try 
+		try
 		{
 			Statement st6=c.createStatement();
 			String sq6="CREATE TABLE  IF NOT EXISTS  physicalTherapist"
@@ -97,10 +97,10 @@ public class SQLiteManager implements DBManager {
 			st12.close();
 			*/
 			Statement st2=c.createStatement();
-			String sq2="CREATE TABLE IF NOT EXISTS   medicalHistory " 
+			String sq2="CREATE TABLE IF NOT EXISTS   medicalHistory "
 					+	"(ID			INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ 	" Name 	        TEXT  NOT NULL,"
-					+   " DOB           DATE  NOT NULL,"					
+					+   " DOB           DATE  NOT NULL,"
 					+   " Diseases	    TEXT,"
 					+   " Allergies     TEXT,"
 					+   " Surgeries     TEXT,"
@@ -109,7 +109,7 @@ public class SQLiteManager implements DBManager {
 			st2.executeUpdate(sq2);
 			st2.close();
 			Statement st1=c.createStatement();
-			String sq1= "CREATE TABLE IF NOT EXISTS  patient " 
+			String sq1= "CREATE TABLE IF NOT EXISTS  patient "
 					+	"(ID			INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ 	"Name 	        TEXT  NOT NULL,"
 					+   "Address        TEXT  NOT NULL,"
@@ -124,7 +124,7 @@ public class SQLiteManager implements DBManager {
 					+   "FOREIGN KEY (PTID) REFERENCES physicalTherapist(ID)"
 					+ ")";
 			st1.executeUpdate(sq1);
-			st1.close();			
+			st1.close();
 			Statement st3=c.createStatement();
 			String sq3="CREATE TABLE  IF NOT EXISTS  doctor"
 					+  "(ID 		    INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -142,7 +142,7 @@ public class SQLiteManager implements DBManager {
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ " Type			TEXT NOT NULL,"
 					+ " Length			INTEGER NOT NULL,"
-					+ " DOCID			INTEGER NOT NULL,"			
+					+ " DOCID			INTEGER NOT NULL,"
 					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID)	"
 					+ ")";
 			st4.executeUpdate(sq4);
@@ -150,10 +150,11 @@ public class SQLiteManager implements DBManager {
 			Statement st5=c.createStatement();
 			String sq5="CREATE TABLE  IF NOT EXISTS  appointment"
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ "	DateTime		DATETIME NOT NULL,"
+					+ "	date			DATE NOT NULL,"
+					+ " time			TIME NOT NULL,"
 					+ " PATID			INTEGER NOT NULL,"
 					+ " DOCID			INTEGER NOT NULL,"
-					+ " PTID			INTEGER NOT NULL,"					
+					+ " PTID			INTEGER NOT NULL,"
 					+ " FOREIGN KEY (PATID) REFERENCES patient(ID),"
 					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID),"
 					+ "	FOREIGN KEY (PTID) REFERENCES physicalTherapist(ID)"
@@ -190,12 +191,12 @@ public class SQLiteManager implements DBManager {
 					+ " PTID			INTEGER REFERENCES physicalTherapist(ID))";
 			st11.executeUpdate(sq11);
 			st11.close();
-		} 
-		catch (SQLException e) 
+		}
+		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

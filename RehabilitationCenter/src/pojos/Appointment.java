@@ -1,49 +1,36 @@
 package pojos;
 import java.sql.Date;
-import java.time.LocalDateTime;
+import java.sql.Time;
 import java.io.Serializable;
 
 public class Appointment implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private LocalDateTime dateTime;
-	
-	public Appointment () {
+	private Date date;
+	private Time time;
+
+	public Appointment() {
 		super();
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public LocalDateTime getDateTime() {
-		return dateTime;
-	}
-
-	public void setDateTime(LocalDateTime dateTime) {
-		this.dateTime = dateTime;
-	}
-
-	public Appointment(Integer id, LocalDateTime dateTime) {
+	public Appointment(Integer id, Date date, Time time) {
 		super();
 		this.id = id;
-		this.dateTime = dateTime;
+		this.date = date;
+		this.time = time;
 	}
+
+
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((dateTime == null) ? 0 : dateTime.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -53,11 +40,6 @@ public class Appointment implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Appointment other = (Appointment) obj;
-		if (dateTime == null) {
-			if (other.dateTime != null)
-				return false;
-		} else if (!dateTime.equals(other.dateTime))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -65,6 +47,25 @@ public class Appointment implements Serializable {
 			return false;
 		return true;
 	}
-	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public Time getTime() {
+		return time;
+	}
+	public void setTime(Time time) {
+		this.time = time;
+	}
+
+
 
 }
