@@ -1,4 +1,4 @@
-package ui;
+package gui;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -121,7 +121,7 @@ public class PatientMenu
 			{
 				ArrayList<PhysicalTherapist> pt= new ArrayList();
 				//TODO este es el error, lo comento porque no se si da error hacer push con errores
-				//pt=SQLitePhysicalTherapistManager.showPhisicalTherapists(ptidField.getText());
+				//pt=SQLitePhysicalTherapistManager.showPhisicalTherapists(sportField.getText());
 			});
 			register.setOnAction(e->{
 				String name = nameField.getText();
