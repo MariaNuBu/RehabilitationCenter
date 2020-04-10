@@ -1,6 +1,7 @@
 package db.sqlite;
 
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import db.interfaces.DBManager;
@@ -24,17 +25,17 @@ public class SQLiteManager implements DBManager {
 	{
 		return c;
 	}
-	public PatientManager getPatient() 
+	public PatientManager getPatientManager() 
 	{
 		return patient;
 	}	
 
-	public DoctorManager getDoctor() 
+	public DoctorManager getDoctorManager() 
 	{
 		return doctor;
 	}
 
-	public PhysicalTherapistManager getPhysicalTherapist()
+	public PhysicalTherapistManager getPhysicalTherapistManager()
 	{
 		return physicalTherapist;
 	}
@@ -44,7 +45,6 @@ public class SQLiteManager implements DBManager {
 		try
 		{
 			Class.forName("org.sqlite.JDBC");
-			//this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/msmar/OneDrive/Documentos/UNI/2º_2ºCuatri/Bases de datos/Práctica/Test.db");
 			this.c=DriverManager.getConnection("jdbc:sqlite:./db/RehabilitationCenter.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON"); 
 			patient = new SQLitePatientManager(c);
@@ -76,6 +76,7 @@ public class SQLiteManager implements DBManager {
 	{
 		try 
 		{
+			
 			Statement st6=c.createStatement();
 			String sq6="CREATE TABLE  IF NOT EXISTS  physicalTherapist"
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -88,13 +89,19 @@ public class SQLiteManager implements DBManager {
 					+ " Salary			DOUBLE NOT NULL)";
 			st6.executeUpdate(sq6);
 			st6.close();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			//java.sql.Date d = new java.sql.Date(new Date().getTime());
 			/*
-			java.sql.Date d = new java.sql.Date(new Date().getTime());
 			Statement st12=c.createStatement();
 			String sq12="INSERT INTO physicalTherapist (Name,Address,DOB,Phone,Email,SportType,Salary)"
-					   +"VALUES('Guillermo','Antonio López','d',678907283,'pablo@gmail.com','Tennis',1324.22)";
+					   +"VALUES('Guillermo Serrano','Antonio López','1969-01-04',678907283,'pablo@gmail.com','Tennis',1324.22)";
 			st12.executeUpdate(sq12);
 			st12.close();
+			Statement st13=c.createStatement();
+			String sq13="INSERT INTO physicalTherapist (Name,Address,DOB,Phone,Email,SportType,Salary)"
+					   +"VALUES('Paco Fernández','Marqués de Vadillo','1980-04-05',635907283,'paco@gmail.com','Swimming',1224.22)";
+			st13.executeUpdate(sq13);
+			st13.close();
 			*/
 			Statement st2=c.createStatement();
 			String sq2="CREATE TABLE IF NOT EXISTS   medicalHistory " 

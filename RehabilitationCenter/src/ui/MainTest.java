@@ -10,7 +10,7 @@ import java.util.Date;
 
 import db.interfaces.*;
 import db.sqlite.*;
-import gui.PatientMenu;
+import ui.PatientMenu;
 import pojos.*;
 
 public class MainTest 
@@ -18,7 +18,7 @@ public class MainTest
 	private static DBManager db;
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
-	
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 	public static void main(String [] args) throws NumberFormatException, IOException 
 	{
@@ -29,21 +29,27 @@ public class MainTest
 		PhysicalTherapist pt3=new PhysicalTherapist("Gabs","Montecarmelo",d,678907283,"gabs@gmail.com","Tennis",1324.22);
 		PhysicalTherapist pt2=new PhysicalTherapist("Alberto","Serrano",d,678123173,"alberto@gmail.com","WeightLifting",34456.0);
 		MedicalHistory mh=new MedicalHistory("Maria",d, "diseases", "allergies", "surgeries", (float)123, 123);
+		*/
 		db= new SQLiteManager();
 		db.connect();
 		db.createTables();
-		pm = db.getPatient();
-		ptm=db.getPhysicalTherapist();
-		*/
+		pm = db.getPatientManager();
+		ptm=db.getPhysicalTherapistManager();
 		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
 		/*
 		ptm.insertPhysicalTherapist(pt1);
 		ptm.insertPhysicalTherapist(pt2);
 		ptm.insertPhysicalTherapist(pt3);
+		*/
+		/*
 		ArrayList<PhysicalTherapist> pts=ptm.showPhisicalTherapists("Tennis");
 		for (PhysicalTherapist physicalTherapist : pts) 
 		{
 			System.out.println(physicalTherapist);	
+		}
+		if (pts.isEmpty())
+		{
+			
 		}
 		*/
 		// esto SI FUNCIONA!!!
@@ -74,6 +80,12 @@ public class MainTest
 		{
 		case 1:
 			PatientMenu patientMenu=new PatientMenu();
+			try {
+				patientMenu.registerPatient();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		;
 		

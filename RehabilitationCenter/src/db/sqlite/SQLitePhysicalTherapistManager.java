@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,8 @@ private Connection c;
 				Integer lenght=rs.getInt(3);
 				treatment = new Treatment(id,type,lenght);
 			}
+			ps.close();
+
 		}
 		catch (SQLException e)
 		{
@@ -69,14 +73,16 @@ private Connection c;
 		}
 	}
 
-	@Override
-	public ArrayList<PhysicalTherapist> showPhisicalTherapists(String sport) 
+	
+	public ArrayList<PhysicalTherapist> showPhysicalTherapists(String sport) 
 	{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		ArrayList<PhysicalTherapist> physicalTherapists=new ArrayList<PhysicalTherapist>();
 		PhysicalTherapist pt=null;
 		try
 		{
-			String sql="SELECT * FROM physicalTherapist WHERE SportType=?";
+			//TODO conseguir que saque bien la fecha porque se introduce pero no la lee al salir
+			String sql="SELECT ID,Name,sportType FROM physicalTherapist WHERE SportType=?";
 			PreparedStatement ps=c.prepareStatement(sql);
 			ps.setString(1, sport);
 			ResultSet rs = ps.executeQuery();
@@ -84,14 +90,50 @@ private Connection c;
 			{
 				Integer id=rs.getInt(1);
 				String name=rs.getString(2);
-				String address=rs.getString(3);
+				//String address=rs.getString(3);
 				//Date dob=rs.getDate(4);
-				Integer phone=rs.getInt(5);
-				String email=rs.getString(6);
-				String sportType=rs.getString(7);
-				Double salary=rs.getDouble(8);
+				//Integer phone=rs.getInt(5);
+				//String email=rs.getString(6);
+				String sportType=rs.getString(3);
+				//Double salary=rs.getDouble(8);
 				//pt=new PhysicalTherapist(id,name,address,dob,phone,email,sportType,salary);
-				pt=new PhysicalTherapist(id,name,address,phone,email,sportType,salary);
+				//pt=new PhysicalTherapist(id,name,address,phone,email,sportType,salary);
+				pt=new PhysicalTherapist(id,name,sportType);
+				physicalTherapists.add(pt);
+			}
+			ps.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return physicalTherapists;
+	}
+	
+	public ArrayList<PhysicalTherapist> showAllPhysicalTherapists() 
+	{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		ArrayList<PhysicalTherapist> physicalTherapists=new ArrayList<PhysicalTherapist>();
+		PhysicalTherapist pt=null;
+		try
+		{
+			//TODO conseguir que saque bien la fecha porque se introduce pero no la lee al salir
+			String sql="SELECT ID,Name,sportType FROM physicalTherapist";
+			PreparedStatement ps=c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				Integer id=rs.getInt(1);
+				String name=rs.getString(2);
+				//String address=rs.getString(3);
+				//Date dob=rs.getDate(4);
+				//Integer phone=rs.getInt(5);
+				//String email=rs.getString(6);
+				String sportType=rs.getString(3);
+				//Double salary=rs.getDouble(8);
+				//pt=new PhysicalTherapist(id,name,address,dob,phone,email,sportType,salary);
+				//pt=new PhysicalTherapist(id,name,address,phone,email,sportType,salary);
+				pt=new PhysicalTherapist(id,name,sportType);
 				physicalTherapists.add(pt);
 			}
 			ps.close();
@@ -116,13 +158,17 @@ private Connection c;
 				int ID=rs.getInt(1);
 				String name=rs.getString(2);
 				String address=rs.getString(3);
-				Date dob=rs.getDate(4);
+				String dob=rs.getString(4);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				Date DOB = Date.valueOf(LocalDate.parse(dob, formatter));
 				Integer phone=rs.getInt(5);
 				String email=rs.getString(6);
 				String sport=rs.getString(7);
 				Double salary=rs.getDouble(8);
-				pt= new PhysicalTherapist(ID,name,address,dob,phone,email,sport,salary);
+				pt= new PhysicalTherapist(ID,name,address,DOB,phone,email,sport,salary);
 			}
+			ps.close();
+
 		}
 		catch(SQLException e)
 		{

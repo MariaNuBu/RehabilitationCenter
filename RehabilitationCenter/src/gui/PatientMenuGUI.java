@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import pojos.*;
 
 
-public class PatientMenu 
+public class PatientMenuGUI 
 {
 		
 		public static void registerPatient() throws Exception
@@ -89,6 +89,7 @@ public class PatientMenu
 			TextField heightField = new TextField();
 			heightField.setPromptText("158");
 			GridPane.setConstraints(heightField, 1, 11);
+			/*
 			Label label13=new Label("PhysicalTherapist ID");
 			GridPane.setConstraints(label13, 0,12);
 			TextField ptidField = new TextField();
@@ -96,9 +97,10 @@ public class PatientMenu
 			GridPane.setConstraints(ptidField, 1, 12);
 			Button showPT=new Button("Show Physical Therapists");
 			GridPane.setConstraints(showPT, 0, 13);
+			*/
 			grid.getChildren().addAll(label1,label5,label2,label3,label4,label6,nameField,DOBField,addressField,emailField,
 					phoneField,sportField,disabilityField,label7,diseasesField,label8,label9,allergiesField,
-					surgeriesField,label10,label11,label12,heightField,weightField,ptidField,label12,register,showPT);
+					surgeriesField,label10,label11,label12,heightField,weightField,label12,register);
 			/*
 			ArrayList<TextField> data = new ArrayList();
 			data.add(nameField);
@@ -117,12 +119,14 @@ public class PatientMenu
 			//TODO vale aqui lo que quiero es que al darle al boton este salga una lista de los physiical therapist y qque asi lo pueda meter la id
 			//y con el id llamamos al metodo de getPhysicalTherapist de manager y asi conseguimos el pt y con esos 3 ya llamamos al 
 			//addPatientandMedicalHistory del manager de patient con el patient y la mh que hemos creado con el boton de register
+			/*
 			showPT.setOnAction(e-> 
 			{
 				ArrayList<PhysicalTherapist> pt= new ArrayList();
 				//TODO este es el error, lo comento porque no se si da error hacer push con errores
 				//pt=SQLitePhysicalTherapistManager.showPhisicalTherapists(sportField.getText());
 			});
+			*/
 			register.setOnAction(e->{
 				String name = nameField.getText();
 				String address=addressField.getText();

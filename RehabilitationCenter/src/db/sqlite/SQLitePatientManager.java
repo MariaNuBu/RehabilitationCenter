@@ -31,6 +31,7 @@ public class SQLitePatientManager implements PatientManager {
 			PreparedStatement prep=c.prepareStatement(sql);
 			prep.setString(1,  "%" + patientName + "%");
 			ResultSet rs=prep.executeQuery();
+
 			while(rs.next())
 			{
 				int id=rs.getInt("ID");
@@ -45,6 +46,8 @@ public class SQLitePatientManager implements PatientManager {
 				Patient pat = new Patient(id,name,address,DOB,phone,email,sportType,disability);
 				p.add(pat);
 			}
+			prep.close();
+
 		}
 		catch(SQLException e)
 		{
@@ -62,6 +65,8 @@ public class SQLitePatientManager implements PatientManager {
 			PreparedStatement p = c.prepareStatement(query);
 			ResultSet rs = p.executeQuery();
 			id = rs.getInt("lastId");
+			p.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -85,6 +90,7 @@ public class SQLitePatientManager implements PatientManager {
 			ps.setInt(7,mh.getHeightCm());
 			ps.executeUpdate();
 			ps.close();
+
 			int mhid=getLastId();
 			String sqlpatient="INSERT INTO patient (Name, Address, DOB, Phone, Email, SportType,Disability,MHID,PTID)"
 					+  "VALUES (?,?,?,?,?,?,?,?,?)";
@@ -125,6 +131,7 @@ public class SQLitePatientManager implements PatientManager {
 				Integer length=rs.getInt(3);
 				treatments.add(new Treatment(id,type,length));
 			}
+			p.close();
 			
 		}
 		catch(SQLException e)
@@ -161,7 +168,7 @@ public class SQLitePatientManager implements PatientManager {
 					patientCreated=true;
 				}
 			}
-			
+			ps.close();
 		}
 		catch(SQLException e)
 		{
@@ -180,6 +187,8 @@ public class SQLitePatientManager implements PatientManager {
 			PreparedStatement ps=c.prepareStatement(sql);
 			ps.setInt(1, p.getId());
 			ResultSet rs=ps.executeQuery();
+			
+
 			while(rs.next())
 			{
 				Integer id=rs.getInt(1);
@@ -192,6 +201,7 @@ public class SQLitePatientManager implements PatientManager {
 				Integer height=rs.getInt(8);
 				mh=new MedicalHistory(id,name,dob,diseases,allergies,surgeries,weight,height);
 			}	
+			ps.close();
 		}
 		catch(SQLException e)
 		{
