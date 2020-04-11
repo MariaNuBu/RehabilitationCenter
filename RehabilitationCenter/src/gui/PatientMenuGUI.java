@@ -4,13 +4,19 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import db.interfaces.DBManager;
+import db.interfaces.PatientManager;
+import db.interfaces.PhysicalTherapistManager;
+import db.sqlite.SQLiteManager;
 import db.sqlite.SQLitePhysicalTherapistManager;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pojos.*;
@@ -18,9 +24,16 @@ import pojos.*;
 
 public class PatientMenuGUI 
 {
-		
+		private static DBManager db;
+		private static PatientManager pm;
+		private static PhysicalTherapistManager ptm;
+
 		public static void registerPatient() throws Exception
 		{
+			db= new SQLiteManager();
+			db.connect();
+			pm = db.getPatientManager();
+			ptm=db.getPhysicalTherapistManager();
 			Stage window = new Stage();
 			window.setTitle("Paralimpic's Rehabilitation Center");
 			GridPane grid = new GridPane();
@@ -89,7 +102,7 @@ public class PatientMenuGUI
 			TextField heightField = new TextField();
 			heightField.setPromptText("158");
 			GridPane.setConstraints(heightField, 1, 11);
-			/*
+			///*
 			Label label13=new Label("PhysicalTherapist ID");
 			GridPane.setConstraints(label13, 0,12);
 			TextField ptidField = new TextField();
@@ -97,10 +110,10 @@ public class PatientMenuGUI
 			GridPane.setConstraints(ptidField, 1, 12);
 			Button showPT=new Button("Show Physical Therapists");
 			GridPane.setConstraints(showPT, 0, 13);
-			*/
-			grid.getChildren().addAll(label1,label5,label2,label3,label4,label6,nameField,DOBField,addressField,emailField,
-					phoneField,sportField,disabilityField,label7,diseasesField,label8,label9,allergiesField,
-					surgeriesField,label10,label11,label12,heightField,weightField,label12,register);
+			//*/
+			grid.getChildren().addAll(label1,label2,label3,label4,label5,label6,label7,label8,label9,label10,label11,label12,label13,
+					nameField,DOBField,addressField,emailField,phoneField,sportField,disabilityField,diseasesField,allergiesField,
+					surgeriesField,heightField,weightField,register,showPT);
 			/*
 			ArrayList<TextField> data = new ArrayList();
 			data.add(nameField);
@@ -119,14 +132,25 @@ public class PatientMenuGUI
 			//TODO vale aqui lo que quiero es que al darle al boton este salga una lista de los physiical therapist y qque asi lo pueda meter la id
 			//y con el id llamamos al metodo de getPhysicalTherapist de manager y asi conseguimos el pt y con esos 3 ya llamamos al 
 			//addPatientandMedicalHistory del manager de patient con el patient y la mh que hemos creado con el boton de register
-			/*
+			///*
 			showPT.setOnAction(e-> 
 			{
 				ArrayList<PhysicalTherapist> pt= new ArrayList();
 				//TODO este es el error, lo comento porque no se si da error hacer push con errores
-				//pt=SQLitePhysicalTherapistManager.showPhisicalTherapists(sportField.getText());
+				String sport=sportField.getText();
+				pt=ptm.showPhysicalTherapists(sport);
+				if (pt.isEmpty())
+				{
+					pt=ptm.showAllPhysicalTherapists();
+				}
+				VBox layout=new VBox();
+				layout.setPadding(new Insets(20,20,20,20));
+				layout.setAlignment(Pos.CENTER);
+				Scene scene2=new Scene(layout,400,400);
+				
+				
 			});
-			*/
+			//*/
 			register.setOnAction(e->{
 				String name = nameField.getText();
 				String address=addressField.getText();
@@ -153,6 +177,7 @@ public class PatientMenuGUI
 			window.setScene(scene);
 			window.show();
 		}
+		/*
 		public static java.sql.Date formatStringToSQLDate(String strDate) throws Exception
 		{
 		        Date utilDate = new Date(0); //DateFormat
@@ -163,6 +188,7 @@ public class PatientMenuGUI
 		        return sqlDate;   
 
 		}
+		*/
 		
 
 }

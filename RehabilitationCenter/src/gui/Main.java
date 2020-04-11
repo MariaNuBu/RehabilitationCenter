@@ -18,7 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pojos.Patient;
-/*
+
 public class Main extends Application 
 {
 	private static DBManager db;
@@ -41,7 +41,7 @@ public class Main extends Application
 		patient.setOnAction(e-> 
 		{
 			try {
-				PatientMenu.registerPatient();
+				PatientMenuGUI.registerPatient();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -63,4 +63,4 @@ public class Main extends Application
 	}
 
 }
-*/
+//*/
