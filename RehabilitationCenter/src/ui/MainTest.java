@@ -86,6 +86,15 @@ public class MainTest
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		case 2:
+			DoctorMenu doctorMenu= new DoctorMenu();
+			try {
+				doctorMenu.doctorMenu();
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		;
 		

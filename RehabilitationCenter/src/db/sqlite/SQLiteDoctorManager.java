@@ -178,13 +178,13 @@ public class SQLiteDoctorManager implements DoctorManager {
      return treatment;
 	}
 	@Override
-	public Treatment getTreatment(Patient p) {
+	public Treatment getTreatment( Integer treatID) {
 		Treatment treatment =null;
 		try
 		{
-			String sql="SELECT * from treatment  AS t JOIN patient AS p ON t.id=p.id WHERE p.id=?";
+			String sql="SELECT * from treatment  AS t JOIN patient AS p ON t.id=p.id WHERE t.id=?";
 			PreparedStatement ps=c.prepareStatement(sql);
-			ps.setInt(1, p.getId());
+			ps.setInt(1, treatID);
 			ResultSet rs=ps.executeQuery();
 			boolean treatmentCreated=false;
 			while (rs.next())
@@ -206,7 +206,36 @@ public class SQLiteDoctorManager implements DoctorManager {
 			e.printStackTrace();
 		}
 		return treatment;		
-	}	
+	}
+	
+	public List <Patient> SearchByName(String name){
+		List <Patient> patientList = new ArrayList<Patient>();
+		try {
+			String sql="SELECT * FROM patient AS p JOIN PatientDoctor AS pd ON p.ID=pd.PATID "
+					+ "WHERE p.Name LIKE ? GROUP BY pd.DOCID";
+			PreparedStatement ps= c.prepareStatement(sql);
+			ps.setString(1, "%"+name+"%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				int id= rs.getInt("ID");
+				String patientName = rs.getString("Name");
+				String address =rs.getString("Address");
+				Date date= rs.getDate("DOB");
+				int phone= rs.getInt("Phone");
+				String email= rs.getString("Email");
+				String sport = rs.getString("SportType");
+				String disability= rs.getString("Disability");
+				Patient newPat= new Patient(id,patientName,address,date,phone,email,sport,disability);
+				patientList.add(newPat);
+				
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return patientList;
+	}
 	}
 
 

@@ -121,7 +121,7 @@ public class SQLiteManager implements DBManager {
 					+ 	"Name 	        TEXT  NOT NULL,"
 					+   "Address        TEXT  NOT NULL,"
 					+   "DOB            DATE  NOT NULL,"
-					+   "Phone 		    FLOAT NOT NULL,"
+					+   "Phone 		    INTEGER NOT NULL,"
 					+   "Email 		    TEXT  NOT NULL,"
 					+   "SportType      TEXT,"
 					+   "Disability     TEXT,"
