@@ -18,7 +18,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pojos.Patient;
-import ui.PatientMenu;
 
 public class Main extends Application 
 {
@@ -31,8 +30,8 @@ public class Main extends Application
 		db= new SQLiteManager();
 		db.connect();
 		db.createTables();
-		pm = db.getPatient();
-		ptm=db.getPhysicalTherapist();
+		pm = db.getPatientManager();
+		ptm=db.getPhysicalTherapistManager();
 		window.setTitle("Paralimpic's Rehabilitation Center");
 		Button patient=new Button("Patient");
 		Button doctor=new Button("Doctor");
@@ -42,7 +41,7 @@ public class Main extends Application
 		patient.setOnAction(e-> 
 		{
 			try {
-				PatientMenu.registerPatient();
+				PatientMenuGUI.registerPatient();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -64,3 +63,4 @@ public class Main extends Application
 	}
 
 }
+//*/

@@ -21,6 +21,15 @@ public class PhysicalTherapist implements Serializable {
 	
 	
 	
+	public PhysicalTherapist(Integer id, String name, String typeSport) 
+	{
+		super();
+		this.id = id;
+		this.name = name;
+		this.typeSport = typeSport;
+	}
+
+
 	public PhysicalTherapist(Integer id,String name, String address, Integer phoneNumber, String eMail, String typeSport,
 			Double salary) {
 		super();
@@ -80,13 +89,21 @@ public class PhysicalTherapist implements Serializable {
 	public PhysicalTherapist() {
 		super();
 	}
-
+	/*
+	@Override
 	public String toString()
 	{
 		String s= "ID: "+this.id+"\nName: "+this.name+"\nAddress: "+this.address+
 				//"\nDOB: "+this.dob+
 				"\nEmail: "+this.eMail+
 				"\nTypeSport: "+this.typeSport+"\nSalary: "+this.salary+"\nPhone: "+this.phoneNumber;
+		return s;
+	}
+	*/
+	@Override
+	public String toString()
+	{
+		String s= "ID: "+this.id+"\nName: "+this.name+"\nTypeSport: "+this.typeSport;
 		return s;
 	}
 

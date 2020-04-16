@@ -5,8 +5,8 @@ public interface DBManager {
 	public void connect();
 	public void disconnect();
 	public void createTables();
-	public PatientManager getPatient(); 
-	public DoctorManager getDoctor();
-	public PhysicalTherapistManager getPhysicalTherapist();
+	public PatientManager getPatientManager(); 
+	public DoctorManager getDoctorManager();
+	public PhysicalTherapistManager getPhysicalTherapistManager();
 	
 }

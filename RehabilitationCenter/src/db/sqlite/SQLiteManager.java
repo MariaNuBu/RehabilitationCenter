@@ -1,6 +1,7 @@
 package db.sqlite;
 
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import db.interfaces.AppointmentManager;
@@ -26,17 +27,16 @@ public class SQLiteManager implements DBManager {
 	{
 		return c;
 	}
-	public PatientManager getPatient()
+	public PatientManager getPatientManager() 
 	{
 		return patient;
 	}
-
-	public DoctorManager getDoctor()
+	public DoctorManager getDoctorManager() 
 	{
 		return doctor;
 	}
 
-	public PhysicalTherapistManager getPhysicalTherapist()
+	public PhysicalTherapistManager getPhysicalTherapistManager()
 	{
 		return physicalTherapist;
 	}
@@ -103,6 +103,11 @@ public class SQLiteManager implements DBManager {
 					   +"VALUES('Guillermo','Antonio López','d',678907283,'pablo@gmail.com','Tennis',1324.22)";
 			st12.executeUpdate(sq12);
 			st12.close();
+			Statement st13=c.createStatement();
+			String sq13="INSERT INTO physicalTherapist (Name,Address,DOB,Phone,Email,SportType,Salary)"
+					   +"VALUES('Paco Fernández','Marqués de Vadillo','1980-04-05',635907283,'paco@gmail.com','Swimming',1224.22)";
+			st13.executeUpdate(sq13);
+			st13.close();
 			*/
 			Statement st2=c.createStatement();
 			String sq2="CREATE TABLE IF NOT EXISTS   medicalHistory "
@@ -122,7 +127,7 @@ public class SQLiteManager implements DBManager {
 					+ 	"Name 	        TEXT  NOT NULL,"
 					+   "Address        TEXT  NOT NULL,"
 					+   "DOB            DATE  NOT NULL,"
-					+   "Phone 		    FLOAT NOT NULL,"
+					+   "Phone 		    INTEGER NOT NULL,"
 					+   "Email 		    TEXT  NOT NULL,"
 					+   "SportType      TEXT,"
 					+   "Disability     TEXT,"
