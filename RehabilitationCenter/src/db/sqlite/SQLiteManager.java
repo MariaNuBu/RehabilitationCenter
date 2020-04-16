@@ -3,6 +3,7 @@ package db.sqlite;
 import java.sql.*;
 import java.util.Date;
 
+import db.interfaces.AppointmentManager;
 import db.interfaces.DBManager;
 import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
@@ -14,6 +15,7 @@ public class SQLiteManager implements DBManager {
 	private PatientManager patient;
 	private DoctorManager doctor;
 	private PhysicalTherapistManager physicalTherapist;
+	private AppointmentManager appointment;
 
 	public SQLiteManager()
 	{
@@ -38,6 +40,11 @@ public class SQLiteManager implements DBManager {
 	{
 		return physicalTherapist;
 	}
+
+	public AppointmentManager getAppointment(){
+		return appointment;
+	}
+
 	@Override
 	public void connect()
 	{
@@ -45,11 +52,12 @@ public class SQLiteManager implements DBManager {
 		{
 			Class.forName("org.sqlite.JDBC");
 			//this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/msmar/OneDrive/Documentos/UNI/2º_2ºCuatri/Bases de datos/Práctica/Test.db");
-			this.c=DriverManager.getConnection("jdbc:sqlite:./db/RehabilitationCenter.db");
+			this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/Teresa Romero/git/RehabilitationCenter2.0/RehabilitationCenter/db"); //jdbc:sqlite:./db/dogs.db
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			patient = new SQLitePatientManager(c);
 			doctor = new SQLiteDoctorManager(c);
 			physicalTherapist = new SQLitePhysicalTherapistManager(c);
+			appointment = new SQLiteAppointmentManager(c);
 
 		}
 		catch (Exception e)

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="nameLabel" text="Name :">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="name" promptText="Name">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="40.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <Label fx:id="dobLabel" text="Date of Birth :">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="dob" prefHeight="26.0" prefWidth="151.0" promptText="YYYY-MM-DD">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="5.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <children>
+            <Label text="Phone">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="phone">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+         <children>
+            <Label text="Diseases">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="diseases" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+         <children>
+            <Label text="Surgeries">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="surgeries" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+         <children>
+            <Label text="Weight(kg)">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="weight" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="7">
+         <children>
+            <Label text="Label">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6">
+         <children>
+            <Label text="Disabilities">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="disabilities" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <children>
+            <Label fx:id="surnameLabel" text="Surname :">
+               <padding>
+                  <Insets left="20.0" top="20.0" />
+               </padding>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="Surname" promptText="Surname">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="40.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label text="Adress :">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="11.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="address" prefHeight="26.0" prefWidth="145.0" promptText="C/ANTONIO LOPEZ">
+               <HBox.margin>
+                  <Insets left="50.0" top="11.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Label text="Email">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="email" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <Label text="Allergies">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="allergies" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <Label text="SportType">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="sport" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+            <Label text="Height(cm)">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="height" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <children>
+            <Label text="PTID">
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="ptid" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+         <children>
+            <Button fx:id="registerButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#clickRegisterButton" text="Register">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="20.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</GridPane>

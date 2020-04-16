@@ -1,4 +1,7 @@
 package ui;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,8 +19,9 @@ public class MainTest
 	private static PhysicalTherapistManager ptm;
 	
 		
-	public static void main(String [] args) 
+	public static void main(String [] args) throws NumberFormatException, IOException 
 	{
+		/*
 		java.sql.Date d = new java.sql.Date(new Date().getTime());
 		Patient p= new Patient("Maria","AntonioLopez",d,123,"email","tennis","none");
 		PhysicalTherapist pt1=new PhysicalTherapist("Pablo","Antonio López",d,678907283,"pablo@gmail.com","Tennis",1324.22);
@@ -29,6 +33,7 @@ public class MainTest
 		db.createTables();
 		pm = db.getPatient();
 		ptm=db.getPhysicalTherapist();
+		*/
 		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
 		/*
 		ptm.insertPhysicalTherapist(pt1);
@@ -51,11 +56,25 @@ public class MainTest
 		}
 		*/
 		//ESTO TAMBIEN FUNCIONA
+		/*
 		Patient get=pm.getPatient(1);
 		System.out.println("conseguido\n"+get);
 		PhysicalTherapist pget=ptm.getPhysicalTherapist(3);
 		System.out.println("physical\n"+pget);
 		MedicalHistory getmh=pm.getMedicalHistory(get);
 		System.out.println("MH "+getmh);
+		*/
+		
+		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
+		System.out.println("What are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
+		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
+		int option = Integer.parseInt(reader.readLine());
+		switch(option)
+		{
+		case 1:
+			PatientMenu patientMenu=new PatientMenu();
+		}
+		;
+		
 	}
 }
