@@ -52,7 +52,7 @@ public class SQLiteManager implements DBManager {
 		{
 			Class.forName("org.sqlite.JDBC");
 			//this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/msmar/OneDrive/Documentos/UNI/2º_2ºCuatri/Bases de datos/Práctica/Test.db");
-			this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/Teresa Romero/git/RehabilitationCenter2.0/RehabilitationCenter/db"); //jdbc:sqlite:./db/dogs.db
+			this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/Teresa Romero/git/RehabilitationCenter2.0/RehabilitationCenter/db/RehabilitationCenter.db"); //jdbc:sqlite:./db/dogs.db
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			patient = new SQLitePatientManager(c);
 			doctor = new SQLiteDoctorManager(c);

@@ -2,12 +2,13 @@ package pojos;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Patient implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	//TODO check if the atributes of the foreign keys are necesary
 	private Integer id;
 	private String  name;
@@ -20,11 +21,11 @@ public class Patient implements Serializable {
 	private MedicalHistory medicalHistory;
 	private PhysicalTherapist physicalTerapist;
 	private List<Doctor> doctors;
-	
+	private List<Appointment> appointments;
+
 	public Patient() {
 		super();
 	}
-	
 
 	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
 			String disability,MedicalHistory mh,PhysicalTherapist pt,List<Doctor> docs)
@@ -40,7 +41,7 @@ public class Patient implements Serializable {
 		this.disability = disability;
 		this.medicalHistory=mh;
 		this.physicalTerapist=pt;
-		this.doctors=docs;
+		this.doctors = docs;
 	}
 
 	public Patient(String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
@@ -69,58 +70,68 @@ public class Patient implements Serializable {
 		this.disability = disability;
 	}
 
+	public Patient(Integer id, String name, Date dob, String eMail, String sport, String disability) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.dob = dob;
+		this.eMail = eMail;
+		this.sport = sport;
+		this.disability = disability;
+	}
 
-	
-	
+	public Patient(Integer id, String name, Date dob, String eMail, String sport, String disability,
+			PhysicalTherapist physicalTerapist) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.dob = dob;
+		this.eMail = eMail;
+		this.sport = sport;
+		this.disability = disability;
+		this.physicalTerapist = physicalTerapist;
+	}
 
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
-	
+
 	public void setAddress(String adress) {
 		this.address = adress;
 	}
-	
+
 	public Date getDob() {
 		return dob;
 	}
-	
+
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-	
+
 	public Integer getPhoneNumber() {
 		return phoneNumber;
 	}
-	
+
 	public void setPhoneNumber(Integer phoneNumber) {
 	this.phoneNumber = phoneNumber;
 	}
-	
-	public String getEmail() {
-		return eMail;
-	}
-	
-	public void setEmail(String eMail) {
-		this.eMail = eMail;
-	}
-	
+
 	public String getSport() {
 		return sport;
 	}
@@ -136,7 +147,7 @@ public class Patient implements Serializable {
 	public void setDisability(String disability) {
 		this.disability = disability;
 	}
-	
+
 	public MedicalHistory getMedicalHistory() {
 		return medicalHistory;
 	}
@@ -165,7 +176,23 @@ public class Patient implements Serializable {
 	public void setDoctors(List<Doctor> doctors) {
 		this.doctors = doctors;
 	}
+	
 
+	public String geteMail() {
+		return eMail;
+	}
+
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 
 	public String toString()
 	{
@@ -173,7 +200,7 @@ public class Patient implements Serializable {
 				"\nTypeSport: "+this.sport+"\nDisability: "+this.disability;
 		return s;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -181,7 +208,7 @@ public class Patient implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-	
+
 
 	@Override
 	public boolean equals(Object obj) {

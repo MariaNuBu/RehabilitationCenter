@@ -80,8 +80,17 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void readAppointments(List<Appointment> ap) {
-		// TODO Auto-generated method stub
+	public void readAppointments(List<Patient>patients) {
+		
+		for(int i=0; i<patients.size(); i++){
+			Integer id  = patients.get(i).getId();
+			String name = patients.get(i).getName();
+			String sport = patients.get(i).getSport();
+			String disability = patients.get(i).getDisability();
+			List<Appointment> appointmentsToRead = patients.get(i).getAppointments();
+			System.out.println(id+" "+name+" "+sport+" "+disability+"APPOINTMENTS-->"+appointmentsToRead);
+			
+		}
 
 	}
 

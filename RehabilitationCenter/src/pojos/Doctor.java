@@ -6,7 +6,7 @@ import java.sql.Date;
 public class Doctor implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String name;
 	private String address;
@@ -15,11 +15,11 @@ public class Doctor implements Serializable{
 	private String eMail;
 	private String speciality;
 	private Double salary;
-	
+
 	public Doctor() {
 		super();
 	}
-	
+
 	public Doctor(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail,
 			String speciality, Double salary) {
 		super();
@@ -32,9 +32,16 @@ public class Doctor implements Serializable{
 		this.speciality = speciality;
 		this.salary = salary;
 	}
-	
-	
-	
+
+	public Doctor(Integer id, String name, String eMail){
+		super();
+		this.id = id;
+		this.name = name;
+		this.eMail = eMail;
+	}
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -42,7 +49,7 @@ public class Doctor implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -59,9 +66,9 @@ public class Doctor implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-	
+
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -110,5 +117,5 @@ public class Doctor implements Serializable{
 	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
-		
+
 }
