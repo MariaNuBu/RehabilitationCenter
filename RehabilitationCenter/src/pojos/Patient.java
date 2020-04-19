@@ -21,7 +21,7 @@ public class Patient implements Serializable {
 	private MedicalHistory medicalHistory;
 	private PhysicalTherapist physicalTerapist;
 	private List<Doctor> doctors;
-	private List<Appointment> appointments;
+	private ArrayList<Appointment> appointments;
 
 	public Patient() {
 		super();
@@ -193,11 +193,11 @@ public class Patient implements Serializable {
 		this.eMail = eMail;
 	}
 
-	public List<Appointment> getAppointments() {
+	public ArrayList<Appointment> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(List<Appointment> appointments) {
+	public void setAppointments(ArrayList<Appointment> appointments) {
 		this.appointments = appointments;
 	}
 

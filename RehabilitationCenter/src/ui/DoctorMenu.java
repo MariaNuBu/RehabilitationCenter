@@ -3,6 +3,10 @@ package ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +19,7 @@ import pojos.*;
 public class DoctorMenu {
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	private static DBManager db;
 	private static DoctorManager dm;
 	private static PatientManager pm;
@@ -101,27 +106,48 @@ public class DoctorMenu {
 			System.out.println("0.Return");
 			int option = Integer.parseInt(reader.readLine());
 			switch(option){
+			//NOTA GENERAL: al hacer algo con appointment el medico solo puede trabajar con sus pacientes actuales
+			//el paciente será el que añada al medico
 			case 1:
-				List<Patient>doctorsPatients = dm.getDoctorsPatients(docID);
-				am.readAppointments(doctorsPatients);
+				List<Patient>currentPatients = dm.getDoctorsPatients(docID);
+				am.readAppointments(currentPatients);
 				break;
 			case 2:
-				List<Patient>doctorsPatients2 = dm.getDoctorsPatients(docID);
-				//TODO
-				break;
+				List<Patient>currentPatients2 = dm.getDoctorsPatients(docID);
+				System.out.println("This are your current patients");
+				for(int i=0; i<currentPatients2.size(); i++){
+					Patient patient = currentPatients2.get(i);
+					System.out.println(patient.toString());
+				}
+				System.out.println("---------------------------");
+				System.out.println("CURRENT APPOINTMENTS");
+				am.readAppointments(currentPatients2);
+				System.out.println("Choose a patients ID for the new appointment");
+				Integer patId = Integer.parseInt(reader.readLine());
+				Patient patient = pm.getPatient(patId);
+				PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();
+				Integer pTId = physicalTherapist.getId();
+				Appointment appointment = introduceDateAndTime();
+				am.addAppointment(appointment, patId, pTId, docID);
+				addAppointmentToPatient(patId, appointment);
+				break; //creo que al crear un paciente hay que incluir un ArrayList<Appointment> vacio
 			case 3:
-				List<Patient>doctorsPatients3 = dm.getDoctorsPatients(docID);
-				//TODO
+				List<Patient>currentPatients3 = dm.getDoctorsPatients(docID);
+				System.out.println("CURRENT APPOINTMENTS");
+				am.readAppointments(currentPatients3);
+				System.out.println("Select the ID of the appointment you want to modify");
+				Integer idAp = Integer.parseInt(reader.readLine());
+
 				break;
 			case 4:
-				List<Patient>doctorsPatients4 = dm.getDoctorsPatients(docID);
+				List<Patient>currentPatients4 = dm.getDoctorsPatients(docID);
 				//TODO
 				break;
 			case 0:
 				return;
 			}
 
-		}
+		}//FALTAN POR HACER VALIDATE INFO POR SI METE UNA DATE QUE YA ESTA COGIDA O UN ID QUE NO ESTÁ
 
 	}
 
@@ -186,6 +212,29 @@ public class DoctorMenu {
 			Treatment treatmentToRead= dm.getTreatment(treatID);
 			dm.readTreatment(treatmentToRead);
 		}
+
+	private static Appointment introduceDateAndTime() throws Exception{
+		System.out.println("Introduce a date: yyyy-mm-dd");
+		String dateString = reader.readLine();
+		Date appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
+		System.out.println("Introduce the time: HH:mm");
+		String timeString = reader.readLine();
+		Time appointmentTime = java.sql.Time.valueOf(timeString);
+		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
+		return appointment;
+		}
+
+	private static void addAppointmentToPatient(Integer patId, Appointment appointment){
+		Patient patient = pm.getPatient(patId);
+		ArrayList<Appointment>appointments = patient.getAppointments();
+		Integer apId = pm.getLastId();
+		Date date = appointment.getDate();
+		Time time = appointment.getTime();
+		Appointment appointmentToAdd = new Appointment(apId, date, time);
+		appointments.add(appointmentToAdd);
+		patient.setAppointments(appointments);
+		}
+
 
 }
 

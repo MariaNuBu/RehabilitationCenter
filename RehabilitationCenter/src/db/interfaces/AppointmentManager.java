@@ -8,7 +8,7 @@ import pojos.*;
 
 public interface AppointmentManager {
 
-	public void addAppointment(Appointment appointment, Patient patient, Doctor doc, PhysicalTherapist pT);
+	public void addAppointment(Appointment appointment, Integer patId, Integer pTId,Integer docId);
 	public void modifyAppointment(Appointment appointment);
 	public void deleteAppointment(Appointment appointment);
 	public void readAppointments(List<Patient>patients); //para que un medico o pT vea todas sus consultas
