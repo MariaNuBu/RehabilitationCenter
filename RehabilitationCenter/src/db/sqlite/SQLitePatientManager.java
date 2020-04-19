@@ -99,7 +99,7 @@ public class SQLitePatientManager implements PatientManager {
 			prep.setString(2,p.getAddress());
 			prep.setDate(3,p.getDob());
 			prep.setInt(4, p.getPhoneNumber());
-			prep.setString(5, p.getEmail());
+			prep.setString(5, p.geteMail());
 			prep.setString(6, p.getSport());
 			prep.setString(7, p.getDisability());
 			prep.setInt(8, mhid);
@@ -119,7 +119,8 @@ public class SQLitePatientManager implements PatientManager {
 		ArrayList<Treatment> treatments=new ArrayList <Treatment>();
 		try 
 		{
-			String sql="SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID"
+			//TODO como hacer bien este join porque explota
+			String sql="SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID JOIN patient AS p ON p.ID=pt.PATID"
 					+ "WHERE PATID=?";
 			PreparedStatement p=c.prepareStatement(sql);
 			p.setInt(1, patient.getId());

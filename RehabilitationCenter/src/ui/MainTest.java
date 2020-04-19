@@ -92,6 +92,15 @@ public class MainTest
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		case 3:
+			try
+			{
+				choose();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		
@@ -123,6 +132,39 @@ public class MainTest
 				e.printStackTrace();
 				}
 			}
+		}
+		
+	}
+	
+	private static void choose() throws Exception 
+	{
+		while(true)
+		{
+			System.out.println("Welcome physical therapist, choose an option");
+			System.out.println("1.Check patients");
+			System.out.println("2.Check appointments");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			int option = Integer.parseInt(reader.readLine());
+			switch(option){
+			case 1:
+				PhysicalMenu physicalMenu= new PhysicalMenu();
+				try {
+					
+					physicalMenu.readTreatment();
+					
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			case 2:
+				DoctorMenu doctorMenuApp = new DoctorMenu();
+				try{
+					
+					doctorMenuApp.doctorAppointmentMenu();
+					
+				}catch(Exception e){
+					e.printStackTrace();
+					}
+				}
 		}
 		
 	}

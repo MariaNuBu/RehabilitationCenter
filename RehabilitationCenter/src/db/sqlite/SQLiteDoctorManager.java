@@ -126,7 +126,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 
 	@Override
 	public List<Treatment> listTreatments(Integer IDPat) {
-
+		//TODO revisar esta query tambien que no esta buen
 		List<Treatment> treatmentList = new ArrayList<Treatment>();
 
 		try {
@@ -182,6 +182,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 	@Override
 	public Treatment getTreatment( Integer treatID) {
 		Treatment treatment =null;
+		//TODO revisar esta query que no esta bien
 		try
 		{
 			String sql="SELECT * from treatment  AS t JOIN patient AS p ON t.id=p.id WHERE t.id=?";

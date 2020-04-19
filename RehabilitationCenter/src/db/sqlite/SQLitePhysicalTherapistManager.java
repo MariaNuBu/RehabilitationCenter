@@ -49,6 +49,8 @@ private Connection c;
      return treatment;
 	}
 	
+	
+	
 	@Override
 	public void insertPhysicalTherapist(PhysicalTherapist pt)
 	{
@@ -175,6 +177,34 @@ private Connection c;
 			e.printStackTrace();
 		}
 		return pt;
+	}
+
+	@Override
+	public ArrayList<Patient> getAllPatients(Integer ptid) 
+	{
+		ArrayList <Patient> patients = new ArrayList<Patient>();
+		try
+		{
+			String sql="SELECT ID,Name FROM patient WHERE PTID=?";
+			PreparedStatement pt= c.prepareStatement(sql);
+			pt.setInt(1, ptid);
+			ResultSet rs=pt.executeQuery();
+			Patient p=null;
+			while(rs.next())
+			{
+				Integer id=rs.getInt(1);
+				String name=rs.getString(2);
+				p=new Patient(id,name);
+				patients.add(p);
+			}
+			pt.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+			
+		return patients;
 	}
 	
 	
