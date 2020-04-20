@@ -17,6 +17,10 @@ public class Treatment  implements Serializable  {
 	  this.lenght=lenght;
 	  
   }
+  public Treatment(String type, Integer lenght) {
+	  this.type = type;
+	  this.lenght = lenght;
+  }
 public Integer getId() {
 	return id;
 }

@@ -13,10 +13,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.bind.ParseConversionEvent;
 
 import db.interfaces.*;
+import db.sqlite.SQLiteManager;
 import pojos.*;
 
 
@@ -41,7 +41,6 @@ public class DoctorMenu {
 		int ptId=Integer.parseInt(reader.readLine());
 		doctorSubMenu(ptId);
 	}
-	
 	
 	
 	
@@ -75,7 +74,7 @@ public class DoctorMenu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
-				//TODO
+				ReadMedicalHistory(patID);
 				break;
 			case 2:
 				ModifyMedicalHistory(patID);
@@ -106,9 +105,10 @@ public class DoctorMenu {
  
  
  private static void ReadMedicalHistory(Integer patID) {
-	 
-	 
+	 ShowMedicalHistory(patID);
  }
+ 
+ 
  
  private static void ModifyMedicalHistory(Integer patID) throws NumberFormatException, IOException {
 		ShowMedicalHistory(patID);
@@ -188,8 +188,20 @@ public class DoctorMenu {
 			
 		}
 		
-	
-		
+private static void createTreatment(Integer patID) throws IOException {
+	db= new SQLiteManager();
+	db.connect();
+	dm = db.getDoctorManager();
+	ListTreatments(patID);
+	System.out.println("For a new treatment:");
+	System.out.println("Type of the new treatment: ");
+	String type = reader.readLine();
+	System.out.println("Length of the new treatment: ");
+	Integer length = Integer.parseInt(reader.readLine());
+	Treatment newTreatment = new Treatment(type,length);
+	dm.createTreatment(newTreatment);
+	System.out.println("You have created a new treatment succesfully!");
+}
 		
 
 	private static void doctorAppointmentSubMenu(Integer docID) throws Exception {
