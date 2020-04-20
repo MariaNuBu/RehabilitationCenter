@@ -145,24 +145,26 @@ public class MainTest
 			System.out.println("2.Check appointments");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 			int option = Integer.parseInt(reader.readLine());
-			switch(option){
-			case 1:
-				PhysicalMenu physicalMenu= new PhysicalMenu();
-				try {
+			PhysicalMenu physicalMenu= new PhysicalMenu();
+			switch(option)
+			{
+				case 1:
 					
-					physicalMenu.readTreatment();
-					
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-			case 2:
-				DoctorMenu doctorMenuApp = new DoctorMenu();
-				try{
-					
-					doctorMenuApp.doctorAppointmentMenu();
-					
-				}catch(Exception e){
-					e.printStackTrace();
+					try
+					{
+						physicalMenu.readTreatment();					
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+				case 2:
+					try
+					{				
+						physicalMenu.checkAppointments();						
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
 					}
 				}
 		}

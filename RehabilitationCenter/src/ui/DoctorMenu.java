@@ -292,25 +292,6 @@ public class DoctorMenu {
 		}
  }
 
-	private static void DeleteTreatment(Integer patID) throws NumberFormatException, IOException {
-			ListTreatments(patID);
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Please, input the ID of the treatment you want to delete :");
-			int treatID;
-		    treatID = Integer.parseInt(reader.readLine());
-			Treatment treatmentToDelete= dm.getTreatment(treatID);
-			dm.deleteTreatment(treatmentToDelete);
-		}
-
-	private static void ReadTreatment(Integer patID) throws NumberFormatException, IOException {
-			ListTreatments(patID);
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Please, input the ID of the treatment you want to read :");
-			int treatID;
-		    treatID = Integer.parseInt(reader.readLine());
-			Treatment treatmentToRead= dm.getTreatment(treatID);
-			dm.readTreatment(treatmentToRead);
-		}
 
 	private static Appointment introduceDateAndTime() throws Exception{
 		System.out.println("Introduce a date: yyyy-mm-dd");
@@ -333,7 +314,7 @@ public class DoctorMenu {
 		appointments.add(appointmentToAdd);
 		patient.setAppointments(appointments);
 		}
- }
+ 
  
  
  

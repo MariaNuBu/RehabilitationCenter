@@ -126,11 +126,11 @@ public class SQLiteDoctorManager implements DoctorManager {
 
 	@Override
 	public List<Treatment> listTreatments(Integer IDPat) {
-		//TODO revisar esta query tambien que no esta buen
 		List<Treatment> treatmentList = new ArrayList<Treatment>();
 
 		try {
-			String sql = "SELECT * FROM treatment AS t JOIN patient AS p ON t.id=p.id WHERE p.id=?";
+			String sql = "SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID JOIN patient AS p ON p.ID=pt.PATID "
+					+ "WHERE PATID=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, IDPat);
 			ResultSet rs = prep.executeQuery();
@@ -182,7 +182,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 	@Override
 	public Treatment getTreatment( Integer treatID) {
 		Treatment treatment =null;
-		//TODO revisar esta query que no esta bien
+		//TODO revisar esta query que no esta bien cambiar tambien los numeros
 		try
 		{
 			String sql="SELECT * from treatment  AS t JOIN patient AS p ON t.id=p.id WHERE t.id=?";

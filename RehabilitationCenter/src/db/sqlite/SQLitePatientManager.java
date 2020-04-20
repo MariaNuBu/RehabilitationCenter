@@ -119,8 +119,7 @@ public class SQLitePatientManager implements PatientManager {
 		ArrayList<Treatment> treatments=new ArrayList <Treatment>();
 		try 
 		{
-			//TODO como hacer bien este join porque explota
-			String sql="SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID JOIN patient AS p ON p.ID=pt.PATID"
+			String sql="SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID JOIN patient AS p ON p.ID=pt.PATID "
 					+ "WHERE PATID=?";
 			PreparedStatement p=c.prepareStatement(sql);
 			p.setInt(1, patient.getId());
