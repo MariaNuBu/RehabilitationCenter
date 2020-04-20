@@ -21,8 +21,11 @@ public class Appointment implements Serializable {
 		this.time = time;
 	}
 
-
-
+	public Appointment(Date date, Time time) {
+		super();
+		this.date = date;
+		this.time = time;
+	}
 
 	@Override
 	public int hashCode() {
@@ -65,6 +68,13 @@ public class Appointment implements Serializable {
 	public void setTime(Time time) {
 		this.time = time;
 	}
+
+	@Override
+	public String toString() {
+		return "Appointment [id=" + id + ", date=" + date + ", time=" + time + "]";
+	}
+
+
 
 
 

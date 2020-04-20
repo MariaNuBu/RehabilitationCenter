@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.interfaces.AppointmentManager;
-import pojos.Appointment;
-import pojos.Doctor;
-import pojos.Patient;
-import pojos.PhysicalTherapist;
+import pojos.*;
+
 
 public class SQLiteAppointmentManager implements AppointmentManager {
 
@@ -24,18 +22,17 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 
 
 	@Override
-	public void addAppointment(Appointment appointment, Patient patient, Doctor doc, PhysicalTherapist pT) {
+	public void addAppointment(Appointment appointment, Integer patId, Integer pTId, Integer docId) {
 		try{
 
-			String sql = "INSERT INTO appointment (ID, date, time, PATID, DOCID, PTID)"
-						+"VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO appointment (date, time, PATID, DOCID, PTID)"
+						+"VALUES (?,?,?,?,?)";
 			PreparedStatement prepS = c.prepareStatement(sql);
-			prepS.setInt(1, appointment.getId());
-			prepS.setDate(2, appointment.getDate());
-			prepS.setTime(3, appointment.getTime());
-			prepS.setInt(4, patient.getId());
-			prepS.setInt(5, doc.getId());
-			prepS.setInt(6, pT.getId());
+			prepS.setDate(1, appointment.getDate());
+			prepS.setTime(2, appointment.getTime());
+			prepS.setInt(3, patId);
+			prepS.setInt(4, docId);
+			prepS.setInt(5, pTId);
 			prepS.executeUpdate();
 			prepS.close();
 
@@ -80,10 +77,22 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void readAppointments(List<Appointment> ap) {
-		// TODO Auto-generated method stub
+	public void readAppointments(List<Patient>patients) {
 
-	}
+		for(int i=0; i<patients.size(); i++){
+			Integer id  = patients.get(i).getId();
+			String name = patients.get(i).getName();
+			String sport = patients.get(i).getSport();
+			String disability = patients.get(i).getDisability();
+			List<Appointment> appointmentsToRead = patients.get(i).getAppointments();
+			boolean check = appointmentsToRead.isEmpty();
+			if(check == false) {
+				System.out.println(id+" "+name+" "+sport+" "+disability+"APPOINTMENTS-->"+appointmentsToRead.toString());
+			} //creo que para esto habria que crear un arrayList de appointments vacío al añadir newPatient !!!!
+
+		}
+
+	} //PONER ESTA FUNCION EN DOCTOR MENU, NO REQUIERE CONEXION CON LA DATABASE
 
 	@Override
 	public List<Appointment> searchDate(Date date) {

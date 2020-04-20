@@ -5,26 +5,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.ParseConversionEvent;
 
-import db.interfaces.DBManager;
-import db.interfaces.DoctorManager;
-import db.interfaces.PatientManager;
-import pojos.MedicalHistory;
-import pojos.Patient;
-import pojos.Treatment;
+import db.interfaces.*;
+import pojos.*;
+
+
 public class DoctorMenu {
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	private static DBManager db;
 	private static DoctorManager dm;
 	private static PatientManager pm;
+	private static AppointmentManager am;
+
 	public  void doctorMenu() throws Exception {
-		
+
 		System.out.println("Please introduce the name of the patient you want to work with");
 		String name = reader.readLine();
 		List<Patient> patients = dm.SearchByName(name);
@@ -39,8 +45,24 @@ public class DoctorMenu {
 	
 	
 	
- private static void doctorSubMenu(Integer patID )throws Exception{
-	 while (true) {
+
+	public void doctorAppointmentMenu() throws Exception{
+
+		System.out.println("Introduce your name");
+		String doctorName = reader.readLine();
+		List<Doctor> docs = dm.searchDoctorByName(doctorName);
+		for(int i=0; i<docs.size();i++){
+			System.out.println(docs.get(i).getId());
+			System.out.println(docs.get(i).getName());
+			System.out.println(docs.get(i).geteMail());
+		}
+		System.out.println("Write to confirm your ID");
+		int docID = Integer.parseInt(reader.readLine());
+		doctorAppointmentSubMenu(docID);
+	}
+
+	private static void doctorSubMenu(Integer patID)throws Exception{
+		while (true) {
 			System.out.println("Hello doctor , what do you want to do ?");
 			System.out.println("1. Read the Medical History of your patient");
 			System.out.println("2. Modify the Medical History of your patient");
@@ -169,7 +191,66 @@ public class DoctorMenu {
 	
 		
 		
- private static void ModifyTreatment(Integer patID) throws NumberFormatException, IOException {
+
+	private static void doctorAppointmentSubMenu(Integer docID) throws Exception {
+		while(true){
+			System.out.println("Select one of this options");
+			System.out.println("1.Read appointments");
+			System.out.println("2.Add appointment");
+			System.out.println("3.Modify appointment");
+			System.out.println("4.Delete appointment");
+			System.out.println("0.Return");
+			int option = Integer.parseInt(reader.readLine());
+			switch(option){
+			//NOTA GENERAL: al hacer algo con appointment el medico solo puede trabajar con sus pacientes actuales
+			//el paciente será el que añada al medico
+			case 1:
+				List<Patient>currentPatients = dm.getDoctorsPatients(docID);
+				am.readAppointments(currentPatients);
+				break;
+			case 2:
+				List<Patient>currentPatients2 = dm.getDoctorsPatients(docID);
+				System.out.println("This are your current patients");
+				for(int i=0; i<currentPatients2.size(); i++){
+					Patient patient = currentPatients2.get(i);
+					System.out.println(patient.toString());
+				}
+				System.out.println("---------------------------");
+				System.out.println("CURRENT APPOINTMENTS");
+				am.readAppointments(currentPatients2);
+				System.out.println("Choose a patients ID for the new appointment");
+				Integer patId = Integer.parseInt(reader.readLine());
+				Patient patient = pm.getPatient(patId);
+				PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();
+				Integer pTId = physicalTherapist.getId();
+				Appointment appointment = introduceDateAndTime();
+				am.addAppointment(appointment, patId, pTId, docID);
+				addAppointmentToPatient(patId, appointment);
+				break; //creo que al crear un paciente hay que incluir un ArrayList<Appointment> vacio
+			case 3:
+				List<Patient>currentPatients3 = dm.getDoctorsPatients(docID);
+				System.out.println("CURRENT APPOINTMENTS");
+				am.readAppointments(currentPatients3);
+				System.out.println("Select the ID of the appointment you want to modify");
+				Integer idAp = Integer.parseInt(reader.readLine());
+
+				break;
+			case 4:
+				List<Patient>currentPatients4 = dm.getDoctorsPatients(docID);
+				//TODO
+				break;
+			case 0:
+				return;
+			}
+
+		}//FALTAN POR HACER VALIDATE INFO POR SI METE UNA DATE QUE YA ESTA COGIDA O UN ID QUE NO ESTÁ
+
+	}
+
+
+
+
+	private static void ModifyTreatment(Integer patID) throws NumberFormatException, IOException {
 	    ListTreatments(patID);
 		System.out.println("-------------------------------------------------------");
 		System.out.println("Please, input the ID of the treatment you want to modify :");
@@ -208,6 +289,49 @@ public class DoctorMenu {
 		System.out.println("This are the actual treatments of your patient:");
 		for (Treatment treatment:treatmentList) {
 			System.out.println(treatment);
+		}
+ }
+
+	private static void DeleteTreatment(Integer patID) throws NumberFormatException, IOException {
+			ListTreatments(patID);
+			System.out.println("-------------------------------------------------------");
+			System.out.println("Please, input the ID of the treatment you want to delete :");
+			int treatID;
+		    treatID = Integer.parseInt(reader.readLine());
+			Treatment treatmentToDelete= dm.getTreatment(treatID);
+			dm.deleteTreatment(treatmentToDelete);
+		}
+
+	private static void ReadTreatment(Integer patID) throws NumberFormatException, IOException {
+			ListTreatments(patID);
+			System.out.println("-------------------------------------------------------");
+			System.out.println("Please, input the ID of the treatment you want to read :");
+			int treatID;
+		    treatID = Integer.parseInt(reader.readLine());
+			Treatment treatmentToRead= dm.getTreatment(treatID);
+			dm.readTreatment(treatmentToRead);
+		}
+
+	private static Appointment introduceDateAndTime() throws Exception{
+		System.out.println("Introduce a date: yyyy-mm-dd");
+		String dateString = reader.readLine();
+		Date appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
+		System.out.println("Introduce the time: HH:mm");
+		String timeString = reader.readLine();
+		Time appointmentTime = java.sql.Time.valueOf(timeString);
+		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
+		return appointment;
+		}
+
+	private static void addAppointmentToPatient(Integer patId, Appointment appointment){
+		Patient patient = pm.getPatient(patId);
+		ArrayList<Appointment>appointments = patient.getAppointments();
+		Integer apId = pm.getLastId();
+		Date date = appointment.getDate();
+		Time time = appointment.getTime();
+		Appointment appointmentToAdd = new Appointment(apId, date, time);
+		appointments.add(appointmentToAdd);
+		patient.setAppointments(appointments);
 		}
  }
  

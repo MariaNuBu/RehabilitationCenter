@@ -74,7 +74,7 @@ public class MainTest
 		
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
 		System.out.println("What are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
-		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
+		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 		int option = Integer.parseInt(reader.readLine());
 		switch(option)
 		{
@@ -87,16 +87,91 @@ public class MainTest
 				e.printStackTrace();
 			}
 		case 2:
+			try {
+				patientsOrAppointments();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		case 3:
+			try
+			{
+				choose();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		
+	}
+	private static void patientsOrAppointments() throws Exception {
+		while(true){
+		System.out.println("Welcome doctor, choose an option");
+		System.out.println("1.Check patients");
+		System.out.println("2.Check appointments");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int option = Integer.parseInt(reader.readLine());
+		switch(option){
+		case 1:
 			DoctorMenu doctorMenu= new DoctorMenu();
 			try {
-				doctorMenu.doctorMenu();
 				
+				doctorMenu.doctorMenu();
 				
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
+		case 2:
+			DoctorMenu doctorMenuApp = new DoctorMenu();
+			try{
+				
+				doctorMenuApp.doctorAppointmentMenu();
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				}
+			}
 		}
-		;
 		
 	}
+	
+	private static void choose() throws Exception 
+	{
+		while(true)
+		{
+			System.out.println("Welcome physical therapist, choose an option");
+			System.out.println("1.Check patients");
+			System.out.println("2.Check appointments");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			int option = Integer.parseInt(reader.readLine());
+			switch(option){
+			case 1:
+				PhysicalMenu physicalMenu= new PhysicalMenu();
+				try {
+					
+					physicalMenu.readTreatment();
+					
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			case 2:
+				DoctorMenu doctorMenuApp = new DoctorMenu();
+				try{
+					
+					doctorMenuApp.doctorAppointmentMenu();
+					
+				}catch(Exception e){
+					e.printStackTrace();
+					}
+				}
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
 }

@@ -15,5 +15,7 @@ public interface DoctorManager {
 	public List<Treatment> listTreatments (Integer IDPat);
 	public Treatment readTreatment (Treatment t);
 	public List <Patient> SearchByName(String name);
-	
+	public List <Doctor> searchDoctorByName(String name);
+	public List<Patient> getDoctorsPatients(Integer docID); //coge todos los pacientes de un medico
+
 }

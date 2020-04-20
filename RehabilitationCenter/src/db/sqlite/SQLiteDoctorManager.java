@@ -9,14 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import db.interfaces.DoctorManager;
 import pojos.Patient;
+import pojos.PhysicalTherapist;
+import pojos.Doctor;
 import pojos.MedicalHistory;
 import pojos.Treatment;
 
 public class SQLiteDoctorManager implements DoctorManager {
 
 	Connection c;
-	
-	public SQLiteDoctorManager(Connection c) 
+
+	public SQLiteDoctorManager(Connection c)
 	{
 		this.c = c;
 	}
@@ -38,7 +40,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 				String surgeries = rs.getString("surgeries");
 				Float weightKg = rs.getFloat("weightKg");
 				Integer heightCm = rs.getInt("heightCm");
-						
+
 				mh = new MedicalHistory(id,name,DOB,desease,allergies,surgeries,weightKg,heightCm);
 			}
 			rs.close();
@@ -48,7 +50,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 		{
 			e.printStackTrace();
 		}
-			
+
 		}
 
 
@@ -79,19 +81,19 @@ public class SQLiteDoctorManager implements DoctorManager {
 			String sql = "INSERT INTO treatments (id, type, length) "
 					+ "VALUES (?,?,?,?,?);";
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1, t.getId()); 
+			ps.setInt(1, t.getId());
 			ps.setString(2, t.getType());
 			ps.setInt(3, t.getLenght());
 			ps.executeUpdate();
 			ps.close();
-			
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-   
+
 	@Override
 	public void modifyTreatment(Treatment t) {
 			try {
@@ -102,12 +104,12 @@ public class SQLiteDoctorManager implements DoctorManager {
 				s.setInt(2, t.getLenght());
 				s.executeUpdate();
 				s.close();
-		
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-	
+
 
 	@Override
 	public void deleteTreatment(Treatment t ) {
@@ -115,7 +117,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 			String sql = "DELETE FROM treatment WHERE ID=?";
 			PreparedStatement ps= c.prepareStatement(sql);
 			ps.setInt(1, t.getId());
-			ps.executeQuery(sql);	
+			ps.executeQuery(sql);
 			ps.close();
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -124,9 +126,9 @@ public class SQLiteDoctorManager implements DoctorManager {
 
 	@Override
 	public List<Treatment> listTreatments(Integer IDPat) {
-		
+		//TODO revisar esta query tambien que no esta buen
 		List<Treatment> treatmentList = new ArrayList<Treatment>();
-		
+
 		try {
 			String sql = "SELECT * FROM treatment AS t JOIN patient AS p ON t.id=p.id WHERE p.id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
@@ -146,11 +148,11 @@ public class SQLiteDoctorManager implements DoctorManager {
 		// Return the list
 		return treatmentList;
 	}
-		
-	
+
+
 
 	@Override
-	public Treatment readTreatment(Treatment t) 
+	public Treatment readTreatment(Treatment t)
 	{
 		Treatment treatment=null;
 		try
@@ -165,7 +167,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 				String type=rs.getString(2);
 				Integer lenght=rs.getInt(3);
 				treatment = new Treatment(id,type,lenght);
-				
+
 			}
 			rs.close();
 			ps.close();
@@ -174,12 +176,13 @@ public class SQLiteDoctorManager implements DoctorManager {
 		{
 			e.printStackTrace();
 		}
-		
+
      return treatment;
 	}
 	@Override
 	public Treatment getTreatment( Integer treatID) {
 		Treatment treatment =null;
+		//TODO revisar esta query que no esta bien
 		try
 		{
 			String sql="SELECT * from treatment  AS t JOIN patient AS p ON t.id=p.id WHERE t.id=?";
@@ -205,9 +208,9 @@ public class SQLiteDoctorManager implements DoctorManager {
 		{
 			e.printStackTrace();
 		}
-		return treatment;		
+		return treatment;
 	}
-	
+
 	public List <Patient> SearchByName(String name){
 		List <Patient> patientList = new ArrayList<Patient>();
 		try {
@@ -227,15 +230,72 @@ public class SQLiteDoctorManager implements DoctorManager {
 				String disability= rs.getString("Disability");
 				Patient newPat= new Patient(id,patientName,address,date,phone,email,sport,disability);
 				patientList.add(newPat);
-				
+
 			}
-			
-			
+
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return patientList;
 	}
+
+	public List<Doctor>searchDoctorByName(String name){
+		List<Doctor>doctorList = new ArrayList<Doctor>();
+		try{
+
+			String sql = "SELECT ID,Name,Email FROM doctor WHERE name LIKE ?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setString(1, "%"+name+"%");
+			ResultSet rs = prepS.executeQuery();
+		while(rs.next()){
+			int id = rs.getInt("ID");
+			String docName = rs.getString("Name");
+			String email = rs.getString("Email");
+			Doctor doc = new Doctor(id, docName, email);
+			doctorList.add(doc);
+		}
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return doctorList;
 	}
+
+	public List<Patient> getDoctorsPatients(Integer docID){ //coge todos los pacientes del médico que esté usando la database
+												   //se consigue un ArrayList<Patient>
+		List<Patient> doctorsPatients = new ArrayList<Patient>();
+		try{
+
+			String sql = "SELECT * FROM doctor AS d JOIN PatientDoctor AS pd ON d.ID = pd.DOCID"
+						+"JOIN patient AS p ON pd.PATID = p.ID"
+						+"WHERE d.ID = ?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, docID);
+			ResultSet rs = prepS.executeQuery();
+			
+			while(rs.next()){
+				int patID = rs.getInt(11);
+				String name = rs.getString(12);
+				Date DOB = rs.getDate(14);
+				String eMail = rs.getString(16);
+				String sport = rs.getString(17);
+				String disability = rs.getString(18);
+				Patient patient = new Patient(patID, name, DOB, eMail, sport, disability);
+				PhysicalTherapist pTherapist = patient.getPhysicalTerapist();
+				Patient patient2 = new Patient(patID, name, DOB, eMail, sport, disability, pTherapist);
+				doctorsPatients.add(patient2);
+			}
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return doctorsPatients;
+	}
+
+}
+
 
 
