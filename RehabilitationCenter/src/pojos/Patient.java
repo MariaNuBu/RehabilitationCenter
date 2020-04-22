@@ -18,6 +18,21 @@ public class Patient implements Serializable {
 	private String  eMail;
 	private String  sport;
 	private String  disability;
+	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
+			String disability, PhysicalTherapist physicalTerapist) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.dob = dob;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.sport = sport;
+		this.disability = disability;
+		this.physicalTerapist = physicalTerapist;
+	}
+
+
 	private MedicalHistory medicalHistory;
 	private PhysicalTherapist physicalTerapist;
 	private List<Doctor> doctors;

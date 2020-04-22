@@ -42,5 +42,9 @@ public class PhysicalMenu
 			System.out.println(treatment);
 		}
 	}
+	public void checkAppointments() throws IOException
+	{
+		
+	}
 
 }
