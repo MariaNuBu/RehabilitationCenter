@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import db.interfaces.AppointmentManager;
 import db.interfaces.DBManager;
 import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
@@ -15,21 +16,21 @@ public class SQLiteManager implements DBManager {
 	private PatientManager patient;
 	private DoctorManager doctor;
 	private PhysicalTherapistManager physicalTherapist;
-		
-	public SQLiteManager() 
+	private AppointmentManager appointment;
+
+	public SQLiteManager()
 	{
 		super();
 	}
-	
-	public Connection getConnection() 
+
+	public Connection getConnection()
 	{
 		return c;
 	}
 	public PatientManager getPatientManager() 
 	{
 		return patient;
-	}	
-
+	}
 	public DoctorManager getDoctorManager() 
 	{
 		return doctor;
@@ -39,18 +40,25 @@ public class SQLiteManager implements DBManager {
 	{
 		return physicalTherapist;
 	}
+
+	public AppointmentManager getAppointment(){
+		return appointment;
+	}
+
 	@Override
 	public void connect()
 	{
 		try
 		{
 			Class.forName("org.sqlite.JDBC");
+			//this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/Teresa Romero/git/RehabilitationCenter2.0/RehabilitationCenter/db/RehabilitationCenter.db"); 
 			this.c=DriverManager.getConnection("jdbc:sqlite:./db/RehabilitationCenter.db");
-			c.createStatement().execute("PRAGMA foreign_keys=ON"); 
+			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			patient = new SQLitePatientManager(c);
 			doctor = new SQLiteDoctorManager(c);
 			physicalTherapist = new SQLitePhysicalTherapistManager(c);
-		
+			appointment = new SQLiteAppointmentManager(c);
+
 		}
 		catch (Exception e)
 		{
@@ -58,8 +66,8 @@ public class SQLiteManager implements DBManager {
 		}
 	}
 	@Override
-	public void disconnect() 
-	{	
+	public void disconnect()
+	{
 		try
 		{
 			c.close();
@@ -70,13 +78,12 @@ public class SQLiteManager implements DBManager {
 		}
 
 	}
-	
+
 	@Override
 	public void createTables()
 	{
-		try 
+		try
 		{
-			
 			Statement st6=c.createStatement();
 			String sq6="CREATE TABLE  IF NOT EXISTS  physicalTherapist"
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -89,12 +96,11 @@ public class SQLiteManager implements DBManager {
 					+ " Salary			DOUBLE NOT NULL)";
 			st6.executeUpdate(sq6);
 			st6.close();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			//java.sql.Date d = new java.sql.Date(new Date().getTime());
 			/*
+			java.sql.Date d = new java.sql.Date(new Date().getTime());
 			Statement st12=c.createStatement();
 			String sq12="INSERT INTO physicalTherapist (Name,Address,DOB,Phone,Email,SportType,Salary)"
-					   +"VALUES('Guillermo Serrano','Antonio López','1969-01-04',678907283,'pablo@gmail.com','Tennis',1324.22)";
+					   +"VALUES('Guillermo','Antonio López','d',678907283,'pablo@gmail.com','Tennis',1324.22)";
 			st12.executeUpdate(sq12);
 			st12.close();
 			Statement st13=c.createStatement();
@@ -104,10 +110,10 @@ public class SQLiteManager implements DBManager {
 			st13.close();
 			*/
 			Statement st2=c.createStatement();
-			String sq2="CREATE TABLE IF NOT EXISTS   medicalHistory " 
+			String sq2="CREATE TABLE IF NOT EXISTS   medicalHistory "
 					+	"(ID			INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ 	" Name 	        TEXT  NOT NULL,"
-					+   " DOB           DATE  NOT NULL,"					
+					+   " DOB           DATE  NOT NULL,"
 					+   " Diseases	    TEXT,"
 					+   " Allergies     TEXT,"
 					+   " Surgeries     TEXT,"
@@ -116,7 +122,7 @@ public class SQLiteManager implements DBManager {
 			st2.executeUpdate(sq2);
 			st2.close();
 			Statement st1=c.createStatement();
-			String sq1= "CREATE TABLE IF NOT EXISTS  patient " 
+			String sq1= "CREATE TABLE IF NOT EXISTS  patient "
 					+	"(ID			INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ 	"Name 	        TEXT  NOT NULL,"
 					+   "Address        TEXT  NOT NULL,"
@@ -131,7 +137,7 @@ public class SQLiteManager implements DBManager {
 					+   "FOREIGN KEY (PTID) REFERENCES physicalTherapist(ID)"
 					+ ")";
 			st1.executeUpdate(sq1);
-			st1.close();			
+			st1.close();
 			Statement st3=c.createStatement();
 			String sq3="CREATE TABLE  IF NOT EXISTS  doctor"
 					+  "(ID 		    INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -149,7 +155,7 @@ public class SQLiteManager implements DBManager {
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ " Type			TEXT NOT NULL,"
 					+ " Length			INTEGER NOT NULL,"
-					+ " DOCID			INTEGER NOT NULL,"			
+					+ " DOCID			INTEGER NOT NULL,"
 					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID)	"
 					+ ")";
 			st4.executeUpdate(sq4);
@@ -157,10 +163,11 @@ public class SQLiteManager implements DBManager {
 			Statement st5=c.createStatement();
 			String sq5="CREATE TABLE  IF NOT EXISTS  appointment"
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ "	DateTime		DATETIME NOT NULL,"
+					+ "	date			DATE NOT NULL,"
+					+ " time			TIME NOT NULL,"
 					+ " PATID			INTEGER NOT NULL,"
 					+ " DOCID			INTEGER NOT NULL,"
-					+ " PTID			INTEGER NOT NULL,"					
+					+ " PTID			INTEGER NOT NULL,"
 					+ " FOREIGN KEY (PATID) REFERENCES patient(ID),"
 					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID),"
 					+ "	FOREIGN KEY (PTID) REFERENCES physicalTherapist(ID)"
@@ -197,12 +204,12 @@ public class SQLiteManager implements DBManager {
 					+ " PTID			INTEGER REFERENCES physicalTherapist(ID))";
 			st11.executeUpdate(sq11);
 			st11.close();
-		} 
-		catch (SQLException e) 
+		}
+		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

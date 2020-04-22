@@ -99,7 +99,7 @@ public class SQLitePatientManager implements PatientManager {
 			prep.setString(2,p.getAddress());
 			prep.setDate(3,p.getDob());
 			prep.setInt(4, p.getPhoneNumber());
-			prep.setString(5, p.getEmail());
+			prep.setString(5, p.geteMail());
 			prep.setString(6, p.getSport());
 			prep.setString(7, p.getDisability());
 			prep.setInt(8, mhid);
@@ -119,7 +119,7 @@ public class SQLitePatientManager implements PatientManager {
 		ArrayList<Treatment> treatments=new ArrayList <Treatment>();
 		try 
 		{
-			String sql="SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID"
+			String sql="SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID JOIN patient AS p ON p.ID=pt.PATID "
 					+ "WHERE PATID=?";
 			PreparedStatement p=c.prepareStatement(sql);
 			p.setInt(1, patient.getId());
@@ -142,7 +142,7 @@ public class SQLitePatientManager implements PatientManager {
 	}
 	
 	@Override
-	public Patient getPatient(Integer id)
+	public Patient getPatient(Integer id) //returns the patient and his physicalTherapist(id,name)
 	{
 		Patient patient =null;
 		try
@@ -152,6 +152,7 @@ public class SQLitePatientManager implements PatientManager {
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			boolean patientCreated=false;
+			Integer ptid=null;
 			while (rs.next())
 			{
 				if(!patientCreated)
@@ -164,11 +165,27 @@ public class SQLitePatientManager implements PatientManager {
 					String email=rs.getString("Email");
 					String sportType=rs.getString("SportType");
 					String disability=rs.getString("Disability");
-					patient = new Patient(patID, name, address,DOB,phone,email,sportType,disability);
-					patientCreated=true;
+					ptid=rs.getInt("PTID");
+					String sql2="SELECT ID,Name FROM physicalTherapist WHERE ID=?";
+					PreparedStatement ps2=c.prepareStatement(sql2);
+					ps2.setInt(1, ptid);
+					ResultSet rs2=ps2.executeQuery();
+					PhysicalTherapist physicalTherapist = null;
+					while(rs.next())
+					{
+						Integer ptID=rs.getInt("ID");
+						String namePhysical=rs.getString("Name");
+						physicalTherapist=new PhysicalTherapist(ptID,namePhysical);
+						patient = new Patient(patID, name, address,DOB,phone,email,sportType,disability,physicalTherapist);
+						patientCreated=true;
+					}
+					ps2.close();
 				}
+				
 			}
 			ps.close();
+			
+			
 		}
 		catch(SQLException e)
 		{
