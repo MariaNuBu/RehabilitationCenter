@@ -68,31 +68,31 @@ public class PatientMenu
 		String sport="Paddel";
 		String disabilities="n";
 		String diseases="n";
-	
+
 		String allergies="n";
-		
+
 		String surgeries="n";
-		
+
 		Float weight=(float) 54.5;
-		
+
 		Integer height=160;
-		
-		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);		
+
+		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);
 		if (pts.isEmpty())
 		{
 			System.out.println("No physical therpist specialized in"+sport);
 			System.out.println("Choose one of those: ");
 			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
-			for (PhysicalTherapist physicalTherapist : pysicals) 
+			for (PhysicalTherapist physicalTherapist : pysicals)
 			{
-				System.out.println(physicalTherapist);	
+				System.out.println(physicalTherapist);
 			}
 		}
 		else
 		{
-			for (PhysicalTherapist physicalTherapist : pts) 
+			for (PhysicalTherapist physicalTherapist : pts)
 			{
-				System.out.println(physicalTherapist);	
+				System.out.println(physicalTherapist);
 			}
 		}
 		System.out.println("Introduce the id of the Physical Therapist you want: ");

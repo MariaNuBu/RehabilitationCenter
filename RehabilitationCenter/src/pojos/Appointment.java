@@ -9,7 +9,10 @@ public class Appointment implements Serializable {
 	private Integer id;
 	private Date date;
 	private Time time;
-
+	private Integer patID;
+	private Integer docID;
+	private Integer ptID;
+	
 	public Appointment() {
 		super();
 	}
@@ -25,6 +28,16 @@ public class Appointment implements Serializable {
 		super();
 		this.date = date;
 		this.time = time;
+	}
+	
+	public Appointment(Integer id, Date date, Time time, Integer patID, Integer docID, Integer ptID){
+		super();
+		this.id = id;
+		this.date = date;
+		this.time = time;
+		this.patID = patID;
+		this.docID = docID;
+		this.ptID = ptID;
 	}
 
 	@Override
@@ -71,8 +84,12 @@ public class Appointment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Appointment [id=" + id + ", date=" + date + ", time=" + time + "]";
+		return "Appointment [id=" + id + ", date=" + date + ", time=" + time + ", patID=" + patID + ", docID=" + docID
+				+ ", ptID=" + ptID + "]";
 	}
+	
+	
+	
 
 
 
