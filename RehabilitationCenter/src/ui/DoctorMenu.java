@@ -14,10 +14,7 @@ import pojos.Patient;
 import pojos.Treatment;
 public class DoctorMenu {
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
-	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static DBManager db;
 	private static DoctorManager dm;
-	private static PatientManager pm;
 	public  void doctorMenu() throws Exception {
 		
 		System.out.println("Please introduce the name of the patient you want to work with");
