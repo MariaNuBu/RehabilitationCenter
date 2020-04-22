@@ -36,7 +36,7 @@ public class Patient implements Serializable {
 	private MedicalHistory medicalHistory;
 	private PhysicalTherapist physicalTerapist;
 	private List<Doctor> doctors;
-	private ArrayList<Appointment> appointments;
+	//private ArrayList<Appointment> appointments;
 
 	public Patient() {
 		super();

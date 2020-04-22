@@ -77,22 +77,30 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void readAppointments(List<Patient>patients) {
+	public void readAppointments(Integer specialistID) {
+		try{
 
-		for(int i=0; i<patients.size(); i++){
-			Integer id  = patients.get(i).getId();
-			String name = patients.get(i).getName();
-			String sport = patients.get(i).getSport();
-			String disability = patients.get(i).getDisability();
-			List<Appointment> appointmentsToRead = patients.get(i).getAppointments();
-			boolean check = appointmentsToRead.isEmpty();
-			if(check == false) {
-				System.out.println(id+" "+name+" "+sport+" "+disability+"APPOINTMENTS-->"+appointmentsToRead.toString());
-			} //creo que para esto habria que crear un arrayList de appointments vacío al añadir newPatient !!!!
+			String sql = "SELECT * FROM appointment WHERE DOCID LIKE ?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, specialistID);
+			ResultSet rs = prepS.executeQuery();
 
+			while(rs.next()){
+				int apID = rs.getInt(1);
+				Date apDate = rs.getDate(2);
+				Time apTime = rs.getTime(3);
+				int patID = rs.getInt(4);
+				int docID = rs.getInt(5);
+				int ptID = rs.getInt(6);
+				Appointment appointmentToRead = new Appointment(apID, apDate, apTime, patID, docID, ptID);
+				System.out.println(appointmentToRead.toString());
+			}
+
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 
-	} //PONER ESTA FUNCION EN DOCTOR MENU, NO REQUIERE CONEXION CON LA DATABASE
+	}
 
 	@Override
 	public List<Appointment> searchDate(Date date) {

@@ -267,13 +267,13 @@ public class SQLiteDoctorManager implements DoctorManager {
 		List<Patient> doctorsPatients = new ArrayList<Patient>();
 		try{
 
-			String sql = "SELECT * FROM doctor AS d JOIN PatientDoctor AS pd ON d.ID = pd.DOCID"
-						+"JOIN patient AS p ON pd.PATID = p.ID"
+			String sql = "SELECT * FROM doctor AS d JOIN PatientDoctor AS pd ON d.ID = pd.DOCID "
+						+"JOIN patient AS p ON pd.PATID = p.ID "
 						+"WHERE d.ID = ?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, docID);
 			ResultSet rs = prepS.executeQuery();
-			
+
 			while(rs.next()){
 				int patID = rs.getInt(11);
 				String name = rs.getString(12);
@@ -291,7 +291,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		return doctorsPatients;
 	}
 

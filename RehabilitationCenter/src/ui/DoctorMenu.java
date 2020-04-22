@@ -34,7 +34,7 @@ public class DoctorMenu {
 		String name = reader.readLine();
 		List<Patient> patients = dm.SearchByName(name);
 		for (Patient patient : patients) {
-			System.out.println(patient);
+			System.out.println(patient.toString());
 		}
 		System.out.println("Please introduce the id of the patient you want to work with ");
 		int ptId=Integer.parseInt(reader.readLine());
@@ -216,8 +216,14 @@ private static void createTreatment(Integer patID) throws IOException {
 			//NOTA GENERAL: al hacer algo con appointment el medico solo puede trabajar con sus pacientes actuales
 			//el paciente será el que añada al medico
 			case 1:
-				List<Patient>currentPatients = dm.getDoctorsPatients(docID);
-				am.readAppointments(currentPatients);
+				List<Patient>currentPatients = dm.getDoctorsPatients(docID); 
+				System.out.println("This are your current patients");
+				for(int i=0; i<currentPatients.size();i++){
+					Patient patient = currentPatients.get(i);
+					System.out.println(patient.toString());
+				}
+				System.out.println("APPOINTMENTS");
+				am.readAppointments(docID);
 				break;
 			case 2:
 				List<Patient>currentPatients2 = dm.getDoctorsPatients(docID);
@@ -228,16 +234,15 @@ private static void createTreatment(Integer patID) throws IOException {
 				}
 				System.out.println("---------------------------");
 				System.out.println("CURRENT APPOINTMENTS");
-				am.readAppointments(currentPatients2);
+				am.readAppointments(docID);
 				System.out.println("Choose a patients ID for the new appointment");
 				Integer patId = Integer.parseInt(reader.readLine());
 				Patient patient = pm.getPatient(patId);
 				PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();
-				Integer pTId = physicalTherapist.getId();
+				Integer pTId = physicalTherapist.getId(); //se puede?
 				Appointment appointment = introduceDateAndTime();
 				am.addAppointment(appointment, patId, pTId, docID);
-				addAppointmentToPatient(patId, appointment);
-				break; //creo que al crear un paciente hay que incluir un ArrayList<Appointment> vacio
+				break;
 			case 3:
 				List<Patient>currentPatients3 = dm.getDoctorsPatients(docID);
 				System.out.println("CURRENT APPOINTMENTS");
@@ -309,17 +314,6 @@ private static void createTreatment(Integer patID) throws IOException {
 		Time appointmentTime = java.sql.Time.valueOf(timeString);
 		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
 		return appointment;
-		}
-
-	private static void addAppointmentToPatient(Integer patId, Appointment appointment){
-		Patient patient = pm.getPatient(patId);
-		ArrayList<Appointment>appointments = patient.getAppointments();
-		Integer apId = pm.getLastId();
-		Date date = appointment.getDate();
-		Time time = appointment.getTime();
-		Appointment appointmentToAdd = new Appointment(apId, date, time);
-		appointments.add(appointmentToAdd);
-		patient.setAppointments(appointments);
 		}
  
  
