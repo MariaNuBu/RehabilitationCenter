@@ -211,13 +211,14 @@ public class SQLiteDoctorManager implements DoctorManager {
 		return treatment;
 	}
 
-	public List <Patient> SearchByName(String name){
+	public List <Patient> SearchByName(String name,Integer docId){
 		List <Patient> patientList = new ArrayList<Patient>();
 		try {
 			String sql="SELECT * FROM patient AS p JOIN PatientDoctor AS pd ON p.ID=pd.PATID "
-					+ "WHERE p.Name LIKE ? GROUP BY pd.DOCID";
+					+ "WHERE p.Name LIKE ? AND pd.DOCID=?";
 			PreparedStatement ps= c.prepareStatement(sql);
 			ps.setString(1, "%"+name+"%");
+			ps.setInt(2, docId);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				int id= rs.getInt(1);
