@@ -33,7 +33,8 @@ public class DoctorMenu {
 		
 		System.out.println("Please introduce the name of the patient you want to work with");
 		String name = reader.readLine();
-		List<Patient> patients = dm.SearchByName(name);
+		Integer docID=1;// cambiar cuando este JPA
+		List<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
 			System.out.println(patient.toString());
 		}
