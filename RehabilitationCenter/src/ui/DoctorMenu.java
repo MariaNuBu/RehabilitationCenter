@@ -27,6 +27,7 @@ public class DoctorMenu {
 	private static DoctorManager dm;
 	private static AppointmentManager am;
 
+
 	private static PatientManager pm;
 	public  void doctorMenu() throws Exception {
 		
