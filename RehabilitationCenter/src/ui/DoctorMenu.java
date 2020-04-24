@@ -80,7 +80,7 @@ public class DoctorMenu {
 				ModifyMedicalHistory(patID);
 				break;
 			case 3:
-				//TODO
+				createTreatment(patID);
 			case 4:
 				ModifyTreatment(patID);
 				break;
