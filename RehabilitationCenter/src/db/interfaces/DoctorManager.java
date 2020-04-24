@@ -1,4 +1,5 @@
 package db.interfaces;
+import java.util.ArrayList;
 import java.util.List;
 
 import pojos.*;
@@ -14,7 +15,7 @@ public interface DoctorManager {
 	public void deleteTreatment (Treatment t);
 	public List<Treatment> listTreatments (Integer IDPat);
 	public Treatment readTreatment (Treatment t);
-	public List <Patient> SearchByName(String name,Integer docID);
+	public ArrayList <Patient> SearchByName(String name,Integer docID);
 	public List <Doctor> searchDoctorByName(String name);
 	public List<Patient> getDoctorsPatients(Integer docID); //coge todos los pacientes de un medico
 

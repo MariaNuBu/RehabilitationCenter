@@ -29,14 +29,18 @@ public class DoctorMenu {
 
 
 	private static PatientManager pm;
-	public  void doctorMenu() throws Exception {
+	public  void doctorMenu(DoctorManager dm) throws Exception {
 		
 		System.out.println("Please introduce the name of the patient you want to work with");
 		String name = reader.readLine();
-		Integer docID=1;// cambiar cuando este JPA
-		List<Patient> patients = dm.SearchByName(name,docID);
+		Integer docID=2;// cambiar cuando este JPA
+		ArrayList<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
-			System.out.println(patient.toString());
+			System.out.println(patient);
+		}
+		if(patients.isEmpty())
+		{
+			System.out.println("There are no patients whith this name");
 		}
 		System.out.println("Please introduce the id of the patient you want to work with ");
 		int ptId=Integer.parseInt(reader.readLine());
