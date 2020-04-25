@@ -239,9 +239,9 @@ private static void createTreatment(Integer patID) throws IOException {
 				Integer patId = Integer.parseInt(reader.readLine());
 				Patient patient = pm.getPatient(patId);
 				PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();
-				Integer pTId = physicalTherapist.getId(); //se puede?
+				//Integer pTId = physicalTherapist.getId(); //se puede?
 				Appointment appointment = introduceDateAndTime();
-				am.addAppointment(appointment, patId, pTId, docID);
+				am.addAppointment(appointment, patient, physicalTherapist, docID);
 				break;
 			case 3:
 				List<Patient>currentPatients3 = dm.getDoctorsPatients(docID);

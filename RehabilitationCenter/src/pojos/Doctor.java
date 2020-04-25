@@ -2,6 +2,7 @@ package pojos;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 public class Doctor implements Serializable{
 
@@ -15,6 +16,7 @@ public class Doctor implements Serializable{
 	private String eMail;
 	private String speciality;
 	private Double salary;
+	//private List<Appointment> appointments;
 
 	public Doctor() {
 		super();

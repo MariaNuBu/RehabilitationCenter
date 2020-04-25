@@ -9,9 +9,9 @@ public class Appointment implements Serializable {
 	private Integer id;
 	private Date date;
 	private Time time;
-	private Integer patID;
-	private Integer docID;
-	private Integer ptID;
+	private Patient pat;
+	private Doctor doc;
+	private PhysicalTherapist pt;
 	
 	public Appointment() {
 		super();
@@ -30,14 +30,14 @@ public class Appointment implements Serializable {
 		this.time = time;
 	}
 	
-	public Appointment(Integer id, Date date, Time time, Integer patID, Integer docID, Integer ptID){
+	public Appointment(Integer id, Date date, Time time, Patient pat, Doctor doc, PhysicalTherapist pt){
 		super();
 		this.id = id;
 		this.date = date;
 		this.time = time;
-		this.patID = patID;
-		this.docID = docID;
-		this.ptID = ptID;
+		this.pat = pat;
+		this.doc = doc;
+		this.pt = pt;
 	}
 
 	@Override
@@ -82,13 +82,36 @@ public class Appointment implements Serializable {
 		this.time = time;
 	}
 
+	public Patient getPat() {
+		return pat;
+	}
+
+	public void setPat(Patient pat) {
+		this.pat = pat;
+	}
+
+	public Doctor getDoc() {
+		return doc;
+	}
+
+	public void setDoc(Doctor doc) {
+		this.doc = doc;
+	}
+
+	public PhysicalTherapist getPt() {
+		return pt;
+	}
+
+	public void setPt(PhysicalTherapist pt) {
+		this.pt = pt;
+	}
+
 	@Override
 	public String toString() {
-		return "Appointment [id=" + id + ", date=" + date + ", time=" + time + ", patID=" + patID + ", docID=" + docID
-				+ ", ptID=" + ptID + "]";
+		return "Appointment [id=" + id + ", date=" + date + ", time=" + time + ", pat=" + pat + ", doc=" + doc + ", pt="
+				+ pt + "]";
 	}
-	
-	
+
 	
 
 

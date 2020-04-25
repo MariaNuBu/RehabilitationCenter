@@ -267,8 +267,8 @@ public class SQLiteDoctorManager implements DoctorManager {
 		List<Patient> doctorsPatients = new ArrayList<Patient>();
 		try{
 
-			String sql = "SELECT * FROM doctor AS d JOIN PatientDoctor AS pd ON d.ID = pd.DOCID "
-						+"JOIN patient AS p ON pd.PATID = p.ID "
+			String sql = "SELECT * FROM patient AS p JOIN PatientDoctor AS pd ON p.ID = pd.PATID "
+						+"JOIN doctor AS d ON pd.DOCID = d.ID "
 						+"WHERE d.ID = ?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, docID);
