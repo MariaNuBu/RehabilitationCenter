@@ -19,6 +19,7 @@ import pojos.*;
 
 
 public class DoctorMenu {
+	
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -29,6 +30,33 @@ public class DoctorMenu {
 
 
 	private static PatientManager pm;
+	
+	public void registerDoctor() throws IOException
+	{
+		db= new SQLiteManager();
+		db.connect();
+		pm = db.getPatientManager();
+		dm = db.getDoctorManager();
+		System.out.println("Name and Surname: ");
+		String name=reader.readLine();
+		System.out.println("Date of Birth: ");
+		String newDOBDate = reader.readLine();
+		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
+		System.out.println("Address: ");
+		String address=reader.readLine();
+		System.out.println("Email: ");
+		String email=reader.readLine();
+		System.out.println("Phone number: ");
+		Integer phone=Integer.parseInt(reader.readLine());
+		System.out.println("Specialty: ");
+		String specialty=reader.readLine();
+		System.out.println("Salary: ");
+		Double salary = Double.parseDouble(reader.readLine());
+		Doctor doc = new Doctor(name, address, DOB, phone, email, specialty, salary);
+		//TODO puedo insertarlos con el JPA? o antes tengo que crear la tabla con JPA
+	}
+	
+	
 	public  void doctorMenu(DoctorManager dm) throws Exception {
 		
 		System.out.println("Please introduce the name of the patient you want to work with");
