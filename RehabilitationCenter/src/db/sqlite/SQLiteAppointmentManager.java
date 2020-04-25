@@ -5,8 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import db.interfaces.AppointmentManager;
 import pojos.*;
@@ -22,7 +21,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 
 
 	@Override
-	public void addAppointment(Appointment appointment, Integer patId, Integer pTId, Integer docId) {
+	public void addAppointment(Appointment appointment, Patient patient, Doctor doctor, PhysicalTherapist physicalTherapist) {
 		try{
 
 			String sql = "INSERT INTO appointment (date, time, PATID, DOCID, PTID)"
@@ -30,9 +29,9 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setDate(1, appointment.getDate());
 			prepS.setTime(2, appointment.getTime());
-			prepS.setInt(3, patId);
-			prepS.setInt(4, docId);
-			prepS.setInt(5, pTId);
+			prepS.setInt(3, patient.getId());
+			prepS.setInt(4, doctor.getId());
+			prepS.setInt(5, physicalTherapist.getId());
 			prepS.executeUpdate();
 			prepS.close();
 
@@ -77,12 +76,12 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void readAppointments(Integer specialistID) {
+	public void readAppointments(Integer docId) {
 		try{
 
-			String sql = "SELECT * FROM appointment WHERE DOCID LIKE ?";
+			String sql = "SELECT * FROM appointment WHERE DOCID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
-			prepS.setInt(1, specialistID);
+			prepS.setInt(1, docId);
 			ResultSet rs = prepS.executeQuery();
 
 			while(rs.next()){
@@ -90,50 +89,83 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 				Date apDate = rs.getDate(2);
 				Time apTime = rs.getTime(3);
 				int patID = rs.getInt(4);
-				int docID = rs.getInt(5);
-				int ptID = rs.getInt(6);
-				Appointment appointmentToRead = new Appointment(apID, apDate, apTime, patID, docID, ptID);
-				System.out.println(appointmentToRead.toString());
+				/*int docID = rs.getInt(5);
+				int ptID = rs.getInt(6);*/
+				Appointment appointmentToRead = new Appointment(apID, apDate, apTime);
+				System.out.println(appointmentToRead.toString()+"PatientsId: "+patID);
 			}
-
+			prepS.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 
 	}
 
+
 	@Override
-	public List<Appointment> searchDate(Date date) {
-		List<Appointment>dates = new ArrayList<Appointment>();
+	public Appointment getAppointment(Integer appointmentID) {
+		Appointment appointmentToModify = null;
 		try{
 
-			String sql = "SELECT * FROM appointment WHERE date LIKE ?";
-			//que muestre solo los appointments del medico o pt en concreto
-			//constructor de appointment con todo+DocID y pTID??
+			String sql = "SELECT * FROM appointment WHERE ID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
-			prepS.setDate(1, date);
+			prepS.setInt(1, appointmentID);
 			ResultSet rs = prepS.executeQuery();
-
+			boolean dateExists = false;
 			while(rs.next()){
-				int id = rs.getInt("ID");
-				Date apDate = rs.getDate("date");
-				Time time   = rs.getTime("time");
-				Appointment appointment = new Appointment(id,apDate,time);
-				dates.add(appointment);
+				if(!dateExists){
+					Integer dateID = rs.getInt("ID");
+					Date date = rs.getDate("Date");
+					Time time = rs.getTime("Time");
+					appointmentToModify = new Appointment(dateID, date, time);
+				}
 			}
+
+			prepS.close();
 
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-
-		return dates;
+		return appointmentToModify;
 	}
+
 
 	@Override
-	public List<Patient> searchAppointmentByPatient(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public LinkedList<ArrayList<Appointment>> checkCurrentAppointments(Integer docID, Integer patID) {
+		LinkedList<ArrayList<Appointment>> docAndPatAppointments = new LinkedList<ArrayList<Appointment>>();
+		ArrayList<Appointment>docAppointments = new ArrayList<Appointment>();
+		ArrayList<Appointment>patAppointments = new ArrayList<Appointment>();
+		try{
+			String sql = "SELECT * FROM appointment WHERE DOCID=?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, docID);
+			ResultSet rs = prepS.executeQuery();
+			while(rs.next()){
+				Date apDate = rs.getDate("Date");
+				Time apTime = rs.getTime("Time");
+				Appointment ap = new Appointment (apDate, apTime);
+				docAppointments.add(ap);
+			}
+			docAndPatAppointments.add(docAppointments);
+			String sql2 = "SELECT * FROM appointment WHERE PATID=?";
+			PreparedStatement prepS2 = c.prepareStatement(sql2);
+			prepS2.setInt(1, patID);
+			ResultSet rs2 = prepS2.executeQuery();
+			while(rs.next()){
+				Date apDate = rs2.getDate("Date");
+				Time apTime = rs2.getTime("Time");
+				Appointment ap = new Appointment(apDate, apTime);
+				patAppointments.add(ap);
+			}
+			docAndPatAppointments.add(patAppointments);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return docAndPatAppointments;
 	}
+
+
+
 
 }
 

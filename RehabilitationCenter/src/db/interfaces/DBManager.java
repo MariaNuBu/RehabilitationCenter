@@ -8,5 +8,5 @@ public interface DBManager {
 	public PatientManager getPatientManager(); 
 	public DoctorManager getDoctorManager();
 	public PhysicalTherapistManager getPhysicalTherapistManager();
-	
+	public AppointmentManager getAppointmentManager();
 }

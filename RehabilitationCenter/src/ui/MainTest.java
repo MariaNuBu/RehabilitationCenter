@@ -19,6 +19,7 @@ public class MainTest
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
 	private static DoctorManager dm;
+	private static AppointmentManager am;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 	public static void main(String [] args) throws NumberFormatException, IOException 
@@ -37,6 +38,7 @@ public class MainTest
 		pm = db.getPatientManager();
 		dm=db.getDoctorManager();
 		ptm=db.getPhysicalTherapistManager();
+		am = db.getAppointmentManager();
 		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
 		/*
 		ptm.insertPhysicalTherapist(pt1);
@@ -128,7 +130,7 @@ public class MainTest
 			DoctorMenu doctorMenuApp = new DoctorMenu();
 			try{
 				
-				doctorMenuApp.doctorAppointmentMenu();
+				doctorMenuApp.doctorAppointmentMenu(dm, am, pm);
 				
 			}catch(Exception e){
 				e.printStackTrace();

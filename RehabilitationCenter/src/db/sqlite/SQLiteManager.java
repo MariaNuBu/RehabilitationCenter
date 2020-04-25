@@ -41,7 +41,7 @@ public class SQLiteManager implements DBManager {
 		return physicalTherapist;
 	}
 
-	public AppointmentManager getAppointment(){
+	public AppointmentManager getAppointmentManager(){
 		return appointment;
 	}
 
