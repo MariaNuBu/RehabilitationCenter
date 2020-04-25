@@ -27,14 +27,20 @@ public class DoctorMenu {
 	private static DoctorManager dm;
 	private static AppointmentManager am;
 
+
 	private static PatientManager pm;
-	public  void doctorMenu() throws Exception {
+	public  void doctorMenu(DoctorManager dm) throws Exception {
 		
 		System.out.println("Please introduce the name of the patient you want to work with");
 		String name = reader.readLine();
-		List<Patient> patients = dm.SearchByName(name);
+		Integer docID=2;// cambiar cuando este JPA
+		ArrayList<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
-			System.out.println(patient.toString());
+			System.out.println(patient);
+		}
+		if(patients.isEmpty())
+		{
+			System.out.println("There are no patients whith this name");
 		}
 		System.out.println("Please introduce the id of the patient you want to work with ");
 		int ptId=Integer.parseInt(reader.readLine());
@@ -79,7 +85,7 @@ public class DoctorMenu {
 				ModifyMedicalHistory(patID);
 				break;
 			case 3:
-				//TODO
+				createTreatment(patID);
 			case 4:
 				ModifyTreatment(patID);
 				break;

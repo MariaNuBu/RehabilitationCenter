@@ -18,6 +18,7 @@ public class MainTest
 	private static DBManager db;
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
+	private static DoctorManager dm;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 	public static void main(String [] args) throws NumberFormatException, IOException 
@@ -34,6 +35,7 @@ public class MainTest
 		db.connect();
 		db.createTables();
 		pm = db.getPatientManager();
+		dm=db.getDoctorManager();
 		ptm=db.getPhysicalTherapistManager();
 		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
 		/*
@@ -73,7 +75,7 @@ public class MainTest
 		*/
 		
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
-		System.out.println("What are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
+		System.out.println("Who are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
 		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 		int option = Integer.parseInt(reader.readLine());
 		switch(option)
@@ -117,7 +119,7 @@ public class MainTest
 			DoctorMenu doctorMenu= new DoctorMenu();
 			try {
 				
-				doctorMenu.doctorMenu();
+				doctorMenu.doctorMenu(dm);
 				
 			}catch(Exception e) {
 				e.printStackTrace();

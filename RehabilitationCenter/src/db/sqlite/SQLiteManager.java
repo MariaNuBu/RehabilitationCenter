@@ -150,6 +150,13 @@ public class SQLiteManager implements DBManager {
 					+ "	Salary			DOUBLE NOT NULL)";
 			st3.executeUpdate(sq3);
 			st3.close();
+			Statement st22=c.createStatement();
+			
+			String sq22="INSERT INTO PatientDoctor (PATID,DOCID) "
+					+ "VALUES (1,2)";
+			st22.executeUpdate(sq22);
+			st22.close();
+			
 			Statement st4=c.createStatement();
 			String sq4="CREATE TABLE  IF NOT EXISTS  treatment"
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"
