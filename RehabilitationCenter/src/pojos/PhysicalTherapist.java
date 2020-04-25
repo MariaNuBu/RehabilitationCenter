@@ -36,20 +36,6 @@ public class PhysicalTherapist implements Serializable {
 		this.typeSport = typeSport;
 	}
 
-
-	public PhysicalTherapist(Integer id,String name, String address, Integer phoneNumber, String eMail, String typeSport,
-			Double salary) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-		this.eMail = eMail;
-		this.typeSport = typeSport;
-		this.salary = salary;
-	}
-
-
 	public PhysicalTherapist(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail,
 			String typeSport, Double salary) {
 		super();

@@ -17,6 +17,7 @@ import pojos.*;
 
 
 public class DoctorMenu {
+
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -27,6 +28,33 @@ public class DoctorMenu {
 
 
 	private static PatientManager pm;
+
+	public void registerDoctor() throws IOException
+	{
+		db= new SQLiteManager();
+		db.connect();
+		pm = db.getPatientManager();
+		dm = db.getDoctorManager();
+		System.out.println("Name and Surname: ");
+		String name=reader.readLine();
+		System.out.println("Date of Birth: ");
+		String newDOBDate = reader.readLine();
+		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
+		System.out.println("Address: ");
+		String address=reader.readLine();
+		System.out.println("Email: ");
+		String email=reader.readLine();
+		System.out.println("Phone number: ");
+		Integer phone=Integer.parseInt(reader.readLine());
+		System.out.println("Specialty: ");
+		String specialty=reader.readLine();
+		System.out.println("Salary: ");
+		Double salary = Double.parseDouble(reader.readLine());
+		Doctor doc = new Doctor(name, address, DOB, phone, email, specialty, salary);
+		//TODO puedo insertarlos con el JPA? o antes tengo que crear la tabla con JPA
+	}
+
+
 	public  void doctorMenu(DoctorManager dm) throws Exception {
 
 		System.out.println("Please introduce the name of the patient you want to work with");
@@ -249,17 +277,33 @@ public class DoctorMenu {
 				Appointment appointmentToModify = am.getAppointment(idAp);
 				Appointment modifiedAppointment = modifyAppointment(appointmentToModify);
 				LinkedList<ArrayList<Appointment>> appointmentsToCheck = am.checkCurrentAppointments(docID, appointmentToModify.getPat().getId());
-				checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
+				boolean taken = checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
+				while(taken=true){
+				modifiedAppointment = modifyAppointment(appointmentToModify);
+				appointmentsToCheck = am.checkCurrentAppointments(docID, appointmentToModify.getPat().getId());
+				taken = checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
+				}
+				am.modifyAppointment(modifiedAppointment);
 				break;
 			case 4:
 				List<Patient>currentPatients4 = dm.getDoctorsPatients(docID);
-				//TODO
+				listCurrentPatients(currentPatients4);
+				System.out.println("CURRENT APPOINTMENTS");
+				am.readAppointments(docID);
+				System.out.println("Select the ID of the appointment you want to delete");
+				Integer apID = Integer.parseInt(reader.readLine());
+				Appointment appointmentToDelete = am.getAppointment(apID);
+				System.out.println("Are you sure you want to delete this appointment?-->Y/N");
+				String answer = reader.readLine();
+				if(answer.equals("Y")){
+					am.deleteAppointment(appointmentToDelete);
+				}
 				break;
 			case 0:
 				return;
 			}
 
-		}//FALTAN POR HACER VALIDATE INFO POR SI METE UNA DATE QUE YA ESTA COGIDA O UN ID QUE NO ESTÁ
+		}
 
 	}
 
@@ -371,7 +415,10 @@ public class DoctorMenu {
 
 	}
 
-	public static void checkAppointments(LinkedList<ArrayList<Appointment>>appointments, Appointment modifiedAppointment, Appointment appointmentToModify) throws Exception{
+	public static boolean checkAppointments(LinkedList<ArrayList<Appointment>>appointments, Appointment modifiedAppointment, Appointment appointmentToModify) throws Exception{
+		boolean appointmentTaken1 = false;
+		boolean appointmentTaken2 = false;
+		boolean taken = false;
 		ArrayList<Appointment> doctorsAppointments = appointments.get(0);
 		Date dateToCheck = modifiedAppointment.getDate();
 		Time timeToCheck = modifiedAppointment.getTime();
@@ -379,14 +426,26 @@ public class DoctorMenu {
 			Date date = doctorsAppointments.get(i).getDate();
 			Time time = doctorsAppointments.get(i).getTime();
 			if(date.equals(dateToCheck) && time.equals(timeToCheck)){
-				System.out.println("This appointment is alredy taken, type another appointment");
-				modifyAppointment(appointmentToModify);
-
+				System.out.println("This date is reserved for another appointment");
+				appointmentTaken1 = true;
+				break;
 			}
 		}
 		ArrayList<Appointment> patientAppointments = appointments.get(1);
+		for(int j=0; j<patientAppointments.size(); j++){
+			Date date = patientAppointments.get(j).getDate();
+			Time time = patientAppointments.get(j).getTime();
+			if(date.equals(dateToCheck) && time.equals(timeToCheck)){
+				System.out.println("This patient has another appointment, select another date and time");
+				appointmentTaken2 = true;
+				break;
+			}
+		}
+		if(appointmentTaken1 == true || appointmentTaken2 == true){
+			taken = true;
+		}
 
-
+		return taken;
 	}
 
 }

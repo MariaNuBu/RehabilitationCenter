@@ -33,6 +33,14 @@ public class Role implements Serializable
 		super();
 		this.users= new ArrayList<User>();
 	}
+	
+	public Role(Integer iD, String role) {
+		super();
+		ID = iD;
+		this.role = role;
+		this.users= new ArrayList<User>();
+	}
+
 	public Integer getID() 
 	{
 		return ID;

@@ -31,24 +31,21 @@ public class User implements Serializable
 	private byte[]  password;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="roleID")
-	private Role role;
-	
+	private Role role;	
 	
 	public User() 
 	{
 		super();
 	}
 
-
-	public User(Integer id, String userName, byte[] password, Role role) 
+	public User(String userName, byte[] password, Role role) 
 	{
 		super();
-		this.ID = id;
 		this.username = userName;
 		this.password = password;
 		this.role = role;
 	}
-
+	
 
 	public Integer getId() 
 	{
