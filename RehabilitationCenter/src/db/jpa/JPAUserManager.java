@@ -22,6 +22,7 @@ public class JPAUserManager implements UserManager {
 		em.getTransaction().begin();
 		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
 		em.getTransaction().commit();
+		/*
 		em.getTransaction().begin();
 		//Use it once to create the Human Resorces person who is going to register people
 		Role staff = new Role (1,"Human Resources");
@@ -44,7 +45,8 @@ public class JPAUserManager implements UserManager {
 		User boss = new User (username,hash,staff);
 		em.getTransaction().begin();
 		em.persist(boss);
-		em.getTransaction().commit();				
+		em.getTransaction().commit();
+		*/				
 	}
 
 	@Override
