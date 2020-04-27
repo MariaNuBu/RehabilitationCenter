@@ -171,18 +171,20 @@ public class SQLitePatientManager implements PatientManager {
 					ps2.setInt(1, ptid);
 					ResultSet rs2=ps2.executeQuery();
 					PhysicalTherapist physicalTherapist = null;
-					while(rs.next())
+					while(rs2.next())
 					{
-						Integer ptID=rs.getInt("ID");
-						String namePhysical=rs.getString("Name");
+						Integer ptID=rs2.getInt("ID");
+						String namePhysical=rs2.getString("Name");
 						physicalTherapist=new PhysicalTherapist(ptID,namePhysical);
 						patient = new Patient(patID, name, address,DOB,phone,email,sportType,disability,physicalTherapist);
 						patientCreated=true;
 					}
 					ps2.close();
+					rs2.close();
 				}
 				
 			}
+			rs.close();
 			ps.close();
 			
 			

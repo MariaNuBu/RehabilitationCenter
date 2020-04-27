@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import db.interfaces.DoctorManager;
+import db.interfaces.PatientManager;
 import pojos.Patient;
 import pojos.PhysicalTherapist;
 import pojos.Doctor;
@@ -57,16 +58,18 @@ public class SQLiteDoctorManager implements DoctorManager {
 	@Override
 	public void modifyMH(MedicalHistory MH) {
 		try {
-		String sql = "UPDATE medicalHistory SET id=?, name=?, DOB=?, disease=?, allergies=?, surgeries=?,"
-				+ "weightKg=?, heightCm WHERE id=?";
+		String sql = "UPDATE medicalHistory SET ID=?, Name=?, DOB=?, Diseases=?, Allergies=?, Surgeries=?,"
+				+ "WeightKg=?, HeightCm=? WHERE ID=?";
 		PreparedStatement s = c.prepareStatement(sql);
 		s.setInt(1, MH.getID());
 		s.setString(2, MH.getName());
 		s.setDate(3, MH.getDOB());
 		s.setString(4, MH.getDiseases());
 		s.setString(5, MH.getAllergies());
-		s.setFloat(6, MH.getWeightKg());
-		s.setInt(7, MH.getHeightCm());
+		s.setString(6,MH.getSurgeries());
+		s.setFloat(7, MH.getWeightKg());
+		s.setInt(8, MH.getHeightCm());
+		s.setInt(9, MH.getID());
 		s.executeUpdate();
 		s.close();
 		}
@@ -74,23 +77,68 @@ public class SQLiteDoctorManager implements DoctorManager {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public int getLastId() 
+	{
+		int id = 0;
+		try {
+			String query = "SELECT last_insert_rowid() AS lastId";
+			PreparedStatement p = c.prepareStatement(query);
+			ResultSet rs = p.executeQuery();
+			id = rs.getInt("lastId");
+			p.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
 
 	@Override
-	public void createTreatment(Treatment t) {
+	public void createTreatment(Treatment t,Integer patientID,Integer DOCID,PatientManager pm) {
 		try {
-			String sql = "INSERT INTO treatments (id, type, length) "
-					+ "VALUES (?,?,?,?,?);";
+			String sql = "INSERT INTO treatment (type, length,DOCID) "
+					+ "VALUES (?,?,?);";
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1, t.getId());
-			ps.setString(2, t.getType());
-			ps.setInt(3, t.getLenght());
+			ps.setString(1, t.getType());
+			ps.setInt(2, t.getLenght());
+			ps.setInt(3,DOCID);
 			ps.executeUpdate();
 			ps.close();
-
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		Integer treatmentID=getLastId();
+		try
+		{
+			String sql2="INSERT INTO PatientTreatment (PATID,TREATID) VALUES (?,?)";
+			PreparedStatement ps2 = c.prepareStatement(sql2);
+			ps2.setInt(1, patientID);
+			ps2.setInt(2, treatmentID);
+			ps2.executeUpdate();
+			ps2.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		Patient p = pm.getPatient(patientID);
+		try
+		{
+			String sql2="INSERT INTO PhysicalTherapistTreatment (TREATID,PTID) VALUES (?,?)";
+			PreparedStatement ps2 = c.prepareStatement(sql2);
+			ps2.setInt(1, treatmentID);
+			ps2.setInt(2, p.getPhysicalTerapist().getId());
+			ps2.executeUpdate();
+			ps2.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
 
 	}
 
@@ -98,10 +146,11 @@ public class SQLiteDoctorManager implements DoctorManager {
 	public void modifyTreatment(Treatment t) {
 			try {
 				// Changes the Type and Length of a particular treatment
-				String sql = "UPDATE treatment SET Type	=?, Length=?, WHERE ID=?";
+				String sql = "UPDATE treatment SET Type	=?, Length=? WHERE ID=?";
 				PreparedStatement s = c.prepareStatement(sql);
 				s.setString(1, t.getType());
 				s.setInt(2, t.getLenght());
+				s.setInt(3, t.getId());
 				s.executeUpdate();
 				s.close();
 
@@ -112,13 +161,23 @@ public class SQLiteDoctorManager implements DoctorManager {
 
 
 	@Override
-	public void deleteTreatment(Treatment t ) {
+	public void deleteTreatment(Treatment t,Integer patID) { //TODO preguntar si se borra de todas
 		try {
-			String sql = "DELETE FROM treatment WHERE ID=?";
+			String sql = "DELETE * FROM treatment WHERE ID=?";
 			PreparedStatement ps= c.prepareStatement(sql);
 			ps.setInt(1, t.getId());
 			ps.executeQuery(sql);
 			ps.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		try {
+			String sql2 = "DELETE * FROM PatientTreatment WHERE TREATID=? AND PATID=?";
+			PreparedStatement ps2= c.prepareStatement(sql2);
+			ps2.setInt(1, t.getId());
+			ps2.setInt(2, patID);
+			ps2.executeQuery(sql2);
+			ps2.close();
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

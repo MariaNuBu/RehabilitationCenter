@@ -3,6 +3,10 @@ package pojos;
 import java.io.Serializable;
 
 public class Treatment  implements Serializable  {
+	@Override
+	public String toString() {
+		return "Treatment [id=" + id + ", type=" + type + ", lenght=" + lenght + "]";
+	}
 	private static final long serialVersionUID = 1L;
     private Integer id ;
     private String type ;

@@ -19,14 +19,11 @@ import pojos.*;
 public class DoctorMenu {
 
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
-
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	private static DBManager db;
 	private static DoctorManager dm;
 	private static AppointmentManager am;
-
-
 	private static PatientManager pm;
 
 	public void registerDoctor() throws IOException
@@ -55,7 +52,7 @@ public class DoctorMenu {
 	}
 
 
-	public  void doctorMenu(DoctorManager dm) throws Exception {
+	public  void doctorMenu(DoctorManager dm,PatientManager pm) throws Exception {
 
 		System.out.println("Please introduce the name of the patient you want to work with");
 		String name = reader.readLine();
@@ -70,7 +67,7 @@ public class DoctorMenu {
 		}
 		System.out.println("Please introduce the id of the patient you want to work with ");
 		int ptId=Integer.parseInt(reader.readLine());
-		doctorSubMenu(ptId);
+		doctorSubMenu(ptId,docID,pm,dm);
 	}
 
 
@@ -91,38 +88,39 @@ public class DoctorMenu {
 		doctorAppointmentSubMenu(docID, dm, am, pm);
 	} //esto es temporal, con el JPA fuera
 
-	private static void doctorSubMenu(Integer patID)throws Exception{
+	private static void doctorSubMenu(Integer patID,Integer docID,PatientManager pm,DoctorManager dm)throws Exception{
 		while (true) {
 			System.out.println("Hello doctor , what do you want to do ?");
 			System.out.println("1. Read the Medical History of your patient");
 			System.out.println("2. Modify the Medical History of your patient");
 			System.out.println("3. Create a new treatment for your patient ");
-			System.out.println("4.Modify one of the treatments of your patient");
-			System.out.println("5.Delete one of the treatments of your patient");
-			System.out.println("6.List all of the treatments of your patient");
-			System.out.println("7.Read one of the treatments of your patient");
+			System.out.println("4. Modify one of the treatments of your patient");
+			System.out.println("5. Delete one of the treatments of your patient");
+			System.out.println("6. List all of the treatments of your patient");
+			System.out.println("7. Read one of the treatments of your patient");
 			System.out.println("0. Back");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
-				ReadMedicalHistory(patID);
+				ShowMedicalHistory(patID,pm);
 				break;
 			case 2:
-				ModifyMedicalHistory(patID);
+				ModifyMedicalHistory(patID,pm,dm);
 				break;
 			case 3:
-				createTreatment(patID);
+				createTreatment(patID,docID,pm,dm);
+				break;
 			case 4:
-				ModifyTreatment(patID);
+				ModifyTreatment(patID,dm);
 				break;
 			case 5:
-				DeleteTreatment(patID);
+				DeleteTreatment(patID,dm);
 				break;
 			case 6:
-				ListTreatments(patID);
+				ListTreatments(patID,dm);
 				break;
 			case 7:
-				ReadTreatment(patID);
+				ReadTreatment(patID,dm);
 				break;
 			case 0:
 				return;
@@ -134,17 +132,11 @@ public class DoctorMenu {
 	 }
  }
 
-
-	 private static void ReadMedicalHistory(Integer patID) {
-		 ShowMedicalHistory(patID);
-	 }
-
-
-
-	 private static void ModifyMedicalHistory(Integer patID) throws NumberFormatException, IOException {
-			ShowMedicalHistory(patID);
+	 private static void ModifyMedicalHistory(Integer patID,PatientManager pm,DoctorManager dm) throws NumberFormatException, IOException {
+			ShowMedicalHistory(patID,pm);
 			Patient p = pm.getPatient(patID);
 			MedicalHistory mhToModify = pm.getMedicalHistory(p);
+			/*
 			System.out.println("Actual name: "+ mhToModify.getName());
 			System.out.println("Type the new name of the patient or press enter to leave it as it is :");
 			String newName = reader.readLine();
@@ -161,6 +153,7 @@ public class DoctorMenu {
 			else {
 				datenewDob = Date.valueOf(LocalDate.parse(newDob, formatter));
 			}
+			*/
 			System.out.println("Actual diseases: "+ mhToModify.getDiseases());
 			System.out.println("Type the new disease of the patient or press enter to leave it as it is :");
 			String newdisease= reader.readLine();
@@ -186,6 +179,7 @@ public class DoctorMenu {
 			if(newWeight.equals("")) {
 				floatnewWeight = mhToModify.getWeightKg();
 			}
+			//TODO VERIFICAR QUE METE UN FLOAT
 			else {
 				floatnewWeight = Float.parseFloat(newWeight);
 			}
@@ -201,7 +195,9 @@ public class DoctorMenu {
 			}
 
 			int id = mhToModify.getID();
-			MedicalHistory updatedMedicalHistory = new MedicalHistory(id,newName,datenewDob,newdisease,newallergie,
+			//MedicalHistory updatedMedicalHistory = new MedicalHistory(id,newName,datenewDob,newdisease,newallergie,
+			//		newsurgerie,floatnewWeight,intnewHeight);
+			MedicalHistory updatedMedicalHistory = new MedicalHistory(id,mhToModify.getName(),mhToModify.getDOB(),newdisease,newallergie,
 					newsurgerie,floatnewWeight,intnewHeight);
 			dm.modifyMH(updatedMedicalHistory);
 			System.out.println("The medical history of your patient has been successfully modified");
@@ -210,27 +206,27 @@ public class DoctorMenu {
 
 
 
-	 private static void ShowMedicalHistory(Integer patID){
+	 private static void ShowMedicalHistory(Integer patID,PatientManager pm){
 		 MedicalHistory mh= new MedicalHistory();
 		 	Patient p = pm.getPatient(patID);
+		 	System.out.println("Patient: \n-----------------------------------\n"+p);
 		 	mh= pm.getMedicalHistory(p);
-			System.out.println("This is the actual medical history of your patient:");
+			System.out.println("This is the actual medical history of your patient:\n--------------------------------\n");
 				System.out.println(mh);
 
 			}
 
-	private static void createTreatment(Integer patID) throws IOException {
-		db= new SQLiteManager();
-		db.connect();
-		dm = db.getDoctorManager();
-		ListTreatments(patID);
+	private static void createTreatment(Integer patID,Integer docID,PatientManager pm,DoctorManager dm) throws IOException {
+		ListTreatments(patID,dm);
 		System.out.println("For a new treatment:");
 		System.out.println("Type of the new treatment: ");
 		String type = reader.readLine();
 		System.out.println("Length of the new treatment: ");
 		Integer length = Integer.parseInt(reader.readLine());
 		Treatment newTreatment = new Treatment(type,length);
-		dm.createTreatment(newTreatment);
+		//TODO luego hay que quitar esto 
+		docID=1;
+		dm.createTreatment(newTreatment,patID,docID,pm);
 		System.out.println("You have created a new treatment succesfully!");
 	}
 
@@ -310,8 +306,8 @@ public class DoctorMenu {
 
 
 
-	private static void ModifyTreatment(Integer patID) throws NumberFormatException, IOException {
-	    ListTreatments(patID);
+	private static void ModifyTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
+	    ListTreatments(patID,dm);
 		System.out.println("-------------------------------------------------------");
 		System.out.println("Please, input the ID of the treatment you want to modify :");
 		int treatID;
@@ -339,7 +335,7 @@ public class DoctorMenu {
 		dm.modifyTreatment(updatedTreatment);
 		System.out.println("The treatment has been successfully modified");
 	 }
-	 private static void ListTreatments(Integer patID) {
+	 private static void ListTreatments(Integer patID,DoctorManager dm) {
 		 List<Treatment>treatmentList= new ArrayList<Treatment>();
 			treatmentList= dm.listTreatments(patID);
 			System.out.println("This are the actual treatments of your patient:");
@@ -363,17 +359,17 @@ public class DoctorMenu {
 
 
 
-	private static void DeleteTreatment(Integer patID) throws NumberFormatException, IOException {
-		ListTreatments(patID);
+	private static void DeleteTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
+		ListTreatments(patID,dm);
 		System.out.println("-------------------------------------------------------");
 		System.out.println("Please, input the ID of the treatment you want to delete :");
 		int treatID;
 	    treatID = Integer.parseInt(reader.readLine());
 		Treatment treatmentToDelete= dm.getTreatment(treatID);
-		dm.deleteTreatment(treatmentToDelete);
+		dm.deleteTreatment(treatmentToDelete,patID);
 	}
-	private static void ReadTreatment(Integer patID) throws NumberFormatException, IOException {
-		ListTreatments(patID);
+	private static void ReadTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
+		ListTreatments(patID,dm);
 		System.out.println("-------------------------------------------------------");
 		System.out.println("Please, input the ID of the treatment you want to read :");
 		int treatID;
