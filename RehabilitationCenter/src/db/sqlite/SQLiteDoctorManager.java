@@ -278,12 +278,12 @@ public class SQLiteDoctorManager implements DoctorManager {
 			ResultSet rs = prepS.executeQuery();
 
 			while(rs.next()){
-				int patID = rs.getInt(11);
-				String name = rs.getString(12);
-				Date DOB = rs.getDate(14);
-				String eMail = rs.getString(16);
-				String sport = rs.getString(17);
-				String disability = rs.getString(18);
+				int patID = rs.getInt(1);
+				String name = rs.getString(2);
+				Date DOB = rs.getDate(4);
+				String eMail = rs.getString(6);
+				String sport = rs.getString(7);
+				String disability = rs.getString(8); //comprobar numeros de las columnas, no estoy segura
 				Patient patient = new Patient(patID, name, DOB, eMail, sport, disability);
 				PhysicalTherapist pTherapist = patient.getPhysicalTerapist();
 				Patient patient2 = new Patient(patID, name, DOB, eMail, sport, disability, pTherapist);
@@ -299,7 +299,38 @@ public class SQLiteDoctorManager implements DoctorManager {
 		return doctorsPatients;
 	}
 
-}
+	@Override
+	public Doctor getDoctor(int docId) {
+		Doctor doc = null;
+		try{
 
+			String sql = "SELECT * FROM doctor WHERE ID=?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, docId);
+			ResultSet rs = prepS.executeQuery();
+			boolean docExists = false;
+			while(rs.next()){
+				if(!docExists){
+					Integer docID = rs.getInt("ID");
+					String docName = rs.getString("Name");
+					String docAddress = rs.getString("Address");
+					Date docDOB = rs.getDate("DOB");
+					Integer docPhoneNumber = rs.getInt("Phone");
+					String docEmail = rs.getString("Email");
+					String specialty = rs.getString("Specialty");
+					Double salary = rs.getDouble("Salary");
+					doc = new Doctor(docID, docName, docAddress, docDOB, docPhoneNumber, docEmail, specialty, salary);
+				}
+			}
+
+			prepS.close();
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return doc;
+	}
+
+}
 
 

@@ -23,8 +23,12 @@ public class MainTest
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
 	private static DoctorManager dm;
+<<<<<<< HEAD
+	private static AppointmentManager am;
+=======
 	private static UserManager userManager;
 	
+>>>>>>> branch 'master' of https://github.com/MariaNuBu/RehabilitationCenter
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 	public static void main(String [] args) throws NumberFormatException, IOException,Exception
@@ -35,8 +39,48 @@ public class MainTest
 		pm = db.getPatientManager();
 		dm=db.getDoctorManager();
 		ptm=db.getPhysicalTherapistManager();
+<<<<<<< HEAD
+		am = db.getAppointmentManager();
+		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
+		/*
+		ptm.insertPhysicalTherapist(pt1);
+		ptm.insertPhysicalTherapist(pt2);
+		ptm.insertPhysicalTherapist(pt3);
+		*/
+		/*
+		ArrayList<PhysicalTherapist> pts=ptm.showPhisicalTherapists("Tennis");
+		for (PhysicalTherapist physicalTherapist : pts) 
+		{
+			System.out.println(physicalTherapist);	
+		}
+		if (pts.isEmpty())
+		{
+			
+		}
+		*/
+		// esto SI FUNCIONA!!!
+		//pm.addPatientandMedicalHistory(p, ptm.getPhysicalTherapist(1), mh);
+		//ESTO TAMBIEN FUNCIONA LO BUSCA BIEN!!
+		/*
+		ArrayList<Patient> searched=pm.searchPatientName("Maria");
+		for (Patient patient : searched) 
+		{
+			System.out.println(patient);
+		}
+		*/
+		//ESTO TAMBIEN FUNCIONA
+		/*
+		Patient get=pm.getPatient(1);
+		System.out.println("conseguido\n"+get);
+		PhysicalTherapist pget=ptm.getPhysicalTherapist(3);
+		System.out.println("physical\n"+pget);
+		MedicalHistory getmh=pm.getMedicalHistory(get);
+		System.out.println("MH "+getmh);
+		*/
+=======
 		userManager = new JPAUserManager();
 		userManager.connect();
+>>>>>>> branch 'master' of https://github.com/MariaNuBu/RehabilitationCenter
 		
 		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
@@ -150,7 +194,7 @@ public class MainTest
 			DoctorMenu doctorMenuApp = new DoctorMenu();
 			try{
 				
-				doctorMenuApp.doctorAppointmentMenu();
+				doctorMenuApp.doctorAppointmentMenu(dm, am, pm);
 				
 			}catch(Exception e){
 				e.printStackTrace();

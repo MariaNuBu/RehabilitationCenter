@@ -18,5 +18,6 @@ public interface DoctorManager {
 	public ArrayList <Patient> SearchByName(String name,Integer docID);
 	public List <Doctor> searchDoctorByName(String name);
 	public List<Patient> getDoctorsPatients(Integer docID); //coge todos los pacientes de un medico
+	public Doctor getDoctor(int docId);
 
 }
