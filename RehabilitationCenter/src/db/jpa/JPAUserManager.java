@@ -22,33 +22,53 @@ public class JPAUserManager implements UserManager {
 		em.getTransaction().begin();
 		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
 		em.getTransaction().commit();
-		/*
-		em.getTransaction().begin();
-		//Use it once to create the Human Resorces person who is going to register people
-		Role staff = new Role (1,"Human Resources");
-		em.persist(staff);
-		em.getTransaction().commit();
-		//Use this to crate the username and password of this person
-		String username = "boss";
-		String password = "fuckingboss";
-		MessageDigest md=null;
-		try 
-		{
-			md = MessageDigest.getInstance("SHA-512");
-		} 
-		catch (NoSuchAlgorithmException e) 
-		{			
-			e.printStackTrace();
-		}
-		md.update(password.getBytes());
-		byte [] hash = md.digest();
-		User boss = new User (username,hash,staff);
-		em.getTransaction().begin();
-		em.persist(boss);
-		em.getTransaction().commit();
-		*/				
+		createStaff();	
 	}
 
+	public void createStaff()
+	{
+		Role staff=null;
+		User boss=null;
+		if(isCreated("Human Resources")==false)
+		{
+			em.getTransaction().begin();
+			//Use it once to create the Human Resorces person who is going to register people
+			staff = new Role (1,"Human Resources");
+			em.persist(staff);
+			em.getTransaction().commit();
+		}
+		else
+		{
+			staff = getRoleByName("Human Resources");
+		}
+		if(userCreated("boss")==false)
+		{
+			//Use this to crate the username and password of this person
+			String username = "boss";
+			String password = "fuckingboss";
+			MessageDigest md=null;
+			try 
+			{
+				md = MessageDigest.getInstance("SHA-512");
+			} 
+			catch (NoSuchAlgorithmException e) 
+			{			
+				e.printStackTrace();
+			}
+			md.update(password.getBytes());
+			byte [] hash = md.digest();
+			boss = new User (username,hash,staff);
+			em.getTransaction().begin();
+			em.persist(boss);
+			em.getTransaction().commit();
+		}
+		else
+		{
+			//Don't do anything because the boss has been alredy created}
+		}
+		
+		
+	}
 	@Override
 	public void disconnect() 
 	{
@@ -78,6 +98,44 @@ public class JPAUserManager implements UserManager {
 		q.setParameter(1, id);
 		Role role=(Role) q.getSingleResult();
 		return role;
+	}
+	
+	public Role getRoleByName(String roleName)
+	{
+		Query q = em.createNativeQuery("SELECT * FROM roles WHERE role=?",Role.class);
+		q.setParameter(1, roleName);
+		Role role=(Role) q.getSingleResult();
+		return role;
+	}
+	
+	public boolean isCreated (String role)
+	{
+		Query q = em.createNativeQuery("SELECT * FROM roles WHERE role = ? ",Role.class);
+		q.setParameter(1, role);
+		Role created = (Role)q.getSingleResult();
+		if(created==null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public boolean userCreated (String userName)
+	{
+		Query q = em.createNativeQuery("SELECT * FROM users WHERE username = ? ",User.class);
+		q.setParameter(1, userName);
+		User created = (User)q.getSingleResult();
+		if(created==null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	@Override

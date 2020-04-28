@@ -51,7 +51,6 @@ public class SQLiteManager implements DBManager {
 		try
 		{
 			Class.forName("org.sqlite.JDBC");
-			//this.c=DriverManager.getConnection("jdbc:sqlite:C:/Users/Teresa Romero/git/RehabilitationCenter2.0/RehabilitationCenter/db/RehabilitationCenter.db"); 
 			this.c=DriverManager.getConnection("jdbc:sqlite:./db/RehabilitationCenter.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			patient = new SQLitePatientManager(c);
@@ -96,19 +95,6 @@ public class SQLiteManager implements DBManager {
 					+ " Salary			DOUBLE NOT NULL)";
 			st6.executeUpdate(sq6);
 			st6.close();
-			/*
-			java.sql.Date d = new java.sql.Date(new Date().getTime());
-			Statement st12=c.createStatement();
-			String sq12="INSERT INTO physicalTherapist (Name,Address,DOB,Phone,Email,SportType,Salary)"
-					   +"VALUES('Guillermo','Antonio López','d',678907283,'pablo@gmail.com','Tennis',1324.22)";
-			st12.executeUpdate(sq12);
-			st12.close();
-			Statement st13=c.createStatement();
-			String sq13="INSERT INTO physicalTherapist (Name,Address,DOB,Phone,Email,SportType,Salary)"
-					   +"VALUES('Paco Fernández','Marqués de Vadillo','1980-04-05',635907283,'paco@gmail.com','Swimming',1224.22)";
-			st13.executeUpdate(sq13);
-			st13.close();
-			*/
 			Statement st2=c.createStatement();
 			String sq2="CREATE TABLE IF NOT EXISTS   medicalHistory "
 					+	"(ID			INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -150,14 +136,6 @@ public class SQLiteManager implements DBManager {
 					+ "	Salary			DOUBLE NOT NULL)";
 			st3.executeUpdate(sq3);
 			st3.close();
-			/*
-			Statement st22=c.createStatement();
-			
-			String sq22="INSERT INTO PatientDoctor (PATID,DOCID) "
-					+ "VALUES (1,2)";
-			st22.executeUpdate(sq22);
-			st22.close();
-			*/
 			Statement st4=c.createStatement();
 			String sq4="CREATE TABLE  IF NOT EXISTS  treatment"
 					+ "(ID				INTEGER PRIMARY KEY AUTOINCREMENT,"

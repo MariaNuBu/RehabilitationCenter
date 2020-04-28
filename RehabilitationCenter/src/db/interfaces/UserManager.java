@@ -15,5 +15,6 @@ public interface UserManager
 	public List<Role> getRoles();
 	public User checkPassword(String username,String password);
 	public User checkPasswordStaff(String username, String password);
-
+	public boolean isCreated (String role);
+	public Role getRoleByName(String roleName);
 }

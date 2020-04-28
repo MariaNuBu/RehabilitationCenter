@@ -33,6 +33,7 @@ public class MainTest
 		
 	public static void main(String [] args) throws NumberFormatException, IOException,Exception
 	{
+		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 		db= new SQLiteManager();
 		db.connect();
 		db.createTables();
@@ -76,9 +77,10 @@ public class MainTest
 		MedicalHistory getmh=pm.getMedicalHistory(get);
 		System.out.println("MH "+getmh);
 		*/
-		//userManager = new JPAUserManager();
-		//userManager.connect();
-		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+		userManager = new JPAUserManager();
+		userManager.connect();
+		/*
+		
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
 		
 		System.out.println("Who are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
@@ -113,8 +115,7 @@ public class MainTest
 			}
 			break;
 		}
-		
-		/*
+		*/
 		System.out.println("What do you wanna do?\n1.-Register\n2.-Log in\n0.-Exit");
 		int option=Integer.parseInt(reader.readLine());
 		switch(option)
@@ -132,7 +133,8 @@ public class MainTest
 				}
 				else
 				{
-					StaffMenu staffMenu = new StaffMenu(); 					
+					StaffMenu staffMenu = new StaffMenu(); 		
+					staffMenu.staffMenu(dm,ptm,pm,userManager);
 				}
 				break;
 			case 2:
@@ -147,7 +149,7 @@ public class MainTest
 				}
 				else if (user.getRole().getRole().equalsIgnoreCase("doctor"))
 				{
-					patientsOrAppointments();
+					patientsOrAppointments(userName);
 				}
 				else if (user.getRole().getRole().equalsIgnoreCase("patient")) 
 				{
@@ -155,20 +157,16 @@ public class MainTest
 				}
 				else if (user.getRole().getRole().equalsIgnoreCase("physical therapist"))
 				{
-					choose();
+					choose(userName);
 				}
 				else 
 				{
 					System.out.println("Invalid role.");
 				}
-				
 		}
-		*/
-		
-		
 	}
 	
-	private static void patientsOrAppointments() throws Exception {
+	private static void patientsOrAppointments(String userName) throws Exception {
 		while(true){
 		System.out.println("Welcome doctor, choose an option");
 		System.out.println("1.Check patients");
@@ -180,7 +178,7 @@ public class MainTest
 			DoctorMenu doctorMenu= new DoctorMenu();
 			try {
 				
-				doctorMenu.doctorMenu(dm,pm);
+				doctorMenu.doctorMenu(dm,pm,userName);
 				
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -190,7 +188,7 @@ public class MainTest
 			DoctorMenu doctorMenuApp = new DoctorMenu();
 			try{
 				
-				doctorMenuApp.doctorAppointmentMenu(dm, am, pm);
+				doctorMenuApp.doctorAppointmentMenu(dm, am, pm,userName);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -201,7 +199,7 @@ public class MainTest
 		
 	}
 	
-	private static void choose() throws Exception 
+	private static void choose(String userName) throws Exception 
 	{
 		while(true)
 		{
@@ -216,7 +214,7 @@ public class MainTest
 				case 1:					
 					try
 					{
-						physicalMenu.readTreatment();					
+						physicalMenu.readTreatment(userName,ptm,pm);					
 					}
 					catch(Exception e) {
 						e.printStackTrace();
@@ -225,14 +223,14 @@ public class MainTest
 				case 2:
 					try
 					{				
-						physicalMenu.checkAppointments();						
+						physicalMenu.checkAppointments(userName,ptm);						
 					}
 					catch(Exception e)
 					{
 						e.printStackTrace();
 					}
 					break;
-				}
+			}
 		}
 		
 	}

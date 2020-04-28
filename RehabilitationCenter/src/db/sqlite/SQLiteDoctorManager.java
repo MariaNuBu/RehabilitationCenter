@@ -23,6 +23,56 @@ public class SQLiteDoctorManager implements DoctorManager {
 	{
 		this.c = c;
 	}
+	
+	@Override
+	public void createDoctor(Doctor doc) 
+	{
+		try
+		{
+			String sqldoctor="INSERT INTO doctor (Name, Address, DOB, Phone, Email, Specialty,Salary)"
+					+  "VALUES (?,?,?,?,?,?,?)";
+			PreparedStatement prep=c.prepareStatement(sqldoctor);
+			prep.setString(1,doc.getName());
+			prep.setString(2,doc.getAddress());
+			prep.setDate(3,doc.getDob());
+			prep.setInt(4, doc.getPhoneNumber());
+			prep.setString(5, doc.geteMail());
+			prep.setString(6, doc.getSpeciality());
+			prep.setDouble(7, doc.getSalary());		
+			prep.executeUpdate();
+			prep.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
+	public Integer searchDoctorByEmail(String email)
+	{
+		Integer docID= null;
+		try
+		{
+			String sql = "SELECT ID FROM doctor WHERE Email=?";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1,email);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				docID=rs.getInt("ID");
+			}
+			ps.close();
+			rs.close();
+		}
+		catch (SQLException e)
+		{
+			
+		}
+		return docID;
+	}
+	
 	@Override
 	public void readMH(Integer ID) {
 		MedicalHistory mh = null; //prueba
@@ -389,6 +439,11 @@ public class SQLiteDoctorManager implements DoctorManager {
 		}
 		return doc;
 	}
+
+
+
+
+	
 
 }
 

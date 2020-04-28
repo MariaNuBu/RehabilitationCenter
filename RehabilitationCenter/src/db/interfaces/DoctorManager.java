@@ -20,5 +20,6 @@ public interface DoctorManager {
 	public List<Patient> getDoctorsPatients(Integer docID); //coge todos los pacientes de un medico
 	public Doctor getDoctor(int docId);
 	public int getLastId();
-
+	public void createDoctor (Doctor doc);
+	public Integer searchDoctorByEmail(String email);
 }

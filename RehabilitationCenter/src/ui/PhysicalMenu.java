@@ -22,57 +22,42 @@ public class PhysicalMenu
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
 	
-	public void registerPhysicalTherapist() throws IOException 
+	public void readTreatment(String userName, PhysicalTherapistManager ptm, PatientManager pm) throws IOException
 	{
-		/*
-		db= new SQLiteManager();
-		db.connect();
-		pm = db.getPatientManager();
-		ptm = db.getPhysicalTherapistManager();
-		*/
-		//TODO puedo insertarlos con el JPA? o antes tengo que crear la tabla con JPA
-		System.out.println("Name and Surname: ");
-		String name=reader.readLine();
-		System.out.println("Date of Birth: ");
-		String newDOBDate = reader.readLine();
-		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
-		System.out.println("Address: ");
-		String address=reader.readLine();
-		System.out.println("Email: ");
-		String email=reader.readLine();
-		System.out.println("Phone number: ");
-		Integer phone=Integer.parseInt(reader.readLine());
-		System.out.println("Sport Type: ");
-		String sport=reader.readLine();
-		System.out.println("Salary: ");
-		Double salary = Double.parseDouble(reader.readLine());
-		PhysicalTherapist pt = new PhysicalTherapist (name, address, DOB, phone, email, sport, salary);
-	}
-	public void readTreatment() throws IOException
-	{
-		db= new SQLiteManager();
-		db.connect();
-		pm = db.getPatientManager();
-		ptm=db.getPhysicalTherapistManager();
+		Integer ptID = ptm.searchPTByEmail(userName);
 		System.out.println("These are your patients");
-		//TODO hay que cambiar el 1 por el id del physical
 		ArrayList<Patient> patients = new ArrayList<Patient>();
-		patients=ptm.getAllPatients(1);
-		for (Patient patient : patients) 
-		{	
-			System.out.println(patient);
-		}
-		System.out.println("Type the ID of the patient you want to check the treatment");
-		Integer patientID = Integer.parseInt(reader.readLine());
-		Patient patientChoosen = pm.getPatient(patientID);
-		ArrayList<Treatment> treatments = new ArrayList <Treatment>();
-		treatments=pm.listTreatment(patientChoosen);
-		for (Treatment treatment : treatments) 
+		patients=ptm.getAllPatients(ptID);
+		if(patients==null)
 		{
-			System.out.println(treatment);
+			System.out.println("You don't have patients alredy");
 		}
+		else
+		{
+			for (Patient patient : patients) 
+			{	
+				System.out.println(patient);
+			}
+			System.out.println("Type the ID of the patient you want to check the treatment");
+			Integer patientID = Integer.parseInt(reader.readLine());
+			Patient patientChoosen = pm.getPatient(patientID);
+			ArrayList<Treatment> treatments = new ArrayList <Treatment>();
+			treatments=pm.listTreatment(patientChoosen);
+			if (treatments==null)
+			{
+				System.out.println("This patient doesn't have any treatments");
+			}
+			else
+			{
+				for (Treatment treatment : treatments) 
+				{
+					System.out.println(treatment);
+				}
+			}
+		}
+		
 	}
-	public void checkAppointments() throws IOException
+	public void checkAppointments(String userName, PhysicalTherapistManager ptm) throws IOException
 	{
 		
 	}

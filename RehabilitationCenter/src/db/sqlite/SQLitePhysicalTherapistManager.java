@@ -23,6 +23,53 @@ private Connection c;
 	}
 	
 	@Override
+	public void addPhysicalTherapist (PhysicalTherapist pt)
+	{
+		try
+		{
+			String sqlphysicalTherapist="INSERT INTO physicalTherapist (Name, Address, DOB, Phone, Email, SportType,Salary)"
+					+  "VALUES (?,?,?,?,?,?,?)";
+			PreparedStatement prep=c.prepareStatement(sqlphysicalTherapist);
+			prep.setString(1,pt.getName());
+			prep.setString(2,pt.getAddress());
+			prep.setDate(3,pt.getDob());
+			prep.setInt(4, pt.getPhoneNumber());
+			prep.setString(5, pt.geteMail());
+			prep.setString(6, pt.getTypeSport());
+			prep.setDouble(7, pt.getSalary());		
+			prep.executeUpdate();
+			prep.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public Integer searchPTByEmail (String email)
+	{
+		Integer ptID=null;
+		try
+		{
+			String sql="SELECT ID FROM physicalTherapist WHERE Email=?";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				ptID = rs.getInt(1);
+			}
+			ps.close();
+			rs.close();					
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return ptID;
+	}
+	
+	@Override
 	public Treatment readTreatment(Treatment t) 
 	{
 		Treatment treatment=null;
