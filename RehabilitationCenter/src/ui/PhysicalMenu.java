@@ -1,8 +1,6 @@
 package ui;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +15,6 @@ import pojos.*;
 public class PhysicalMenu
 {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 	private static DBManager db;
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
@@ -38,8 +35,7 @@ public class PhysicalMenu
 			{	
 				System.out.println(patient);
 			}
-			System.out.println("Type the ID of the patient you want to check the treatment");
-			Integer patientID = Integer.parseInt(reader.readLine());
+			Integer patientID = DataObtention.readInt("Type the ID of the patient you want to check the treatment");
 			Patient patientChoosen = pm.getPatient(patientID);
 			ArrayList<Treatment> treatments = new ArrayList <Treatment>();
 			treatments=pm.listTreatment(patientChoosen);

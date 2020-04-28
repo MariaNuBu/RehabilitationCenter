@@ -1,7 +1,7 @@
 package ui;
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+//import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -33,7 +33,6 @@ public class MainTest
 		
 	public static void main(String [] args) throws NumberFormatException, IOException,Exception
 	{
-		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 		db= new SQLiteManager();
 		db.connect();
 		db.createTables();
@@ -116,16 +115,15 @@ public class MainTest
 			break;
 		}
 		*/
-		System.out.println("What do you wanna do?\n1.-Register\n2.-Log in\n0.-Exit");
-		int option=Integer.parseInt(reader.readLine());
+		
+		int option=DataObtention.readInt("What do you wanna do?\n1.-Register\n2.-Log in\n0.-Exit");
 		switch(option)
 		{
 			case 1:
 				System.out.println("You are a member of the staff of Human Resources, introduce your credentials");
-				System.out.println("Username: ");
-				String username = reader.readLine();
+				String username = DataObtention.readName("Username: ");
 				System.out.println("Password: ");
-				String pass = reader.readLine();
+				String pass =DataObtention.readLine();
 				User staff = userManager.checkPasswordStaff(username, pass);
 				if (staff==null)
 				{
@@ -138,10 +136,9 @@ public class MainTest
 				}
 				break;
 			case 2:
-				System.out.println("Username: ");
-				String userName = reader.readLine();
+				String userName = DataObtention.readName("Username: ");
 				System.out.println("Password: ");
-				String password = reader.readLine();
+				String password = DataObtention.readLine();
 				User user = userManager.checkPassword(userName, password);
 				if (user == null) 
 				{
@@ -163,16 +160,15 @@ public class MainTest
 				{
 					System.out.println("Invalid role.");
 				}
+			case 0 :
+				System.out.println("You have succesfully exit the program. Goodbye!");
 		}
 	}
 	
 	private static void patientsOrAppointments(String userName) throws Exception {
 		while(true){
-		System.out.println("Welcome doctor, choose an option");
-		System.out.println("1.Check patients");
-		System.out.println("2.Check appointments");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		int option = Integer.parseInt(reader.readLine());
+		
+		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"Welcome doctor, choose an option\n "+"2.Check appointments\n ");
 		switch(option){
 		case 1:
 			DoctorMenu doctorMenu= new DoctorMenu();
@@ -203,11 +199,7 @@ public class MainTest
 	{
 		while(true)
 		{
-			System.out.println("Welcome physical therapist, choose an option");
-			System.out.println("1.Check patients");
-			System.out.println("2.Check appointments");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-			int option = Integer.parseInt(reader.readLine());
+			int option =DataObtention.readInt("Welcome physical therapist, choose an option\n "+"1.Check patients\n "+"2.Check appointments\n ");
 			PhysicalMenu physicalMenu= new PhysicalMenu();
 			switch(option)
 			{

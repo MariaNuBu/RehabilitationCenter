@@ -1,8 +1,7 @@
 package ui;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
@@ -20,13 +19,12 @@ import pojos.users.User;
 
 public class StaffMenu 
 {
-	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+	
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
 	public void staffMenu(DoctorManager dm,PhysicalTherapistManager ptm,PatientManager pm,UserManager um) throws IOException
 	{
-		System.out.println("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist");
-		Integer role = Integer.parseInt(reader.readLine());
+		Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist");
 		switch (role)
 		{
 			case 1:
@@ -44,45 +42,28 @@ public class StaffMenu
 	
 	public void registerPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws IOException
 	{
-		System.out.println("Name and Surname: ");
-		String name=reader.readLine();
+		
+		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
-		String newDOBDate = reader.readLine();
+		String newDOBDate = DataObtention.readLine();
 		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
 		System.out.println("Address: ");
-		String address=reader.readLine();
+		String address= DataObtention.readLine();
 		System.out.println("Email: ");
-		String email=reader.readLine();
-		System.out.println("Phone number: ");
-		Integer phone=Integer.parseInt(reader.readLine());
+		String email= DataObtention.readLine();
+		Integer phone= DataObtention.readInt("Phone number: ");;
 		System.out.println("Type of sport: ");
-		String sport=reader.readLine();
+		String sport= DataObtention.readLine();
 		System.out.println("Disabilities: ");
-		String disabilities=reader.readLine();
+		String disabilities= DataObtention.readLine();
 		System.out.println("Diseases: ");
-		String diseases=reader.readLine();
+		String diseases= DataObtention.readLine();
 		System.out.println("Allergies: ");
-		String allergies=reader.readLine();
+		String allergies= DataObtention.readLine();;
 		System.out.println("Surgeries: ");
-		String surgeries=reader.readLine();
-		Float weightKG=null;
-		while (true)
-        {
-            System.out.println("Weight(kg): ");
-            try
-            {
-                String weight = reader.readLine();
-                weightKG = Float.parseFloat(weight);
-                break;
-            }
-            catch (NumberFormatException e)
-            {
-                System.out.println("Not valid data, try again! ");
-            }
-            catch (IOException e) { }
-        }
-		System.out.println("Height(cm): ");
-		Integer height=Integer.parseInt(reader.readLine());
+		String surgeries= DataObtention.readLine();;
+		Float weightKG=DataObtention.readFloat("Weight(kg): ");
+		Integer height=DataObtention.readInt("Height(cm): ");
 		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);
 		if (pts.isEmpty())
 		{
@@ -101,8 +82,8 @@ public class StaffMenu
 				System.out.println(physicalTherapist);
 			}
 		}
-		System.out.println("Introduce the id of the Physical Therapist you want: ");
-		Integer ptid=Integer.parseInt(reader.readLine());
+		
+		Integer ptid=DataObtention.readInt("Introduce the id of the Physical Therapist you want: ");
 		PhysicalTherapist pt=ptm.getPhysicalTherapist(ptid);
 		Patient p=new Patient(name, address, DOB, phone, email, sport, disabilities);
 		MedicalHistory mh=new MedicalHistory(name, DOB, diseases, allergies, surgeries, weightKG, height);
@@ -123,7 +104,7 @@ public class StaffMenu
 		User patient = new User();		
 		String userName = email;
 		System.out.println("Choose the password for that user: ");
-		String pass = reader.readLine();
+		String pass =DataObtention.readLine();
 		MessageDigest md=null;
 		try 
 		{
@@ -141,21 +122,18 @@ public class StaffMenu
 	}
 	public void registerDoctor(DoctorManager dm,UserManager um) throws IOException
 	{
-		System.out.println("Name and Surname: ");
-		String name=reader.readLine();
+		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
-		String newDOBDate = reader.readLine();
+		String newDOBDate = DataObtention.readLine();
 		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
 		System.out.println("Address: ");
-		String address=reader.readLine();
+		String address=DataObtention.readLine();
 		System.out.println("Email: ");
-		String email=reader.readLine();
-		System.out.println("Phone number: ");
-		Integer phone=Integer.parseInt(reader.readLine());
+		String email=DataObtention.readLine();
+		Integer phone=DataObtention.readInt("Phone number: ");
 		System.out.println("Specialty: ");
-		String specialty=reader.readLine();
-		System.out.println("Salary: ");
-		Double salary = Double.parseDouble(reader.readLine());
+		String specialty= DataObtention.readLine();
+		Double salary = DataObtention.readDouble("Salary: ");
 		Doctor doc = new Doctor(name, address, DOB, phone, email, specialty, salary);
 		dm.createDoctor(doc);
 		//Now we need to create a new user for that doctor and check if the role doctor has been created and if its not, create it
@@ -174,7 +152,7 @@ public class StaffMenu
 		User doctor = new User();		
 		String userName = email;
 		System.out.println("Choose the password for that user: ");
-		String pass = reader.readLine();
+		String pass = DataObtention.readLine();
 		MessageDigest md=null;
 		try 
 		{
@@ -192,21 +170,19 @@ public class StaffMenu
 	}
 	public void registerPhysicalTherapist(PhysicalTherapistManager ptm,UserManager um) throws IOException
 	{
-		System.out.println("Name and Surname: ");
-		String name=reader.readLine();
+		
+		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
-		String newDOBDate = reader.readLine();
+		String newDOBDate = DataObtention.readLine();
 		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
 		System.out.println("Address: ");
-		String address=reader.readLine();
+		String address=DataObtention.readLine();
 		System.out.println("Email: ");
-		String email=reader.readLine();
-		System.out.println("Phone number: ");
-		Integer phone=Integer.parseInt(reader.readLine());
+		String email=DataObtention.readLine();
+		Integer phone=DataObtention.readInt("Phone number: ");
 		System.out.println("Type of sport: ");
-		String sport=reader.readLine();
-		System.out.println("Salary: ");
-		Double salary = Double.parseDouble(reader.readLine());
+		String sport=DataObtention.readLine();
+		Double salary = DataObtention.readDouble("Salary: ");
 		PhysicalTherapist pt = new PhysicalTherapist(name, address, DOB, phone, email, sport, salary);
 		ptm.addPhysicalTherapist(pt);
 		//Now we need to create a new user for that physical therapist and check if the role pysical therapist has been created and if its not, create it
@@ -225,7 +201,7 @@ public class StaffMenu
 		User physicalTherpist = new User();		
 		String userName = email;
 		System.out.println("Choose the password for that user: ");
-		String pass = reader.readLine();
+		String pass = DataObtention.readLine();
 		MessageDigest md=null;
 		try 
 		{
