@@ -211,16 +211,8 @@ public class SQLiteDoctorManager implements DoctorManager {
 
 
 	@Override
-	public void deleteTreatment(Treatment t,Integer patID) { //TODO preguntar si se borra de todas
-		try {
-			String sql = "DELETE * FROM treatment WHERE ID=?";
-			PreparedStatement ps= c.prepareStatement(sql);
-			ps.setInt(1, t.getId());
-			ps.executeQuery(sql);
-			ps.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
+	public void deleteTreatment(Treatment t,Integer patID,PatientManager pm) { //TODO preguntar si se borra de todas
+		
 		try {
 			String sql2 = "DELETE * FROM PatientTreatment WHERE TREATID=? AND PATID=?";
 			PreparedStatement ps2= c.prepareStatement(sql2);
@@ -231,6 +223,19 @@ public class SQLiteDoctorManager implements DoctorManager {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		/*try {
+			String sql3 = "DELETE * FROM  PhysicalTherapistTreatment WHERE TREATID=? AND PTID=?";
+			PreparedStatement ps3= c.prepareStatement(sql3);
+			ps3.setInt(1, t.getId());
+			Patient p=pm.getPatient(patID);
+			PhysicalTherapist pt=p.getPhysicalTerapist();
+			int ptID=pt.getId();
+			ps3.setInt(2, ptID);
+			ps3.executeQuery(sql3);
+			ps3.close();
+		}catch(SQLException e){
+			e.printStackTrace();}*/
+		//TODO preguntar si borramos esto
 	}
 
 	@Override

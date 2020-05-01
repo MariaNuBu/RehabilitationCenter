@@ -79,7 +79,7 @@ public class DoctorMenu {
 				ModifyTreatment(patID,dm);
 				break;
 			case 5:
-				DeleteTreatment(patID,dm);
+				DeleteTreatment(patID,dm,pm);
 				break;
 			case 6:
 				ListTreatments(patID,dm);
@@ -310,12 +310,12 @@ public class DoctorMenu {
 
 
 
-	private static void DeleteTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
+	private static void DeleteTreatment(Integer patID,DoctorManager dm,PatientManager pm) throws NumberFormatException, IOException {
 		ListTreatments(patID,dm);
 		System.out.println("-------------------------------------------------------");
 		int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to delete :");
 		Treatment treatmentToDelete= dm.getTreatment(treatID);
-		dm.deleteTreatment(treatmentToDelete,patID);
+		dm.deleteTreatment(treatmentToDelete,patID,pm);
 	}
 	private static void ReadTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
 		System.out.println("-------------------------------------------------------");
