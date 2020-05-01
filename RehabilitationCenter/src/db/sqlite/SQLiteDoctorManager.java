@@ -413,7 +413,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 		Doctor doc = null;
 		try{
 
-			String sql = "SELECT * FROM doctor WHERE ID=?";
+			String sql = "SELECT ID,Name,Phone,Email,Specialty FROM doctor WHERE ID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, docId);
 			ResultSet rs = prepS.executeQuery();
@@ -422,13 +422,10 @@ public class SQLiteDoctorManager implements DoctorManager {
 				if(!docExists){
 					Integer docID = rs.getInt("ID");
 					String docName = rs.getString("Name");
-					String docAddress = rs.getString("Address");
-					Date docDOB = rs.getDate("DOB");
 					Integer docPhoneNumber = rs.getInt("Phone");
 					String docEmail = rs.getString("Email");
 					String specialty = rs.getString("Specialty");
-					Double salary = rs.getDouble("Salary");
-					doc = new Doctor(docID, docName, docAddress, docDOB, docPhoneNumber, docEmail, specialty, salary);
+					doc = new Doctor(docID, docName, docPhoneNumber, docEmail, specialty);
 				}
 			}
 
