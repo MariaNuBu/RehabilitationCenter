@@ -1,6 +1,8 @@
 package ui;
+import java.io.BufferedReader;
 //import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 //import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,7 +30,7 @@ public class MainTest
 
 	private static UserManager userManager;
 	
-
+	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 	public static void main(String [] args) throws NumberFormatException, IOException,Exception
@@ -76,9 +78,11 @@ public class MainTest
 		MedicalHistory getmh=pm.getMedicalHistory(get);
 		System.out.println("MH "+getmh);
 		*/
+		/*
 		userManager = new JPAUserManager();
 		userManager.connect();
-		/*
+		*/
+		
 		
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
 		
@@ -90,7 +94,7 @@ public class MainTest
 		case 1:
 			PatientMenu patientMenu=new PatientMenu();
 			try {
-				patientMenu.registerPatient();
+				//TODO poner el menu del patient Menu
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -114,8 +118,8 @@ public class MainTest
 			}
 			break;
 		}
-		*/
 		
+		/*
 		int option=DataObtention.readInt("What do you wanna do?\n1.-Register\n2.-Log in\n0.-Exit");
 		switch(option)
 		{
@@ -163,18 +167,20 @@ public class MainTest
 			case 0 :
 				System.out.println("You have succesfully exit the program. Goodbye!");
 		}
+		*/
 	}
 	
-	private static void patientsOrAppointments(String userName) throws Exception {
+	//TODO poner luego el username
+	private static void patientsOrAppointments() throws Exception {
 		while(true){
 		
-		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"Welcome doctor, choose an option\n "+"2.Check appointments\n ");
+		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.Check patients\n "+"2.Check appointments\n ");
 		switch(option){
 		case 1:
 			DoctorMenu doctorMenu= new DoctorMenu();
 			try {
-				
-				doctorMenu.doctorMenu(dm,pm,userName);
+				//TODO poner el username
+				doctorMenu.doctorMenu(dm,pm,2);
 				
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -183,8 +189,8 @@ public class MainTest
 		case 2:
 			DoctorMenu doctorMenuApp = new DoctorMenu();
 			try{
-				
-				doctorMenuApp.doctorAppointmentMenu(dm, am, pm,userName);
+				//TODO poner el username
+				doctorMenuApp.doctorAppointmentMenu(dm, am, pm,2);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -194,8 +200,8 @@ public class MainTest
 		}
 		
 	}
-	
-	private static void choose(String userName) throws Exception 
+	//TODO poner el user name String userName
+	private static void choose() throws Exception 
 	{
 		while(true)
 		{
@@ -206,7 +212,8 @@ public class MainTest
 				case 1:					
 					try
 					{
-						physicalMenu.readTreatment(userName,ptm,pm);					
+						//TODO poner el username
+						physicalMenu.readTreatment(1,ptm,pm);					
 					}
 					catch(Exception e) {
 						e.printStackTrace();
@@ -214,8 +221,10 @@ public class MainTest
 					break;
 				case 2:
 					try
-					{				
-						physicalMenu.checkAppointments(userName,ptm);						
+					{	
+						//TODO poner el username
+
+						physicalMenu.checkAppointments(1,ptm);						
 					}
 					catch(Exception e)
 					{

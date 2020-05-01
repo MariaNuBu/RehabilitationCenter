@@ -1,7 +1,9 @@
 package ui;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -16,19 +18,26 @@ import pojos.*;
 
 
 public class DoctorMenu {
+	
+	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
 
 	
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss");
 	private static DBManager db;
 	private static DoctorManager dm;
 	private static AppointmentManager am;
 	private static PatientManager pm;
 
-	public  void doctorMenu(DoctorManager dm,PatientManager pm,String userName) throws Exception 
-	{		
+	//TODO PONER EL USER NAME
+	public  void doctorMenu(DoctorManager dm,PatientManager pm,Integer doctprID) throws Exception 
+	{	
 		String name = DataObtention.readName("Please introduce the name of the patient you want to work with");//reader.readLine();
+		/*
 		Integer docID=dm.searchDoctorByEmail(userName);
+		*/
+		
+		Integer docID=doctprID;
 		ArrayList<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
 			System.out.println(patient);
@@ -44,8 +53,8 @@ public class DoctorMenu {
 
 
 
-
-	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,String userName) throws Exception{
+	//TODO poner el username
+	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,Integer doc) throws Exception{
 		//Yo aqui quitaria esto y pondria el metodo de buscar el doctor por el email y coger su id
 		//int docID = dm.searchDoctorByEmail(userName);
 		String doctorName =DataObtention.readName("Introduce your name");
@@ -203,14 +212,14 @@ public class DoctorMenu {
 				List<Patient>currentPatients = dm.getDoctorsPatients(docID);
 				listCurrentPatients(currentPatients);
 				System.out.println("APPOINTMENTS");
-				am.readAppointments(docID);
+				am.readAppointments(docID,pm,dm);
 				break;
 			case 2:
 				List<Patient>currentPatients2 = dm.getDoctorsPatients(docID);
 				listCurrentPatients(currentPatients2);
 				System.out.println("---------------------------");
 				System.out.println("CURRENT APPOINTMENTS");
-				am.readAppointments(docID);
+				am.readAppointments(docID,pm,dm);
 				Integer patId = DataObtention.readInt("Choose a patients ID for the new appointment");
 				Patient patient = pm.getPatient(patId);
 				PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();
@@ -222,10 +231,12 @@ public class DoctorMenu {
 				List<Patient>currentPatients3 = dm.getDoctorsPatients(docID);
 				listCurrentPatients(currentPatients3);
 				System.out.println("CURRENT APPOINTMENTS");
-				am.readAppointments(docID);
+				am.readAppointments(docID,pm,dm);
 				Integer idAp =DataObtention.readInt("Select the ID of the appointment you want to modify");
 				Appointment appointmentToModify = am.getAppointment(idAp);
 				Appointment modifiedAppointment = modifyAppointment(appointmentToModify);
+				//TODO 
+				/*
 				LinkedList<ArrayList<Appointment>> appointmentsToCheck = am.checkCurrentAppointments(docID, appointmentToModify.getPat().getId());
 				boolean taken = checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
 				while(taken=true){
@@ -233,13 +244,14 @@ public class DoctorMenu {
 				appointmentsToCheck = am.checkCurrentAppointments(docID, appointmentToModify.getPat().getId());
 				taken = checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
 				}
+				*/
 				am.modifyAppointment(modifiedAppointment);
 				break;
 			case 4:
 				List<Patient>currentPatients4 = dm.getDoctorsPatients(docID);
 				listCurrentPatients(currentPatients4);
 				System.out.println("CURRENT APPOINTMENTS");
-				am.readAppointments(docID);
+				am.readAppointments(docID,pm,dm);
 				Integer apID = DataObtention.readInt("Select the ID of the appointment you want to delete");
 				Appointment appointmentToDelete = am.getAppointment(apID);
 				System.out.println("Are you sure you want to delete this appointment?-->Y/N");
@@ -298,11 +310,11 @@ public class DoctorMenu {
 
 	private static Appointment introduceDateAndTime() throws Exception{
 		System.out.println("Introduce a date: yyyy-mm-dd");
-		String dateString = DataObtention.readLine();
+		String dateString = reader.readLine();
 		Date appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
-		System.out.println("Introduce the time: HH:mm");
-		String timeString =DataObtention.readLine();
-		Time appointmentTime = java.sql.Time.valueOf(timeString);
+		System.out.println("Introduce the time: hh:mm:ss");
+		String timeString =reader.readLine();
+		Time appointmentTime = Time.valueOf(timeString);
 		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
 		return appointment;
 		}
@@ -348,13 +360,13 @@ public class DoctorMenu {
 		}else{
 			date = Date.valueOf(LocalDate.parse(newDate, formatter));
 		}
-		System.out.println("Introduce new time [HH:mm] or press enter");
+		System.out.println("Introduce new time [HH:mm:ss] or press enter");
 		String newTime = DataObtention.readLine();
 		Time time;
 		if(newTime.equals("")){
 			time = appointmentToModify.getTime();
 		}else{
-			time = Time.valueOf(LocalTime.parse(newTime, timeFormatter));
+			time = Time.valueOf(newTime);
 		}
 		modifiedAppointment = new Appointment(appointmentToModify.getId(), date, time);
 		return modifiedAppointment;

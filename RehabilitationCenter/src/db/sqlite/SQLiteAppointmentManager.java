@@ -8,6 +8,8 @@ import java.sql.Time;
 import java.util.*;
 
 import db.interfaces.AppointmentManager;
+import db.interfaces.DoctorManager;
+import db.interfaces.PatientManager;
 import pojos.*;
 
 
@@ -60,6 +62,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
+	//TODO no funciona el delete
 	public void deleteAppointment(Appointment appointment) {
 		try{
 
@@ -76,7 +79,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void readAppointments(Integer docId) {
+	public void readAppointments(Integer docId,PatientManager pm,DoctorManager dm) {
 		try{
 
 			String sql = "SELECT * FROM appointment WHERE DOCID=?";
@@ -89,9 +92,15 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 				Date apDate = rs.getDate(2);
 				Time apTime = rs.getTime(3);
 				int patID = rs.getInt(4);
-				/*int docID = rs.getInt(5);
-				int ptID = rs.getInt(6);*/
-				Appointment appointmentToRead = new Appointment(apID, apDate, apTime);
+				int docID = rs.getInt(5);
+				int ptID = rs.getInt(6);
+				Patient p = new Patient();
+				p = pm.getPatient(patID);
+				PhysicalTherapist pt = new PhysicalTherapist();
+				pt = p.getPhysicalTerapist();
+				Doctor d = new Doctor();
+				d = dm.getDoctor(docId);
+				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
 				System.out.println(appointmentToRead.toString()+"PatientsId: "+patID);
 			}
 			prepS.close();

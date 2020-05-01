@@ -108,17 +108,29 @@ public class JPAUserManager implements UserManager {
 		return role;
 	}
 	
-	public boolean isCreated (String role)
+	public boolean isCreated (String role) //TODO VERIFICAR ESTE METODO CREO QUE CON EL CATCH ESTÁ ARREGLADO
 	{
 		Query q = em.createNativeQuery("SELECT * FROM roles WHERE role = ? ",Role.class);
-		q.setParameter(1, role);
-		Role created = (Role)q.getSingleResult();
+		Role created=null;
+		try
+		{
+			q.setParameter(1, role);
+			created = (Role)q.getSingleResult();
+		}
+		catch (javax.persistence.NoResultException e)
+		{
+			e.printStackTrace();
+		}
 		if(created==null)
 		{
+			System.out.println("false");
+
 			return false;
 		}
 		else
 		{
+			System.out.println("true");
+
 			return true;
 		}
 	}

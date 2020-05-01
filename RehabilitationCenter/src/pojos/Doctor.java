@@ -6,6 +6,14 @@ import java.util.List;
 
 public class Doctor implements Serializable{
 
+	public Doctor(Integer id, String name, Integer phoneNumber, String eMail, String speciality) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.speciality = speciality;
+	}
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;

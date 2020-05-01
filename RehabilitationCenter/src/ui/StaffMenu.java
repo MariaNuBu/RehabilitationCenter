@@ -24,19 +24,24 @@ public class StaffMenu
 	
 	public void staffMenu(DoctorManager dm,PhysicalTherapistManager ptm,PatientManager pm,UserManager um) throws IOException
 	{
-		Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist");
-		switch (role)
+		while(true)
 		{
-			case 1:
-				registerPatient(pm,ptm,um);
-				break;
-			case 2:				
-				registerDoctor(dm,um);
-				break;
-			case 3:
-				registerPhysicalTherapist(ptm,um);
-				break;
-		}
+			Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Back");
+			switch (role)
+			{
+				case 1:
+					registerPatient(pm,ptm,um);
+					break;
+				case 2:				
+					registerDoctor(dm,um);
+					break;
+				case 3:
+					registerPhysicalTherapist(ptm,um);
+					break;
+				case 4:
+					//TODO VER COMO VOLVER AL MENU PRNCIPAL MainTest.main();
+			}
+		}	
 		
 	}
 	
@@ -167,6 +172,7 @@ public class StaffMenu
 		doctor = new User(userName,hash,doctorRole);
 		System.out.println("Register completed succesfully!");
 		
+		
 	}
 	public void registerPhysicalTherapist(PhysicalTherapistManager ptm,UserManager um) throws IOException
 	{
@@ -187,6 +193,7 @@ public class StaffMenu
 		ptm.addPhysicalTherapist(pt);
 		//Now we need to create a new user for that physical therapist and check if the role pysical therapist has been created and if its not, create it
 		Role physicalTherapistRole=null;
+		//TODO ESTO DA ERROR
 		if(um.isCreated("Physical Therapist")==false)
 		{
 			physicalTherapistRole = new Role("Physical Therapist");
