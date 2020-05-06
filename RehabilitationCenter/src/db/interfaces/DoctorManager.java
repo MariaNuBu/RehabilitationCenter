@@ -12,7 +12,7 @@ public interface DoctorManager {
 	public void createTreatment (Treatment t,Integer patientID,Integer DOCID,PatientManager pm);
 	public Treatment getTreatment( Integer treatID);
 	public void modifyTreatment (Treatment t);
-	public void  deleteTreatment(Treatment t,Integer patID,PatientManager pm);
+	public void deleteTreatment(Treatment t,Integer patID); 
 	public List<Treatment> listTreatments (Integer IDPat);
 	public Treatment readTreatment (Treatment t);
 	public ArrayList <Patient> SearchByName(String name,Integer docID);

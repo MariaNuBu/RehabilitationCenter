@@ -211,8 +211,8 @@ public class SQLiteDoctorManager implements DoctorManager {
 
 
 	@Override
-	public void deleteTreatment(Treatment t,Integer patID) { //TODO preguntar si se borra de todas
-		
+	public void deleteTreatment(Treatment t,Integer patID) 
+	{	
 		try {
 			String sql2 = "DELETE FROM PatientTreatment WHERE PATID=? AND TREATID=?";
 			PreparedStatement ps2= c.prepareStatement(sql2);			
