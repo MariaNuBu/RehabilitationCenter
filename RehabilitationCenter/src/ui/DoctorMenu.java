@@ -324,7 +324,7 @@ public class DoctorMenu {
 		System.out.println("-------------------------------------------------------");
 		int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to delete :");
 		Treatment treatmentToDelete= dm.getTreatment(treatID);
-		dm.deleteTreatment(treatmentToDelete,patID,pm);
+		dm.deleteTreatment(treatmentToDelete,patID);
 	}
 	private static void ReadTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
 		System.out.println("-------------------------------------------------------");
