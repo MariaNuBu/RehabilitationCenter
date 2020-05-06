@@ -82,21 +82,11 @@ public class PhysicalTherapist implements Serializable {
 	public PhysicalTherapist() {
 		super();
 	}
-	/*
+	
 	@Override
 	public String toString()
 	{
-		String s= "ID: "+this.id+"\nName: "+this.name+"\nAddress: "+this.address+
-				//"\nDOB: "+this.dob+
-				"\nEmail: "+this.eMail+
-				"\nTypeSport: "+this.typeSport+"\nSalary: "+this.salary+"\nPhone: "+this.phoneNumber;
-		return s;
-	}
-	*/
-	@Override
-	public String toString()
-	{
-		String s= "ID: "+this.id+"\nName: "+this.name+"\nTypeSport: "+this.typeSport;
+		String s= "ID: "+this.id+", Name: "+this.name+", TypeSport: "+this.typeSport;
 		return s;
 	}
 

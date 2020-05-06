@@ -26,7 +26,7 @@ public class StaffMenu
 	{
 		while(true)
 		{
-			Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Back");
+			Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Exit");
 			switch (role)
 			{
 				case 1:
@@ -39,7 +39,8 @@ public class StaffMenu
 					registerPhysicalTherapist(ptm,um);
 					break;
 				case 4:
-					//TODO VER COMO VOLVER AL MENU PRNCIPAL MainTest.main();
+					//You don't go back doesn't make sense
+					break;
 			}
 		}	
 		
@@ -51,12 +52,12 @@ public class StaffMenu
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
-		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
+		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));
 		System.out.println("Address: ");
 		String address= DataObtention.readLine();
 		System.out.println("Email: ");
 		String email= DataObtention.readLine();
-		Integer phone= DataObtention.readInt("Phone number: ");;
+		Integer phone= DataObtention.readInt("Phone number: ");
 		System.out.println("Type of sport: ");
 		String sport= DataObtention.readLine();
 		System.out.println("Disabilities: ");
@@ -64,15 +65,15 @@ public class StaffMenu
 		System.out.println("Diseases: ");
 		String diseases= DataObtention.readLine();
 		System.out.println("Allergies: ");
-		String allergies= DataObtention.readLine();;
+		String allergies= DataObtention.readLine();
 		System.out.println("Surgeries: ");
-		String surgeries= DataObtention.readLine();;
+		String surgeries= DataObtention.readLine();
 		Float weightKG=DataObtention.readFloat("Weight(kg): ");
 		Integer height=DataObtention.readInt("Height(cm): ");
 		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);
 		if (pts.isEmpty())
 		{
-			System.out.println("No physical therpist specialized in"+sport);
+			System.out.println("No physical therpist specialized in "+sport);
 			System.out.println("Choose one of those: ");
 			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
 			for (PhysicalTherapist physicalTherapist : pysicals)
@@ -122,6 +123,7 @@ public class StaffMenu
 		md.update(pass.getBytes());
 		byte [] hash = md.digest();
 		patient = new User(userName,hash,patientRole);
+		um.createUser(patient);
 		System.out.println("Register completed succesfully!");
 		
 	}
@@ -130,7 +132,7 @@ public class StaffMenu
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
-		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
+		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));
 		System.out.println("Address: ");
 		String address=DataObtention.readLine();
 		System.out.println("Email: ");
@@ -170,6 +172,7 @@ public class StaffMenu
 		md.update(pass.getBytes());
 		byte [] hash = md.digest();
 		doctor = new User(userName,hash,doctorRole);
+		um.createUser(doctor);
 		System.out.println("Register completed succesfully!");
 		
 		
@@ -180,7 +183,7 @@ public class StaffMenu
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
-		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));;
+		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));
 		System.out.println("Address: ");
 		String address=DataObtention.readLine();
 		System.out.println("Email: ");
@@ -206,7 +209,9 @@ public class StaffMenu
 			physicalTherapistRole = um.getRoleByName("Physical Therapist");
 		}
 		User physicalTherpist = new User();		
+		System.out.println(email);
 		String userName = email;
+		
 		System.out.println("Choose the password for that user: ");
 		String pass = DataObtention.readLine();
 		MessageDigest md=null;
@@ -221,6 +226,7 @@ public class StaffMenu
 		md.update(pass.getBytes());
 		byte [] hash = md.digest();
 		physicalTherpist = new User(userName,hash,physicalTherapistRole);
+		um.createUser(physicalTherpist);
 		System.out.println("Register completed succesfully!");		
 	}
 	

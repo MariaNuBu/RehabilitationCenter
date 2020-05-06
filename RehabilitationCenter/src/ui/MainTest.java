@@ -78,12 +78,12 @@ public class MainTest
 		MedicalHistory getmh=pm.getMedicalHistory(get);
 		System.out.println("MH "+getmh);
 		*/
-		/*
+		
 		userManager = new JPAUserManager();
 		userManager.connect();
-		*/
 		
 		
+		/*
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
 		
 		System.out.println("Who are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
@@ -118,8 +118,8 @@ public class MainTest
 			}
 			break;
 		}
+		*/
 		
-		/*
 		int option=DataObtention.readInt("What do you wanna do?\n1.-Register\n2.-Log in\n0.-Exit");
 		switch(option)
 		{
@@ -167,11 +167,11 @@ public class MainTest
 			case 0 :
 				System.out.println("You have succesfully exit the program. Goodbye!");
 		}
-		*/
+		
 	}
 	
 	//TODO poner luego el username
-	private static void patientsOrAppointments() throws Exception {
+	private static void patientsOrAppointments(String username) throws Exception {
 		while(true){
 		
 		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.Check patients\n "+"2.Check appointments\n ");
@@ -180,7 +180,7 @@ public class MainTest
 			DoctorMenu doctorMenu= new DoctorMenu();
 			try {
 				//TODO poner el username
-				doctorMenu.doctorMenu(dm,pm,2);
+				doctorMenu.doctorMenu(dm,pm,username);
 				
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -190,7 +190,7 @@ public class MainTest
 			DoctorMenu doctorMenuApp = new DoctorMenu();
 			try{
 				//TODO poner el username
-				doctorMenuApp.doctorAppointmentMenu(dm, am, pm,2);
+				doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -201,7 +201,7 @@ public class MainTest
 		
 	}
 	//TODO poner el user name String userName
-	private static void choose() throws Exception 
+	private static void choose(String username) throws Exception 
 	{
 		while(true)
 		{
@@ -213,7 +213,7 @@ public class MainTest
 					try
 					{
 						//TODO poner el username
-						physicalMenu.readTreatment(1,ptm,pm);					
+						physicalMenu.readTreatment(username,ptm,pm);					
 					}
 					catch(Exception e) {
 						e.printStackTrace();
@@ -223,8 +223,7 @@ public class MainTest
 					try
 					{	
 						//TODO poner el username
-
-						physicalMenu.checkAppointments(1,ptm);						
+						physicalMenu.checkAppointments(username,ptm);						
 					}
 					catch(Exception e)
 					{

@@ -30,14 +30,11 @@ public class DoctorMenu {
 	private static PatientManager pm;
 
 	//TODO PONER EL USER NAME
-	public  void doctorMenu(DoctorManager dm,PatientManager pm,Integer doctprID) throws Exception 
+	public  void doctorMenu(DoctorManager dm,PatientManager pm,String username) throws Exception 
 	{	
 		String name = DataObtention.readName("Please introduce the name of the patient you want to work with");//reader.readLine();
-		/*
-		Integer docID=dm.searchDoctorByEmail(userName);
-		*/
 		
-		Integer docID=doctprID;
+		Integer docID=dm.searchDoctorByEmail(username);
 		ArrayList<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
 			System.out.println(patient);
@@ -54,7 +51,7 @@ public class DoctorMenu {
 
 
 	//TODO poner el username
-	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,Integer doc) throws Exception{
+	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,String username) throws Exception{
 		//Yo aqui quitaria esto y pondria el metodo de buscar el doctor por el email y coger su id
 		//int docID = dm.searchDoctorByEmail(userName);
 		String doctorName =DataObtention.readName("Introduce your name");

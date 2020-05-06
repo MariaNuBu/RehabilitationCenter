@@ -85,7 +85,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 			{
 				Integer id = rs.getInt("iD");
 				String name = rs.getString("name");
-				Date DOB = rs.getDate("dOB");
+				Date DOB = rs.getDate("DOB");
 				String desease = rs.getString("diseases");
 				String allergies = rs.getString("allergies");
 				String surgeries = rs.getString("surgeries");
@@ -212,21 +212,13 @@ public class SQLiteDoctorManager implements DoctorManager {
 
 	@Override
 	public void deleteTreatment(Treatment t,Integer patID) { //TODO preguntar si se borra de todas
+		
 		try {
-			String sql = "DELETE * FROM treatment WHERE ID=?";
-			PreparedStatement ps= c.prepareStatement(sql);
-			ps.setInt(1, t.getId());
-			ps.executeQuery(sql);
-			ps.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		try {
-			String sql2 = "DELETE * FROM PatientTreatment WHERE TREATID=? AND PATID=?";
-			PreparedStatement ps2= c.prepareStatement(sql2);
-			ps2.setInt(1, t.getId());
-			ps2.setInt(2, patID);
-			ps2.executeQuery(sql2);
+			String sql2 = "DELETE FROM PatientTreatment WHERE PATID=? AND TREATID=?";
+			PreparedStatement ps2= c.prepareStatement(sql2);			
+			ps2.setInt(1, patID);
+			ps2.setInt(2, t.getId());
+			ps2.executeUpdate();
 			ps2.close();
 		}catch(SQLException e){
 			e.printStackTrace();

@@ -20,10 +20,10 @@ public class PhysicalMenu
 	private static PhysicalTherapistManager ptm;
 	
 	//TODO PONER EL USERNAME
-	public void readTreatment(Integer cambiar, PhysicalTherapistManager ptm, PatientManager pm) throws IOException
+	public void readTreatment(String username, PhysicalTherapistManager ptm, PatientManager pm) throws IOException
 	{
-		//Integer ptID = ptm.searchPTByEmail(userName);
-		Integer ptID=cambiar;
+		Integer ptID = ptm.searchPTByEmail(username);
+		
 		System.out.println("These are your patients");
 		ArrayList<Patient> patients = new ArrayList<Patient>();
 		patients=ptm.getAllPatients(ptID);
@@ -56,7 +56,7 @@ public class PhysicalMenu
 		
 	}
 	//TODO cambiar el user
-	public void checkAppointments(Integer cambiar, PhysicalTherapistManager ptm) throws IOException
+	public void checkAppointments(String username, PhysicalTherapistManager ptm) throws IOException
 	{
 		
 	}

@@ -9,6 +9,7 @@ public interface UserManager
 {
 	public void connect();
 	public void disconnect();
+	public void createStaff();
 	public void createUser(User user);
 	public void createRole(Role role);
 	public Role getRole(int id);
@@ -17,4 +18,5 @@ public interface UserManager
 	public User checkPasswordStaff(String username, String password);
 	public boolean isCreated (String role);
 	public Role getRoleByName(String roleName);
+	public boolean userCreated (String userName);
 }

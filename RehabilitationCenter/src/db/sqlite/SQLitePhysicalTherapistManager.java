@@ -125,12 +125,10 @@ private Connection c;
 	
 	public ArrayList<PhysicalTherapist> showPhysicalTherapists(String sport) 
 	{
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		ArrayList<PhysicalTherapist> physicalTherapists=new ArrayList<PhysicalTherapist>();
 		PhysicalTherapist pt=null;
 		try
 		{
-			//TODO conseguir que saque bien la fecha porque se introduce pero no la lee al salir
 			String sql="SELECT ID,Name,sportType FROM physicalTherapist WHERE SportType=?";
 			PreparedStatement ps=c.prepareStatement(sql);
 			ps.setString(1, sport);
@@ -139,14 +137,7 @@ private Connection c;
 			{
 				Integer id=rs.getInt(1);
 				String name=rs.getString(2);
-				//String address=rs.getString(3);
-				//Date dob=rs.getDate(4);
-				//Integer phone=rs.getInt(5);
-				//String email=rs.getString(6);
 				String sportType=rs.getString(3);
-				//Double salary=rs.getDouble(8);
-				//pt=new PhysicalTherapist(id,name,address,dob,phone,email,sportType,salary);
-				//pt=new PhysicalTherapist(id,name,address,phone,email,sportType,salary);
 				pt=new PhysicalTherapist(id,name,sportType);
 				physicalTherapists.add(pt);
 			}
@@ -161,12 +152,10 @@ private Connection c;
 	
 	public ArrayList<PhysicalTherapist> showAllPhysicalTherapists() 
 	{
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		ArrayList<PhysicalTherapist> physicalTherapists=new ArrayList<PhysicalTherapist>();
 		PhysicalTherapist pt=null;
 		try
 		{
-			//TODO conseguir que saque bien la fecha porque se introduce pero no la lee al salir
 			String sql="SELECT ID,Name,sportType FROM physicalTherapist";
 			PreparedStatement ps=c.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -174,14 +163,7 @@ private Connection c;
 			{
 				Integer id=rs.getInt(1);
 				String name=rs.getString(2);
-				//String address=rs.getString(3);
-				//Date dob=rs.getDate(4);
-				//Integer phone=rs.getInt(5);
-				//String email=rs.getString(6);
 				String sportType=rs.getString(3);
-				//Double salary=rs.getDouble(8);
-				//pt=new PhysicalTherapist(id,name,address,dob,phone,email,sportType,salary);
-				//pt=new PhysicalTherapist(id,name,address,phone,email,sportType,salary);
 				pt=new PhysicalTherapist(id,name,sportType);
 				physicalTherapists.add(pt);
 			}
@@ -207,9 +189,7 @@ private Connection c;
 				int ID=rs.getInt(1);
 				String name=rs.getString(2);
 				String address=rs.getString(3);
-				String dob=rs.getString(4);
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				Date DOB = Date.valueOf(LocalDate.parse(dob, formatter));
+				Date DOB=rs.getDate(4);
 				Integer phone=rs.getInt(5);
 				String email=rs.getString(6);
 				String sport=rs.getString(7);

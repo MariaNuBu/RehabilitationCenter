@@ -66,7 +66,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	public void deleteAppointment(Appointment appointment) {
 		try{
 
-			String sql = "DELETE * FROM appointment WHERE ID=?";
+			String sql = "DELETE FROM appointment WHERE ID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, appointment.getId());
 			prepS.executeUpdate();
