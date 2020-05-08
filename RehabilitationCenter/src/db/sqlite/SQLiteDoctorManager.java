@@ -428,6 +428,52 @@ public class SQLiteDoctorManager implements DoctorManager {
 		}
 		return doc;
 	}
+	
+	@Override
+	public List <Doctor> listDoctors()
+	{
+		ArrayList <Doctor> doctors = null;
+		try
+		{
+			String sql = "SELECT * FROM doctor";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				Integer docID = rs.getInt("ID");
+				Date DOB = rs.getDate("DOB");				
+				String name = rs.getString("Name");
+				String address = rs.getString("Address");
+				Integer phone = rs.getInt("Phone");
+				String email = rs.getString("Email");
+				String specialty = rs.getString("Specialty");
+				Double salary = rs.getDouble("Salary");
+				Doctor doctor = new Doctor(docID, name,address, DOB, phone, email, specialty,salary);
+				doctors.add(doctor);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return doctors;
+	}
+	
+	public void deleteDoctor(Integer ID)
+	{
+		try
+		{
+			String sql = "DELETE FROM doctor WHERE ID = ?";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,ID);
+			ps.executeUpdate();
+			ps.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 
 

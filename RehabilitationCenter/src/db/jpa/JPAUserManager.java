@@ -104,6 +104,14 @@ public class JPAUserManager implements UserManager {
 		Role role=(Role) q.getSingleResult();
 		return role;
 	}
+	
+	public Integer getUser(String username)
+	{
+		Query q = em.createNativeQuery("SELECT * FROM users WHERE username=?",User.class);
+		q.setParameter(1,username);
+		User user = (User) q.getSingleResult();
+		return user.getId();
+	}
 	@Override
 	public Role getRoleByName(String roleName)
 	{
@@ -195,5 +203,36 @@ public class JPAUserManager implements UserManager {
 			e.printStackTrace();
 		}
 		return user;
+	}
+	
+	public void changePassword(String username,String password)
+	{
+		try
+		{
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			md.update(password.getBytes());
+			byte [] hash=md.digest();
+			Query q = em.createNativeQuery("SELECT * FROM users WHERE username=?",User.class);
+			q.setParameter(1, username);
+			User user = (User) q.getSingleResult();
+			em.getTransaction().begin();
+			user.setPassword(hash);
+			em.getTransaction().commit();
+			em.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	public void fireWorkers (Integer ID)
+	{
+		Query q = em.createNativeQuery("SELECT * FROM users WHERE ID=?",User.class);
+		q.setParameter(1, ID);
+		User workerFired =(User) q.getSingleResult();
+		em.getTransaction().begin();
+		em.remove(workerFired);
+		em.getTransaction().commit();
+		em.close();
 	}
 }

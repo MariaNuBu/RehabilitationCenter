@@ -90,6 +90,13 @@ public class Doctor implements Serializable{
 
 
 
+	@Override
+	public String toString() 
+	{
+		return "Doctor [id=" + id + ", name=" + name + ", dob=" + dob + ", address=" + address + ", phoneNumber="
+				+ phoneNumber + ", eMail=" + eMail + ", speciality=" + speciality + ", salary=" + salary + "]";
+	}
+
 	public Integer getId() {
 		return id;
 	}

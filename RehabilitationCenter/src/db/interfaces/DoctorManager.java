@@ -22,4 +22,6 @@ public interface DoctorManager {
 	public int getLastId();
 	public void createDoctor (Doctor doc);
 	public Integer searchDoctorByEmail(String email);
+	public List<Doctor> listDoctors();
+	public void deleteDoctor(Integer ID);
 }

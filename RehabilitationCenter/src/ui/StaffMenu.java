@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import db.interfaces.*;
 import pojos.Doctor;
@@ -22,26 +23,45 @@ public class StaffMenu
 	
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
-	public void staffMenu(DoctorManager dm,PhysicalTherapistManager ptm,PatientManager pm,UserManager um) throws IOException
+	public void staffMenu(DoctorManager dm,PhysicalTherapistManager ptm,PatientManager pm,AppointmentManager am,UserManager um) throws IOException
 	{
 		while(true)
 		{
-			Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Exit");
-			switch (role)
+			Integer option = DataObtention.readInt("Choose the action: \n 1.-Register\n 2.-Fire workers");
+			if(option==1)
 			{
-				case 1:
-					registerPatient(pm,ptm,um);
-					break;
-				case 2:				
-					registerDoctor(dm,um);
-					break;
-				case 3:
-					registerPhysicalTherapist(ptm,um);
-					break;
-				case 4:
-					//You don't go back doesn't make sense
-					break;
+				Integer role =DataObtention.readInt("Choose the role you want to register: \n 1.-Patient\n 2.-Doctor\n 3.-Physical Therapist\n4.-Exit");
+				switch (role)
+				{
+					case 1:
+						registerPatient(pm,ptm,um);
+						break;
+					case 2:				
+						registerDoctor(dm,um);
+						break;
+					case 3:
+						registerPhysicalTherapist(ptm,um);
+						break;
+					case 4:
+						break;
+				}
 			}
+			if (option==2)
+			{
+				Integer role =DataObtention.readInt("Choose the role of the worker you want to fire: \n 1.-Doctor\n 2.-Physical Therapist\n 3.-Exit");
+				switch (role)
+				{
+					case 1:
+						fireDoctor(dm,am,um);
+						break;
+					case 2:				
+						firePhysicalTherapist(pm,am,ptm,um);
+						break;
+					case 3:
+						break;
+				}
+			}
+			
 		}	
 		
 	}
@@ -228,6 +248,59 @@ public class StaffMenu
 		physicalTherpist = new User(userName,hash,physicalTherapistRole);
 		um.createUser(physicalTherpist);
 		System.out.println("Register completed succesfully!");		
+	}
+	
+	public void fireDoctor (DoctorManager dm, AppointmentManager am, UserManager um)
+	{
+		List<Doctor> doctors = new ArrayList<Doctor>();
+		doctors = dm.listDoctors();
+		for (Doctor doctor : doctors) 
+		{
+			System.out.println(doctor);
+		}
+		Integer ID = DataObtention.readInt("Introduce the ID of the doctor you want to fire");
+		Doctor tofire = dm.getDoctor(ID);
+		um.fireWorkers(tofire.getId());
+		//probar borrar esto y que borre todo
+		am.deleteAppointmentDoctor(ID);
+		dm.deleteDoctor(ID);
+		
+	}
+	
+	public void firePhysicalTherapist (PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,UserManager um)
+	{
+		List<PhysicalTherapist> physicalTherapists = new ArrayList<PhysicalTherapist>();
+		physicalTherapists = ptm.listPhysicalTherapists();
+		for (PhysicalTherapist physicalTherapist : physicalTherapists) 
+		{
+			System.out.println(physicalTherapist);
+		}
+		Integer ID = DataObtention.readInt("Introduce the ID of the physical therapist you want to fire");
+		PhysicalTherapist tofire = ptm.getPhysicalTherapist(ID);
+		Integer userID = um.getUser(tofire.geteMail());
+		um.fireWorkers(userID);
+		//TODO probar a borrar esta linea y borrar todas las tablas
+		am.deleteAppointmentPhysicalTherapist(ID);
+		ptm.deletePhysicalTherapist(ID);
+		//We need to reasign a physical therapist to the patients
+		ArrayList<Patient> patients = new ArrayList <Patient>();
+		patients = ptm.getAllPatients(ID);
+		for (Patient patient : patients) 
+		{
+			System.out.println(patient);
+			physicalTherapists = ptm.showPhysicalTherapists(patient.getSport());
+			if (physicalTherapists.isEmpty())
+			{
+				physicalTherapists = ptm.showAllPhysicalTherapists();
+			}
+			for (PhysicalTherapist physicalTherapist : physicalTherapists) 
+			{
+				System.out.println(physicalTherapist);
+			}
+			Integer newptID = DataObtention.readInt("Type the ID of the physical therapist you want for that patient: ");
+			pm.changePhysicalTherapist(patient,newptID);
+		}
+		
 	}
 	
 }

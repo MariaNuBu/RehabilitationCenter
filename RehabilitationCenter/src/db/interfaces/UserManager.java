@@ -19,4 +19,7 @@ public interface UserManager
 	public boolean isCreated (String role);
 	public Role getRoleByName(String roleName);
 	public boolean userCreated (String userName);
+	public void changePassword(String username,String password);
+	public void fireWorkers (Integer ID);
+	public Integer getUser(String username);
 }

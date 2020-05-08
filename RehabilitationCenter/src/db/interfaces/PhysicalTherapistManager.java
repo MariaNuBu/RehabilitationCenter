@@ -15,4 +15,6 @@ public interface PhysicalTherapistManager {
 	public ArrayList<Patient> getAllPatients(Integer ptid);
 	public void addPhysicalTherapist (PhysicalTherapist pt);
 	public Integer searchPTByEmail (String email);
+	public List <PhysicalTherapist> listPhysicalTherapists();
+	public void deletePhysicalTherapist(Integer ID);
 }

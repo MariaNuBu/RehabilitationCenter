@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.*;
 
@@ -172,6 +173,41 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		}
 		return docAndPatAppointments;
 	}
+	
+	@Override
+	public void deleteAppointmentDoctor(Integer ID)
+	{
+		try
+		{
+			String sql = "DELETE FROM appointment WHERE DOCID=?";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,ID);
+			ps.executeUpdate();
+			ps.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void deleteAppointmentPhysicalTherapist(Integer ID)
+	{
+		try
+		{
+			String sql = "DELETE FROM appointment WHERE PTID=?";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,ID);
+			ps.executeUpdate();
+			ps.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 
 
 

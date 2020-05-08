@@ -154,9 +154,9 @@ public class SQLiteManager implements DBManager {
 					+ " PATID			INTEGER NOT NULL,"
 					+ " DOCID			INTEGER NOT NULL,"
 					+ " PTID			INTEGER NOT NULL,"
-					+ " FOREIGN KEY (PATID) REFERENCES patient(ID),"
-					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID),"
-					+ "	FOREIGN KEY (PTID) REFERENCES physicalTherapist(ID)"
+					+ " FOREIGN KEY (PATID) REFERENCES patient(ID) ON DELETE CASCADE,"
+					+ " FOREIGN KEY (DOCID) REFERENCES doctor(ID) ON DELETE CASCADE,"
+					+ "	FOREIGN KEY (PTID) REFERENCES physicalTherapist(ID) ON DELETE CASCADE"
 					+ ")";
 			st5.executeUpdate(sq5);
 			st5.close();

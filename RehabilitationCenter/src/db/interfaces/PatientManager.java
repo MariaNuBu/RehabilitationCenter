@@ -13,5 +13,6 @@ public interface PatientManager {
 	public Patient getPatient(Integer id);
 	public int getLastId();
 	public MedicalHistory getMedicalHistory(Patient p);
+	public void changePhysicalTherapist(Patient patient,Integer newptID);
 	
 }

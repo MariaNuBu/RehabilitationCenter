@@ -120,7 +120,7 @@ public class MainTest
 		}
 		*/
 		
-		int option=DataObtention.readInt("What do you wanna do?\n1.-Register\n2.-Log in\n0.-Exit");
+		int option=DataObtention.readInt("What do you wanna do?\n1.-Log in staff\n2.-Log in\n0.-Exit");
 		switch(option)
 		{
 			case 1:
@@ -136,7 +136,7 @@ public class MainTest
 				else
 				{
 					StaffMenu staffMenu = new StaffMenu(); 		
-					staffMenu.staffMenu(dm,ptm,pm,userManager);
+					staffMenu.staffMenu(dm,ptm,pm,am,userManager);
 				}
 				break;
 			case 2:
@@ -154,7 +154,7 @@ public class MainTest
 				}
 				else if (user.getRole().getRole().equalsIgnoreCase("patient")) 
 				{
-					//TODO poner el menu del paciente
+					patientChoose(userName);
 				}
 				else if (user.getRole().getRole().equalsIgnoreCase("physical therapist"))
 				{
@@ -170,33 +170,60 @@ public class MainTest
 		
 	}
 	
-	//TODO poner luego el username
+	private static void patientChoose(String username)
+	{
+		while (true)
+		{
+			int option = DataObtention.readInt("Welcome patient, choose an option\n 1.-Add appointment\n 2.-Change password\n 3.-Exit");
+			switch(option)
+			{
+				case 1:
+					break;
+				case 2:
+					changePassword(username);
+					break;
+				case 3:
+					break;
+			}
+		}
+	}
+	
+	
 	private static void patientsOrAppointments(String username) throws Exception {
 		while(true){
 		
-		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.Check patients\n "+"2.Check appointments\n ");
-		switch(option){
-		case 1:
-			DoctorMenu doctorMenu= new DoctorMenu();
-			try {
-				//TODO poner el username
-				doctorMenu.doctorMenu(dm,pm,username);
-				
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case 2:
-			DoctorMenu doctorMenuApp = new DoctorMenu();
-			try{
-				//TODO poner el username
-				doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username);
-				
-			}catch(Exception e){
-				e.printStackTrace();
+		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.-Check patients\n "+"2.-Check appointments\n 3.-Change password\n 4.-Exit ");
+		switch(option)
+		{
+			case 1:
+				DoctorMenu doctorMenu= new DoctorMenu();
+				try {
+					//TODO poner el username
+					doctorMenu.doctorMenu(dm,pm,username);
+					
+				}catch(Exception e) {
+					e.printStackTrace();
 				}
-			}
-			break;
+				break;
+			case 2:
+				DoctorMenu doctorMenuApp = new DoctorMenu();
+				try{
+					//TODO poner el username
+					doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username);
+					
+				}catch(Exception e){
+					e.printStackTrace();
+					}
+				break;
+			case 3:
+				changePassword(username);
+				break;
+			case 4:
+				break;
+		}
+			
+		
+			
 		}
 		
 	}
@@ -205,7 +232,7 @@ public class MainTest
 	{
 		while(true)
 		{
-			int option =DataObtention.readInt("Welcome physical therapist, choose an option\n "+"1.Check patients\n "+"2.Check appointments\n ");
+			int option =DataObtention.readInt("Welcome physical therapist, choose an option\n 1.Check patients\n 2.Check appointments\n 3.-Change password\n 4.Exit");
 			PhysicalMenu physicalMenu= new PhysicalMenu();
 			switch(option)
 			{
@@ -230,11 +257,46 @@ public class MainTest
 						e.printStackTrace();
 					}
 					break;
+				case 3:
+					changePassword(username);
+					break;
+				case 4:
+					break;
 			}
 		}
 		
 	}
 	
+	private static void changePassword (String username)
+	{
+		try
+		{
+			User user = null;
+			while (user==null)
+			{
+				System.out.println("Introduce your current password");
+				String actualpass = DataObtention.readLine();
+				user = userManager.checkPassword(username, actualpass);
+				if (user == null) 
+				{
+					System.out.println("Wrong credentials, please try again!");
+				}
+			}						
+			System.out.println("Introduce your new password");
+			String newpass = DataObtention.readLine();
+			String checkpass="";
+			while(!newpass.equals(checkpass))
+			{
+				System.out.println("Introduce yout new password again");
+				checkpass=DataObtention.readLine();
+			}					
+			userManager.changePassword(username,newpass);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 	
 	

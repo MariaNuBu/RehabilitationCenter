@@ -195,7 +195,7 @@ public class SQLitePatientManager implements PatientManager {
 		}
 		return patient;		
 	}
-
+	
 	@Override
 	public MedicalHistory getMedicalHistory(Patient p)
 	{
@@ -206,8 +206,6 @@ public class SQLitePatientManager implements PatientManager {
 			PreparedStatement ps=c.prepareStatement(sql);
 			ps.setInt(1, p.getId());
 			ResultSet rs=ps.executeQuery();
-			
-
 			while(rs.next())
 			{
 				Integer id=rs.getInt(1);
@@ -227,6 +225,24 @@ public class SQLitePatientManager implements PatientManager {
 			e.printStackTrace();
 		}
 		return mh;
+	}
+	
+	@Override
+	public void changePhysicalTherapist(Patient patient,Integer newptID)
+	{
+		try
+		{
+			String sql = "UPDATE patient SET PTID=? WHERE ID=?";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, newptID);
+			ps.setInt(2, patient.getId());
+			ps.executeUpdate();
+			ps.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	

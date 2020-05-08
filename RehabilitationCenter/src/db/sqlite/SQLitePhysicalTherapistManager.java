@@ -175,6 +175,7 @@ private Connection c;
 		}
 		return physicalTherapists;
 	}
+	
 	public PhysicalTherapist getPhysicalTherapist(Integer id)
 	{
 		PhysicalTherapist pt=null;
@@ -234,7 +235,54 @@ private Connection c;
 		return patients;
 	}
 	
+	public List <PhysicalTherapist> listPhysicalTherapists()
+	{
+		List <PhysicalTherapist> physicalTherapists = new ArrayList<PhysicalTherapist>();
+		try
+		{
+			String sql = "SELECT * FROM physicalTherapist";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				Integer ID = rs.getInt("ID");
+				String name = rs.getString("Name");
+				String address = rs.getString("Address");
+				Date DOB = rs.getDate("DOB");				
+				Integer phone = rs.getInt("Phone");
+				String email = rs.getString("Email");
+				String sport = rs.getString("SportType");
+				Double salary = rs.getDouble("Salary");
+				PhysicalTherapist pt = new PhysicalTherapist(ID, name,address, DOB, phone, email, sport,salary);
+				//System.out.println(pt);
+				physicalTherapists.add(pt);
+			}
+			ps.close();
+			rs.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return physicalTherapists;
+	}
 	
+	@Override
+	public void deletePhysicalTherapist(Integer ID)
+	{
+		try
+		{
+			String sql = "DELETE FROM physicalTherapist WHERE ID = ?";
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,ID);
+			ps.executeUpdate();
+			ps.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	
 
