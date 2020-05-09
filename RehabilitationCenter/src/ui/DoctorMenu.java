@@ -191,7 +191,7 @@ public class DoctorMenu {
 
 			int option =DataObtention.readInt("Select one of this options\n "+"1.Read appointments\n "+"2.Add appointment\n "+"3.Modify appointment\n "+"4.Delete appointment\n"+"0.Return ");
 			switch(option){
-			
+
 			case 1:
 				List<Patient>currentPatients = dm.getDoctorsPatients(docID);
 				listCurrentPatients(currentPatients);
