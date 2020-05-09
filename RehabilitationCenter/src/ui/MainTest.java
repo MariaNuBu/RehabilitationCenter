@@ -19,7 +19,7 @@ import ui.PatientMenu;
 import pojos.*;
 import pojos.users.User;
 
-public class MainTest 
+public class MainTest
 {
 	private static DBManager db;
 	private static PatientManager pm;
@@ -29,10 +29,10 @@ public class MainTest
 	private static AppointmentManager am;
 
 	private static UserManager userManager;
-	
+
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
+
 	public static void main(String [] args) throws NumberFormatException, IOException,Exception
 	{
 		db= new SQLiteManager();
@@ -50,13 +50,13 @@ public class MainTest
 		*/
 		/*
 		ArrayList<PhysicalTherapist> pts=ptm.showPhisicalTherapists("Tennis");
-		for (PhysicalTherapist physicalTherapist : pts) 
+		for (PhysicalTherapist physicalTherapist : pts)
 		{
-			System.out.println(physicalTherapist);	
+			System.out.println(physicalTherapist);
 		}
 		if (pts.isEmpty())
 		{
-			
+
 		}
 		*/
 		// esto SI FUNCIONA!!!
@@ -64,7 +64,7 @@ public class MainTest
 		//ESTO TAMBIEN FUNCIONA LO BUSCA BIEN!!
 		/*
 		ArrayList<Patient> searched=pm.searchPatientName("Maria");
-		for (Patient patient : searched) 
+		for (Patient patient : searched)
 		{
 			System.out.println(patient);
 		}
@@ -78,16 +78,16 @@ public class MainTest
 		MedicalHistory getmh=pm.getMedicalHistory(get);
 		System.out.println("MH "+getmh);
 		*/
-		
+
 		userManager = new JPAUserManager();
 		userManager.connect();
-		
-		
+
+
 		/*
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
-		
+
 		System.out.println("Who are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
-		
+
 		int option = Integer.parseInt(reader.readLine());
 		switch(option)
 		{
@@ -119,7 +119,7 @@ public class MainTest
 			break;
 		}
 		*/
-		
+
 		int option=DataObtention.readInt("What do you wanna do?\n1.-Log in staff\n2.-Log in\n0.-Exit");
 		switch(option)
 		{
@@ -135,7 +135,7 @@ public class MainTest
 				}
 				else
 				{
-					StaffMenu staffMenu = new StaffMenu(); 		
+					StaffMenu staffMenu = new StaffMenu();
 					staffMenu.staffMenu(dm,ptm,pm,am,userManager);
 				}
 				break;
@@ -144,7 +144,7 @@ public class MainTest
 				System.out.println("Password: ");
 				String password = DataObtention.readLine();
 				User user = userManager.checkPassword(userName, password);
-				if (user == null) 
+				if (user == null)
 				{
 					System.out.println("Wrong credentials, please try again!");
 				}
@@ -152,7 +152,7 @@ public class MainTest
 				{
 					patientsOrAppointments(userName);
 				}
-				else if (user.getRole().getRole().equalsIgnoreCase("patient")) 
+				else if (user.getRole().getRole().equalsIgnoreCase("patient"))
 				{
 					patientChoose(userName);
 				}
@@ -160,16 +160,16 @@ public class MainTest
 				{
 					choose(userName);
 				}
-				else 
+				else
 				{
 					System.out.println("Invalid role.");
 				}
 			case 0 :
 				System.out.println("You have succesfully exit the program. Goodbye!");
 		}
-		
+
 	}
-	
+
 	private static void patientChoose(String username)
 	{
 		while (true)
@@ -187,11 +187,11 @@ public class MainTest
 			}
 		}
 	}
-	
-	
+
+
 	private static void patientsOrAppointments(String username) throws Exception {
 		while(true){
-		
+
 		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.-Check patients\n "+"2.-Check appointments\n 3.-Change password\n 4.-Exit ");
 		switch(option)
 		{
@@ -200,7 +200,7 @@ public class MainTest
 				try {
 					//TODO poner el username
 					doctorMenu.doctorMenu(dm,pm,username);
-					
+
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -210,7 +210,7 @@ public class MainTest
 				try{
 					//TODO poner el username
 					doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username);
-					
+
 				}catch(Exception e){
 					e.printStackTrace();
 					}
@@ -221,26 +221,26 @@ public class MainTest
 			case 4:
 				break;
 		}
-			
-		
-			
+
+
+
 		}
-		
+
 	}
 	//TODO poner el user name String userName
-	private static void choose(String username) throws Exception 
+	private static void choose(String username) throws Exception
 	{
 		while(true)
 		{
-			int option =DataObtention.readInt("Welcome physical therapist, choose an option\n 1.Check patients\n 2.Check appointments\n 3.-Change password\n 4.Exit");
+			int option =DataObtention.readInt("Welcome physical therapist, choose an option\n 1.Check patients\n 2.Check or add appointments\n 3.-Change password\n 4.Exit");
 			PhysicalMenu physicalMenu= new PhysicalMenu();
 			switch(option)
 			{
-				case 1:					
+				case 1:
 					try
 					{
 						//TODO poner el username
-						physicalMenu.readTreatment(username,ptm,pm);					
+						physicalMenu.readTreatment(username,ptm,pm);
 					}
 					catch(Exception e) {
 						e.printStackTrace();
@@ -248,9 +248,9 @@ public class MainTest
 					break;
 				case 2:
 					try
-					{	
+					{
 						//TODO poner el username
-						physicalMenu.checkAppointments(username,ptm);						
+						physicalMenu.checkAppointments(username,ptm,am,pm,dm);
 					}
 					catch(Exception e)
 					{
@@ -264,9 +264,9 @@ public class MainTest
 					break;
 			}
 		}
-		
+
 	}
-	
+
 	private static void changePassword (String username)
 	{
 		try
@@ -277,11 +277,11 @@ public class MainTest
 				System.out.println("Introduce your current password");
 				String actualpass = DataObtention.readLine();
 				user = userManager.checkPassword(username, actualpass);
-				if (user == null) 
+				if (user == null)
 				{
 					System.out.println("Wrong credentials, please try again!");
 				}
-			}						
+			}
 			System.out.println("Introduce your new password");
 			String newpass = DataObtention.readLine();
 			String checkpass="";
@@ -289,7 +289,7 @@ public class MainTest
 			{
 				System.out.println("Introduce yout new password again");
 				checkpass=DataObtention.readLine();
-			}					
+			}
 			userManager.changePassword(username,newpass);
 		}
 		catch(Exception e)
@@ -297,9 +297,9 @@ public class MainTest
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

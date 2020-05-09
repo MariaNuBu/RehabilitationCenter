@@ -12,7 +12,7 @@ public class Appointment implements Serializable {
 	private Patient pat;
 	private Doctor doc;
 	private PhysicalTherapist pt;
-	
+
 	public Appointment() {
 		super();
 	}
@@ -29,7 +29,7 @@ public class Appointment implements Serializable {
 		this.date = date;
 		this.time = time;
 	}
-	
+
 	public Appointment(Integer id, Date date, Time time, Patient pat, Doctor doc, PhysicalTherapist pt){
 		super();
 		this.id = id;
@@ -108,11 +108,10 @@ public class Appointment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Appointment [id=" + id + ", date=" + date + ", time=" + time + ", pat=" + pat + ", doc=" + doc + ", pt="
-				+ pt + "]";
+		return "Appointment [ID=" + id + ", Date=" + date + ", Time=" + time + "]";
 	}
 
-	
+
 
 
 

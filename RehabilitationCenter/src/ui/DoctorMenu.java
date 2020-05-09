@@ -18,10 +18,10 @@ import pojos.*;
 
 
 public class DoctorMenu {
-	
+
 	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
 
-	
+
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss");
 	private static DBManager db;
@@ -30,10 +30,10 @@ public class DoctorMenu {
 	private static PatientManager pm;
 
 	//TODO PONER EL USER NAME
-	public  void doctorMenu(DoctorManager dm,PatientManager pm,String username) throws Exception 
-	{	
+	public  void doctorMenu(DoctorManager dm,PatientManager pm,String username) throws Exception
+	{
 		String name = DataObtention.readName("Please introduce the name of the patient you want to work with");//reader.readLine();
-		
+
 		Integer docID=dm.searchDoctorByEmail(username);
 		ArrayList<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
@@ -43,27 +43,15 @@ public class DoctorMenu {
 		{
 			System.out.println("There are no patients whith this name");
 		}
-		
-		int ptId= DataObtention.readInt("Please introduce the id of the patient you want to work with ");
-		doctorSubMenu(ptId,docID,pm,dm);
+
+		int patId= DataObtention.readInt("Please introduce the id of the patient you want to work with ");
+		doctorSubMenu(patId,docID,pm,dm);
 	}
 
-
-
-	//TODO poner el username
-	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,String username) throws Exception{
-		//Yo aqui quitaria esto y pondria el metodo de buscar el doctor por el email y coger su id
-		//int docID = dm.searchDoctorByEmail(userName);
-		String doctorName =DataObtention.readName("Introduce your name");
-		List<Doctor> docs = dm.searchDoctorByName(doctorName);
-		for(int i=0; i<docs.size();i++){
-			System.out.println(docs.get(i).getId());
-			System.out.println(docs.get(i).getName());
-			System.out.println(docs.get(i).geteMail());
-		}
-		int docID = DataObtention.readInt("Write to confirm your ID");
+	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,String userName) throws Exception{
+		int docID = dm.searchDoctorByEmail(userName);
 		doctorAppointmentSubMenu(docID, dm, am, pm);
-	} //esto es temporal, con el JPA fuera
+	}
 
 	private static void doctorSubMenu(Integer patID,Integer docID,PatientManager pm,DoctorManager dm)throws Exception{
 		while (true) {
@@ -200,11 +188,10 @@ public class DoctorMenu {
 
 	private static void doctorAppointmentSubMenu(Integer docID, DoctorManager dm, AppointmentManager am, PatientManager pm) throws Exception {
 		while(true){
-		
+
 			int option =DataObtention.readInt("Select one of this options\n "+"1.Read appointments\n "+"2.Add appointment\n "+"3.Modify appointment\n "+"4.Delete appointment\n"+"0.Return ");
 			switch(option){
-			//NOTA GENERAL: al hacer algo con appointment el medico solo puede trabajar con sus pacientes actuales
-			//el paciente será el que añada al medico
+			
 			case 1:
 				List<Patient>currentPatients = dm.getDoctorsPatients(docID);
 				listCurrentPatients(currentPatients);
@@ -232,7 +219,7 @@ public class DoctorMenu {
 				Integer idAp =DataObtention.readInt("Select the ID of the appointment you want to modify");
 				Appointment appointmentToModify = am.getAppointment(idAp);
 				Appointment modifiedAppointment = modifyAppointment(appointmentToModify);
-				//TODO 
+				//TODO
 				/*
 				LinkedList<ArrayList<Appointment>> appointmentsToCheck = am.checkCurrentAppointments(docID, appointmentToModify.getPat().getId());
 				boolean taken = checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
