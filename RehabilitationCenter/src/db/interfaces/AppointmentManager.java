@@ -17,7 +17,8 @@ public interface AppointmentManager {
 	public void deleteAppointmentDoctor(Integer ID);
 	public void deleteAppointmentPhysicalTherapist(Integer ID);
 	public void readPTAppointments(Integer ptID, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm);
-	public void readPatientsAppointments(Integer patID,PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm);
-	public List<Appointment>getPhysicalTherapistAppointments(Integer ptID);
-	public List<Appointment>getDoctorsAppointments(Integer docID);
+	public List<Appointment> readPatientsAppointments(Integer patID,PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm);
+	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm);
+	public List<Appointment> getDoctorsAppointments(Integer docID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm);
+
 }

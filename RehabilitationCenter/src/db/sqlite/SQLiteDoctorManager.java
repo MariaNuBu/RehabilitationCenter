@@ -432,7 +432,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 	@Override
 	public List <Doctor> listDoctors()
 	{
-		ArrayList <Doctor> doctors = null;
+		List <Doctor> doctors = new ArrayList <Doctor>();
 		try
 		{
 			String sql = "SELECT * FROM doctor";

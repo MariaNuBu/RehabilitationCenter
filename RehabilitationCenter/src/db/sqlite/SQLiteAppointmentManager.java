@@ -245,70 +245,113 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 
 
 	@Override
-	public void readPatientsAppointments(Integer patId, PatientManager pm, PhysicalTherapistManager ptm,
-			DoctorManager dm) {
-		try{
-
+	public List<Appointment> readPatientsAppointments(Integer patId, PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm)
+	{
+		List <Appointment> appointments = new ArrayList<Appointment>();
+		try
+		{
 			String sql = "SELECT * FROM appointment WHERE PATID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, patId);
 			ResultSet rs = prepS.executeQuery();
-
-			while(rs.next()){
+			while(rs.next())
+			{
 				int apID = rs.getInt(1);
 				Date apDate = rs.getDate(2);
 				Time apTime = rs.getTime(3);
 				int patID = rs.getInt(4);
 				int docID = rs.getInt(5);
-				int ptID = rs.getInt(6);
-				Patient p = new Patient();
+				int ptID = rs.getInt(6);Patient p = new Patient();
 				p = pm.getPatient(patId);
 				PhysicalTherapist pt = new PhysicalTherapist();
 				pt = p.getPhysicalTerapist();
 				Doctor d = new Doctor();
-				d = dm.getDoctor(docID);
+				d = dm.getDoctor(docID);				
 				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
-				System.out.println(appointmentToRead+"  DOCTOR-->" + d);
-
+				appointments.add(appointmentToRead);
 			}
 			prepS.close();
-
-		}catch(SQLException e){
+			rs.close();
+		}
+		catch(SQLException e)
+		{
 			e.printStackTrace();
 		}
-
-
+		return appointments;
 	}
 
 
 	@Override
-	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID) {
-		List<Appointment>ptAppointments = new ArrayList<>();
-		try{
-
+	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm) {
+		List <Appointment> appointments = new ArrayList<Appointment>();
+		try
+		{
 			String sql = "SELECT * FROM appointment WHERE PTID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, ptID);
 			ResultSet rs = prepS.executeQuery();
-
-			while(rs.next()){
+			while(rs.next())
+			{
+				int apID = rs.getInt(1);
 				Date apDate = rs.getDate(2);
 				Time apTime = rs.getTime(3);
-				Appointment appointment = new Appointment(apDate, apTime);
-				ptAppointments.add(appointment);
+				int patID = rs.getInt(4);
+				int docID = rs.getInt(5);
+				int ptid = rs.getInt(6);
+				Patient p = new Patient();
+				p = pm.getPatient(patID);
+				PhysicalTherapist pt = new PhysicalTherapist();
+				pt = p.getPhysicalTerapist();
+				Doctor d = new Doctor();
+				d = dm.getDoctor(docID);				
+				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
+				appointments.add(appointmentToRead);
 			}
-
-		}catch(SQLException e){
+			prepS.close();
+			rs.close();
+		}
+		catch(SQLException e)
+		{
 			e.printStackTrace();
 		}
-		return ptAppointments;
+		return appointments;
 	}
 
 
 	@Override
-	public List<Appointment> getDoctorsAppointments(Integer docID) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Appointment> getDoctorsAppointments(Integer docID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm) {
+		List <Appointment> appointments = new ArrayList<Appointment>();
+		try
+		{
+			String sql = "SELECT * FROM appointment WHERE DOCID=?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, docID);
+			ResultSet rs = prepS.executeQuery();
+			while(rs.next())
+			{
+				int apID = rs.getInt(1);
+				Date apDate = rs.getDate(2);
+				Time apTime = rs.getTime(3);
+				int patID = rs.getInt(4);
+				int docid = rs.getInt(5);
+				int ptID = rs.getInt(6);
+				Patient p = new Patient();
+				p = pm.getPatient(patID);
+				PhysicalTherapist pt = new PhysicalTherapist();
+				pt = p.getPhysicalTerapist();
+				Doctor d = new Doctor();
+				d = dm.getDoctor(docID);				
+				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
+				appointments.add(appointmentToRead);
+			}
+			prepS.close();
+			rs.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return appointments;	
 	}
 
 

@@ -302,6 +302,7 @@ public class SQLitePatientManager implements PatientManager {
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, pat.getId());
 			prepS.setInt(2, doc.getId());
+			prepS.executeUpdate();
 			prepS.close();
 
 		}catch(SQLException e){

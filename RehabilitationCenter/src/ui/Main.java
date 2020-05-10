@@ -1,25 +1,23 @@
 package ui;
 import java.io.BufferedReader;
-//import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-//import java.io.InputStreamReader;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javax.persistence.NoResultException;
+
 import db.interfaces.*;
 import db.jpa.JPAUserManager;
 import db.sqlite.*;
-import ui.PatientMenu;
 import pojos.*;
 import pojos.users.User;
 
-public class MainTest
+public class Main
 {
 	private static DBManager db;
 	private static PatientManager pm;
@@ -42,47 +40,9 @@ public class MainTest
 		dm=db.getDoctorManager();
 		ptm=db.getPhysicalTherapistManager();
 		am = db.getAppointmentManager();
-		//TODO por que ahora la fecha explota y antes no ;pero ya funciona bien sale la lista con todo menos la fecha
-		/*
-		ptm.insertPhysicalTherapist(pt1);
-		ptm.insertPhysicalTherapist(pt2);
-		ptm.insertPhysicalTherapist(pt3);
-		*/
-		/*
-		ArrayList<PhysicalTherapist> pts=ptm.showPhisicalTherapists("Tennis");
-		for (PhysicalTherapist physicalTherapist : pts)
-		{
-			System.out.println(physicalTherapist);
-		}
-		if (pts.isEmpty())
-		{
-
-		}
-		*/
-		// esto SI FUNCIONA!!!
-		//pm.addPatientandMedicalHistory(p, ptm.getPhysicalTherapist(1), mh);
-		//ESTO TAMBIEN FUNCIONA LO BUSCA BIEN!!
-		/*
-		ArrayList<Patient> searched=pm.searchPatientName("Maria");
-		for (Patient patient : searched)
-		{
-			System.out.println(patient);
-		}
-		*/
-		//ESTO TAMBIEN FUNCIONA
-		/*
-		Patient get=pm.getPatient(1);
-		System.out.println("conseguido\n"+get);
-		PhysicalTherapist pget=ptm.getPhysicalTherapist(3);
-		System.out.println("physical\n"+pget);
-		MedicalHistory getmh=pm.getMedicalHistory(get);
-		System.out.println("MH "+getmh);
-		*/
-
 		userManager = new JPAUserManager();
 		userManager.connect();
-
-
+		
 		/*
 		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
 
@@ -124,41 +84,55 @@ public class MainTest
 		switch(option)
 		{
 			case 1:
+				User staff = null;
 				System.out.println("You are a member of the staff of Human Resources, introduce your credentials");
-				String username = DataObtention.readName("Username: ");
-				System.out.println("Password: ");
-				String pass =DataObtention.readLine();
-				User staff = userManager.checkPasswordStaff(username, pass);
-				if (staff==null)
+				while (staff == null)
 				{
-					System.out.println("The credentials are wrong, are you sure you are in Human Resources?");
-				}
-				else
-				{
-					StaffMenu staffMenu = new StaffMenu();
-					staffMenu.staffMenu(dm,ptm,pm,am,userManager);
-				}
+					String username = DataObtention.readName("Username: ");
+					System.out.println("Password: ");
+					String pass =DataObtention.readLine();
+					
+					try
+					{
+						staff = userManager.checkPasswordStaff(username, pass);
+					}
+					catch(NoResultException e)
+					{
+						System.out.println("Wrong credentials, please try again");
+					}
+				}				
+				StaffMenu staffMenu = new StaffMenu();
+				staffMenu.staffMenu(dm,ptm,pm,am,userManager);
 				break;
 			case 2:
-				String userName = DataObtention.readName("Username: ");
-				System.out.println("Password: ");
-				String password = DataObtention.readLine();
-				User user = userManager.checkPassword(userName, password);
-				if (user == null)
+				System.out.println("Please introduce your credentials");
+				String username = "";
+				User user = null;
+				while(user==null)
 				{
-					System.out.println("Wrong credentials, please try again!");
-				}
-				else if (user.getRole().getRole().equalsIgnoreCase("doctor"))
+					username = DataObtention.readName("Username: ");
+					System.out.println("Password: ");
+					String password = DataObtention.readLine();
+					try
+					{
+						user = userManager.checkPassword(username, password);
+					}
+					catch(NoResultException e)
+					{
+						System.out.println("Wrong credentials, please try again");
+					}
+				}				
+				if (user.getRole().getRole().equalsIgnoreCase("doctor"))
 				{
-					patientsOrAppointments(userName);
+					patientsOrAppointments(username);
 				}
 				else if (user.getRole().getRole().equalsIgnoreCase("patient")) 
 				{
-					patientChoose(userName, pm, dm, ptm, am);
+					patientChoose(username, pm, dm, ptm, am);
 				}
 				else if (user.getRole().getRole().equalsIgnoreCase("physical therapist"))
 				{
-					choose(userName);
+					choose(username);
 				}
 				else 
 				{
@@ -166,6 +140,7 @@ public class MainTest
 				}
 			case 0 :
 				System.out.println("You have succesfully exit the program. Goodbye!");
+				break;
 		}
 		
 	}
@@ -175,6 +150,7 @@ public class MainTest
 		Integer patID = pm.searchPatientByEmail(username);
 		while (true)
 		{
+			PatientMenu patientmenu = new PatientMenu();
 			int option = DataObtention.readInt("Welcome patient, choose an option\n 1.-Change password\n 2.-Read appointments\n 3.-Add appointment\n 4.-Exit");
 			switch(option)
 			{
@@ -182,44 +158,11 @@ public class MainTest
 					changePassword(username);
 					break;
 				case 2:
-					System.out.println("----CURRENT APPOINTMENTS-----");
-					am.readPatientsAppointments(patID, pm, ptm, dm);
+					patientmenu.readAppointments(patID, pm, ptm, dm,am);					
 					break;
 				case 3:
-					System.out.println("----CURRENT APPOINTMENTS-----");
-					am.readPatientsAppointments(patID, pm, ptm, dm);
-					System.out.println("----AVAILABLE DOCTORS----");
-					List<Doctor>currentDoctors = dm.listDoctors();
-					for(Doctor doctor:currentDoctors){
-						System.out.println("ID: "+doctor.getId()+" Name: "+doctor.getName()+" Specialty "+doctor.getSpeciality());
-					}
-					Integer docId = DataObtention.readInt("----CHOOSE THE DOCTORS ID ACCORDING TO THE SPECIALTY YOU NEED----");
-					Patient p = pm.getPatient(patID);
-					Doctor doc = dm.getDoctor(docId);
-					PhysicalTherapist pT = p.getPhysicalTerapist();
-					boolean inTable = pm.checkDoctor(patID, docId);
-					if(inTable = false){
-						pm.addDoctorToPatient(p,doc);
-					}else{
-						System.out.println("\n");
-					}
-					Appointment appointment = introduceDateAndTime();
-					List<Appointment> ptApps = am.getPhysicalTherapistAppointments(pT.getId());
-					boolean taken = checkAppointments(ptApps, appointment);
-					while(taken = true){
-						System.out.println("Please try with another appointment");
-						appointment = introduceDateAndTime();
-						taken = checkAppointments(ptApps, appointment);
-					}
-					List<Appointment>docApps = am.getDoctorsAppointments(doc.getId());
-					boolean taken2 = checkAppointments(docApps, appointment);
-					while(taken2 = true){
-						System.out.println("Please try with another appointment");
-						appointment = introduceDateAndTime();
-						taken2 = checkAppointments(ptApps, appointment);
-					}
-					am.addAppointment(appointment, p, doc, pT);
-					break; //Falta comprobar que el checkAppointments funciona
+					patientmenu.addAppointment(patID, pm, ptm, dm, am);
+					break;
 				case 4:
 					break;
 			}
@@ -257,38 +200,10 @@ public class MainTest
 			case 4:
 				break;
 		}
-
-
-
 		}
-
 	}
 
-	private static Appointment introduceDateAndTime() throws Exception{
-		System.out.println("Introduce a date: yyyy-mm-dd");
-		String dateString = reader.readLine();
-		Date appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
-		System.out.println("Introduce the time: hh:mm:ss");
-		String timeString =reader.readLine();
-		Time appointmentTime = Time.valueOf(timeString);
-		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
-		return appointment;
-		}
-
-	private static boolean checkAppointments(List<Appointment>Apps, Appointment appointment) throws Exception{
-		Date dateToCheck = appointment.getDate();
-		Time timeToCheck = appointment.getTime();
-		boolean taken = false;
-		for(Appointment app: Apps){
-			Date date = app.getDate();
-			Time time = app.getTime();
-			if(date.equals(dateToCheck) && time.equals(timeToCheck)){
-				System.out.println("Ups, looks like this appointment is not available");
-				taken = true;
-			}
-		}
-		return taken;
-	}
+	
 	private static void choose(String username) throws Exception 
 	{
 		while(true)
@@ -356,9 +271,4 @@ public class MainTest
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
 }

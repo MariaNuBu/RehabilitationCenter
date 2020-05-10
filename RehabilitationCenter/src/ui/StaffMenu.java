@@ -25,45 +25,49 @@ public class StaffMenu
 	
 	public void staffMenu(DoctorManager dm,PhysicalTherapistManager ptm,PatientManager pm,AppointmentManager am,UserManager um) throws IOException
 	{
-		while(true)
+		Boolean loop = true;
+		while(loop)
 		{
-			Integer option = DataObtention.readInt("Choose the action: \n 1.-Register\n 2.-Fire workers");
-			if(option==1)
+			Integer option = DataObtention.readInt("Choose the action: \n1.-Register\n2.-Fire workers\n3.-Exit");
+			switch (option)
 			{
-				Integer role =DataObtention.readInt("Choose the role you want to register: \n 1.-Patient\n 2.-Doctor\n 3.-Physical Therapist\n4.-Exit");
-				switch (role)
-				{
-					case 1:
-						registerPatient(pm,ptm,um);
-						break;
-					case 2:				
-						registerDoctor(dm,um);
-						break;
-					case 3:
-						registerPhysicalTherapist(ptm,um);
-						break;
-					case 4:
-						break;
-				}
-			}
-			if (option==2)
-			{
-				Integer role =DataObtention.readInt("Choose the role of the worker you want to fire: \n 1.-Doctor\n 2.-Physical Therapist\n 3.-Exit");
-				switch (role)
-				{
-					case 1:
-						fireDoctor(dm,am,um);
-						break;
-					case 2:				
-						firePhysicalTherapist(pm,am,ptm,um);
-						break;
-					case 3:
-						break;
-				}
-			}
-			
-		}	
-		
+				case 1:
+					Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Back");
+					switch (role)
+					{
+						case 1:
+							registerPatient(pm,ptm,um);
+							break;
+						case 2:				
+							registerDoctor(dm,um);
+							break;
+						case 3:
+							registerPhysicalTherapist(ptm,um);
+							break;
+						case 4:
+							break;
+					}
+					break;
+				case 2:
+					Integer rolefire =DataObtention.readInt("Choose the role of the worker you want to fire: \n 1.-Doctor\n 2.-Physical Therapist\n 3.-Exit");
+					switch (rolefire)
+					{
+						case 1:
+							fireDoctor(dm,am,um);
+							break;
+						case 2:				
+							firePhysicalTherapist(pm,am,ptm,um);
+							break;
+						case 3:
+							break;
+					}
+					break;
+				case 3:
+					System.out.println("Hope to see you soon!");
+					loop = false;
+					break;
+			}			
+		}			
 	}
 	
 	public void registerPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws IOException
