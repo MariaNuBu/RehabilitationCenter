@@ -11,6 +11,7 @@ import java.util.*;
 import db.interfaces.AppointmentManager;
 import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
+import db.interfaces.PhysicalTherapistManager;
 import pojos.*;
 
 
@@ -173,7 +174,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		}
 		return docAndPatAppointments;
 	}
-	
+
 	@Override
 	public void deleteAppointmentDoctor(Integer ID)
 	{
@@ -190,7 +191,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void deleteAppointmentPhysicalTherapist(Integer ID)
 	{
@@ -207,7 +208,111 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			e.printStackTrace();
 		}
 	}
-	
+
+
+	@Override
+	public void readPTAppointments(Integer ptId, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm) {
+		try{
+
+			String sql = "SELECT *FROM appointment WHERE PTID=?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, ptId);
+			ResultSet rs = prepS.executeQuery();
+
+			while(rs.next()){
+				int apID = rs.getInt(1);
+				Date apDate = rs.getDate(2);
+				Time apTime = rs.getTime(3);
+				int patID = rs.getInt(4);
+				int docID = rs.getInt(5);
+				int ptID = rs.getInt(6);
+				Patient p = new Patient();
+				p = pm.getPatient(patID);
+				PhysicalTherapist pt = new PhysicalTherapist();
+				pt = ptm.getPhysicalTherapist(ptId);
+				Doctor d = new Doctor();
+				d = dm.getDoctor(docID);
+				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
+				System.out.println(appointmentToRead+"  PATIENT-->" + p);
+
+			}
+			prepS.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+	}
+
+
+	@Override
+	public void readPatientsAppointments(Integer patId, PatientManager pm, PhysicalTherapistManager ptm,
+			DoctorManager dm) {
+		try{
+
+			String sql = "SELECT * FROM appointment WHERE PATID=?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, patId);
+			ResultSet rs = prepS.executeQuery();
+
+			while(rs.next()){
+				int apID = rs.getInt(1);
+				Date apDate = rs.getDate(2);
+				Time apTime = rs.getTime(3);
+				int patID = rs.getInt(4);
+				int docID = rs.getInt(5);
+				int ptID = rs.getInt(6);
+				Patient p = new Patient();
+				p = pm.getPatient(patId);
+				PhysicalTherapist pt = new PhysicalTherapist();
+				pt = p.getPhysicalTerapist();
+				Doctor d = new Doctor();
+				d = dm.getDoctor(docID);
+				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
+				System.out.println(appointmentToRead+"  DOCTOR-->" + d);
+
+			}
+			prepS.close();
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+
+	}
+
+
+	@Override
+	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID) {
+		List<Appointment>ptAppointments = new ArrayList<>();
+		try{
+
+			String sql = "SELECT * FROM appointment WHERE PTID=?";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setInt(1, ptID);
+			ResultSet rs = prepS.executeQuery();
+
+			while(rs.next()){
+				Date apDate = rs.getDate(2);
+				Time apTime = rs.getTime(3);
+				Appointment appointment = new Appointment(apDate, apTime);
+				ptAppointments.add(appointment);
+			}
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return ptAppointments;
+	}
+
+
+	@Override
+	public List<Appointment> getDoctorsAppointments(Integer docID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 
 
 

@@ -5,10 +5,10 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import db.interfaces.DBManager;
-import db.interfaces.PatientManager;
-import db.interfaces.PhysicalTherapistManager;
+import db.interfaces.*;
 import db.sqlite.SQLiteManager;
 import pojos.*;
 
@@ -18,12 +18,12 @@ public class PhysicalMenu
 	private static DBManager db;
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
-	
+
 	//TODO PONER EL USERNAME
 	public void readTreatment(String username, PhysicalTherapistManager ptm, PatientManager pm) throws IOException
 	{
 		Integer ptID = ptm.searchPTByEmail(username);
-		
+
 		System.out.println("These are your patients");
 		ArrayList<Patient> patients = new ArrayList<Patient>();
 		patients=ptm.getAllPatients(ptID);
@@ -33,8 +33,8 @@ public class PhysicalMenu
 		}
 		else
 		{
-			for (Patient patient : patients) 
-			{	
+			for (Patient patient : patients)
+			{
 				System.out.println(patient);
 			}
 			Integer patientID = DataObtention.readInt("Type the ID of the patient you want to check the treatment");
@@ -47,18 +47,21 @@ public class PhysicalMenu
 			}
 			else
 			{
-				for (Treatment treatment : treatments) 
+				for (Treatment treatment : treatments)
 				{
 					System.out.println(treatment);
 				}
 			}
 		}
-		
+
 	}
 	//TODO cambiar el user
-	public void checkAppointments(String username, PhysicalTherapistManager ptm) throws IOException
+	public void checkAppointments(String username, PhysicalTherapistManager ptm, AppointmentManager am, PatientManager pm, DoctorManager dm) throws IOException
 	{
-		
+		Integer ptID = ptm.searchPTByEmail(username);
+				System.out.println("----CURRENT APPOINTMENTS-------");
+				am.readPTAppointments(ptID, pm, ptm, dm);
 	}
 
 }
+
