@@ -198,7 +198,6 @@ public class MainTest
 			case 1:
 				DoctorMenu doctorMenu= new DoctorMenu();
 				try {
-					//TODO poner el username
 					doctorMenu.doctorMenu(dm,pm,username);
 					
 				}catch(Exception e) {
@@ -208,7 +207,6 @@ public class MainTest
 			case 2:
 				DoctorMenu doctorMenuApp = new DoctorMenu();
 				try{
-					//TODO poner el username
 					doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username);
 					
 				}catch(Exception e){
@@ -227,7 +225,6 @@ public class MainTest
 		}
 		
 	}
-	//TODO poner el user name String userName
 	private static void choose(String username) throws Exception 
 	{
 		while(true)
@@ -239,7 +236,6 @@ public class MainTest
 				case 1:					
 					try
 					{
-						//TODO poner el username
 						physicalMenu.readTreatment(username,ptm,pm);					
 					}
 					catch(Exception e) {
@@ -249,7 +245,6 @@ public class MainTest
 				case 2:
 					try
 					{	
-						//TODO poner el username
 						physicalMenu.checkAppointments(username,ptm);						
 					}
 					catch(Exception e)

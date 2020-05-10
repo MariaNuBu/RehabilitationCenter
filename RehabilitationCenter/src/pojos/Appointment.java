@@ -1,16 +1,32 @@
 package pojos;
 import java.sql.Date;
 import java.sql.Time;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import xml.utils.SQLDateAdapter;
+
 import java.io.Serializable;
 
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder={"date","time","pat","doc","pt"})
 public class Appointment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	//TODO preguntar que si queeremos que si puedas insertar appoointments esto ya no es elemtne 
+	@XmlTransient
 	private Integer id;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date;
+	@XmlElement
 	private Time time;
+	@XmlElement
 	private Patient pat;
+	@XmlElement
 	private Doctor doc;
+	@XmlElement
 	private PhysicalTherapist pt;
 	
 	public Appointment() {

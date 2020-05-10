@@ -4,24 +4,43 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import xml.utils.SQLDateAdapter;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "patient")
+@XmlType(propOrder= {"name","dob","address","phoneNumer","eMail","sport","disability","medicalHistory","physicalTherapist","doctors","appointments"})
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	//TODO check if the atributes of the foreign keys are necesary
+	@XmlTransient
 	private Integer id;
+	@XmlAttribute
 	private String  name;
+	@XmlElement
 	private String  address;
-	private Date    dob;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
+	private Date 	dob;
+	@XmlElement
 	private Integer phoneNumber;
+	@XmlElement
 	private String  eMail;
+	@XmlElement
 	private String  sport;
+	@XmlElement
 	private String  disability;
-	
+	@XmlElement
 	private MedicalHistory medicalHistory;
+	@XmlElement
 	private PhysicalTherapist physicalTerapist;
+	@XmlElement(name = "doctor")
+	@XmlElementWrapper (name = "doctors")
 	private List<Doctor> doctors;
+	@XmlElement(name = "appointment")
+	@XmlElementWrapper (name = "appointments")
 	private List<Appointment> appointments;
 
 	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
