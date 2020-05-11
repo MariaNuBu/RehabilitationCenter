@@ -93,35 +93,51 @@ public class PatientMenu
 	}
 	
 	private static Appointment introduceDateAndTime() throws Exception{
-		Boolean incorrect = true;
+		Boolean dateincorrect = true;
+		Boolean timeincorrect = true;
 		String dateString="";
 		Date appointmentDate=null;
 		String timeString="";
 		Time appointmentTime=null;
-		while(incorrect)
-		{
+		while(dateincorrect)
+		{	
 			try
 			{
 				System.out.println("Introduce a date: yyyy-mm-dd");
 				dateString = DataObtention.readLine();
-				appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
-				System.out.println("Introduce the time: hh:mm:ss");
-				timeString =DataObtention.readLine();
-				appointmentTime = Time.valueOf(timeString);
+				appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));				
+				dateincorrect=false;
 			}
 			catch (DateTimeParseException e)
 			{
-				System.out.println("Date or time wrong introduced");
+				System.out.println("Date wrong introduced");
 			}
 			catch(IllegalArgumentException ex)
 			{
-				System.out.println("Date or time wrong introduced");
+				System.out.println("Date wrong introduced");
+			}				
+		}	
+		while(timeincorrect)
+		{
+			try
+			{
+				System.out.println("Introduce an hour: hh-mm-ss");
+				timeString = DataObtention.readLine();
+				appointmentTime = Time.valueOf(timeString);				
+				timeincorrect=false;
 			}
-			incorrect=false;			
-		}			
+			catch (DateTimeParseException e)
+			{
+				System.out.println("Time wrong introduced");
+			}
+			catch(IllegalArgumentException ex)
+			{
+				System.out.println("Time wrong introduced");
+			}	
+		}
 		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
 		return appointment;
-		}
+}
 
 	private static boolean checkAppointments(List<Appointment>Apps, Appointment appointment) throws Exception{
 		Date dateToCheck = appointment.getDate();

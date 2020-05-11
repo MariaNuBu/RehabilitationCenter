@@ -77,9 +77,11 @@ public class DoctorMenu {
 				break;
 			case 6:
 				ListTreatments(patID,dm);
+				//This only shows the ID and the type of the treatment
 				break;
 			case 7:
 				ReadTreatment(patID,dm);
+				//Is used after list to read a specific treatment as we need it's ID
 				break;
 			case 0:
 				return;
@@ -95,24 +97,6 @@ public class DoctorMenu {
 			ShowMedicalHistory(patID,pm);
 			Patient p = pm.getPatient(patID);
 			MedicalHistory mhToModify = pm.getMedicalHistory(p);
-			/*
-			System.out.println("Actual name: "+ mhToModify.getName());
-			System.out.println("Type the new name of the patient or press enter to leave it as it is :");
-			String newName = reader.readLine();
-			if(newName.equals("")) {
-				newName = mhToModify.getName();
-			}
-			System.out.println("Actual date of birth:" + mhToModify.getDOB());
-			System.out.println("Type the new date of birth of the patient or press enter to leave it as it is :");
-			String newDob = reader.readLine();
-			Date datenewDob;
-			if(newDob.equals("")) {
-				datenewDob = mhToModify.getDOB();
-			}
-			else {
-				datenewDob = Date.valueOf(LocalDate.parse(newDob, formatter));
-			}
-			*/
 			System.out.println("Actual diseases: "+ mhToModify.getDiseases());
 			System.out.println("Type the new disease of the patient or press enter to leave it as it is :");
 			String newdisease= DataObtention.readLine();
@@ -138,7 +122,6 @@ public class DoctorMenu {
 			if(newWeight.equals("")) {
 				floatnewWeight = mhToModify.getWeightKg();
 			}
-			//TODO VERIFICAR QUE METE UN FLOAT
 			else {
 				floatnewWeight = Float.parseFloat(newWeight);
 			}
@@ -154,8 +137,6 @@ public class DoctorMenu {
 			}
 
 			int id = mhToModify.getID();
-			//MedicalHistory updatedMedicalHistory = new MedicalHistory(id,newName,datenewDob,newdisease,newallergie,
-			//		newsurgerie,floatnewWeight,intnewHeight);
 			MedicalHistory updatedMedicalHistory = new MedicalHistory(id,mhToModify.getName(),mhToModify.getDOB(),newdisease,newallergie,
 					newsurgerie,floatnewWeight,intnewHeight);
 			dm.modifyMH(updatedMedicalHistory);
@@ -256,39 +237,59 @@ public class DoctorMenu {
 
 
 	private static void ModifyTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
-	    ListTreatments(patID,dm);
-		System.out.println("-------------------------------------------------------");
-		int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to modify :");
-		Treatment treatmentToModify= dm.getTreatment(treatID);
-		System.out.println("Actual Type: "+treatmentToModify.getType());
-		//If the user does not type anything the type of treatment  won´t change
-		System.out.println("Type the new type of treatment or press enter to leave it as it is :");
-		String newType= DataObtention.readLine();
-		if(newType.equals("")) {
-			newType=treatmentToModify.getType();
-		}
-		System.out.println("Actual Lenght: "+treatmentToModify.getLenght());
-		//If the user does not type anything the type of treatment  won´t change
-		System.out.println("Type the new lenght for the treatment or press enter to leave it as it is :");
-		String newLength= DataObtention.readLine();
-		int intnewLength;
-		if(newLength.equals("")) {
-			intnewLength=treatmentToModify.getLenght();
-		}else {
-			intnewLength=Integer.parseInt(newLength);
-		}
-		int id=treatmentToModify.getId();
-		Treatment updatedTreatment= new Treatment(id,newType,intnewLength);
-		dm.modifyTreatment(updatedTreatment);
-		System.out.println("The treatment has been successfully modified");
+		 List<Treatment>treatmentList= new ArrayList<Treatment>();
+			treatmentList= dm.listTreatments(patID);
+			if(treatmentList.isEmpty())
+			{
+				System.out.println("This patient doesn't have any treatments yet");
+			}
+			else
+			{
+				System.out.println("This are the actual treatments of your patient:");
+				for (Treatment treatment:treatmentList) {
+					System.out.println(treatment);
+				}
+				System.out.println("-------------------------------------------------------");
+				int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to modify :");
+				Treatment treatmentToModify= dm.getTreatment(treatID);
+				System.out.println("Actual Type: "+treatmentToModify.getType());
+				//If the user does not type anything the type of treatment  won´t change
+				System.out.println("Type the new type of treatment or press enter to leave it as it is :");
+				String newType= DataObtention.readLine();
+				if(newType.equals("")) {
+					newType=treatmentToModify.getType();
+				}
+				System.out.println("Actual Lenght: "+treatmentToModify.getLenght());
+				//If the user does not type anything the type of treatment  won´t change
+				System.out.println("Type the new lenght for the treatment or press enter to leave it as it is :");
+				String newLength= DataObtention.readLine();
+				int intnewLength;
+				if(newLength.equals("")) {
+					intnewLength=treatmentToModify.getLenght();
+				}else {
+					intnewLength=Integer.parseInt(newLength);
+				}
+				int id=treatmentToModify.getId();
+				Treatment updatedTreatment= new Treatment(id,newType,intnewLength);
+				dm.modifyTreatment(updatedTreatment);
+				System.out.println("The treatment has been successfully modified");
+			} 
 	 }
+	
 	 private static void ListTreatments(Integer patID,DoctorManager dm) {
 		 List<Treatment>treatmentList= new ArrayList<Treatment>();
 			treatmentList= dm.listTreatments(patID);
-			System.out.println("This are the actual treatments of your patient:");
-			for (Treatment treatment:treatmentList) {
-				System.out.println(treatment);
+			if(treatmentList.isEmpty())
+			{
+				System.out.println("This patient doesn't have any treatments yet");
 			}
+			else
+			{
+				System.out.println("This are the actual treatments of your patient:");
+				for (Treatment treatment:treatmentList) {
+					System.out.println("ID: "+treatment.getId()+", Type: "+treatment.getType());
+				}
+			}		
 	 }
 
 
@@ -307,11 +308,23 @@ public class DoctorMenu {
 
 
 	private static void DeleteTreatment(Integer patID,DoctorManager dm,PatientManager pm) throws NumberFormatException, IOException {
-		ListTreatments(patID,dm);
-		System.out.println("-------------------------------------------------------");
-		int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to delete :");
-		Treatment treatmentToDelete= dm.getTreatment(treatID);
-		dm.deleteTreatment(treatmentToDelete,patID);
+		 List<Treatment>treatmentList= new ArrayList<Treatment>();
+			treatmentList= dm.listTreatments(patID);
+			if(treatmentList.isEmpty())
+			{
+				System.out.println("This patient doesn't have any treatments yet");
+			}
+			else
+			{
+				System.out.println("This are the actual treatments of your patient:");
+				for (Treatment treatment:treatmentList) {
+					System.out.println(treatment);
+				}
+				System.out.println("-------------------------------------------------------");
+				int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to delete :");
+				Treatment treatmentToDelete= dm.getTreatment(treatID);
+				dm.deleteTreatment(treatmentToDelete,patID);
+			}		
 	}
 	private static void ReadTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
 		System.out.println("-------------------------------------------------------");
@@ -320,7 +333,7 @@ public class DoctorMenu {
 		if(treatmentToRead==null) {
 			System.out.println("The chosen ID doesn't correspond to any existing treatment ");
 		}else {
-		dm.readTreatment(treatmentToRead);
+		System.out.println(dm.readTreatment(treatmentToRead));
 		}
 	}
 

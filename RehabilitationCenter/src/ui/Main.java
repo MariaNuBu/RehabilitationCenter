@@ -166,6 +166,10 @@ public class Main
 				case 4:
 					break;
 			}
+			if(option==4)
+			{
+				break;
+			}
 		}
 	}
 	
@@ -200,6 +204,10 @@ public class Main
 			case 4:
 				break;
 		}
+		if(option==4)
+		{
+			break;
+		}
 		}
 	}
 
@@ -208,7 +216,7 @@ public class Main
 	{
 		while(true)
 		{
-			int option =DataObtention.readInt("Welcome physical therapist, choose an option\n 1.Check patients\n 2.Check appointments\n 3.-Change password\n 4.Exit");
+			int option =DataObtention.readInt("Welcome physical therapist, choose an option\n 1.-Check patients\n 2.-Check appointments\n 3.-Change password\n 4.Exit");
 			PhysicalMenu physicalMenu= new PhysicalMenu();
 			switch(option)
 			{
@@ -236,6 +244,10 @@ public class Main
 					break;
 				case 4:
 					break;
+			}
+			if(option==4)
+			{
+				break;
 			}
 		}
 		

@@ -213,7 +213,7 @@ private Connection c;
 		ArrayList <Patient> patients = new ArrayList<Patient>();
 		try
 		{
-			String sql="SELECT ID,Name FROM patient WHERE PTID=?";
+			String sql="SELECT * FROM patient WHERE PTID=?";
 			PreparedStatement pt= c.prepareStatement(sql);
 			pt.setInt(1, ptid);
 			ResultSet rs=pt.executeQuery();
@@ -222,7 +222,13 @@ private Connection c;
 			{
 				Integer id=rs.getInt(1);
 				String name=rs.getString(2);
-				p=new Patient(id,name);
+				String address=rs.getString("Address");
+				Date DOB=rs.getDate("DOB");
+				Integer phone=rs.getInt("Phone");
+				String email=rs.getString("Email");
+				String sportType=rs.getString("SportType");
+				String disability=rs.getString("Disability");
+				p=new Patient(id,name,address,DOB,phone,email,sportType,disability);
 				patients.add(p);
 			}
 			pt.close();

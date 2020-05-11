@@ -235,12 +235,6 @@ public class Patient implements Serializable {
 		this.appointments = appointments;
 	}
 
-	public String toString()
-	{
-		String s= "ID: "+this.id+"\nName: "+this.name+"\nAddress: "+this.address+"\nDOB: "+this.dob+"\nEmail: "+this.eMail+
-				"\nTypeSport: "+this.sport+"\nDisability: "+this.disability;
-		return s;
-	}
 
 	@Override
 	public int hashCode() {
@@ -267,4 +261,12 @@ public class Patient implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Patient [ID=" + id + ",Name=" + name + ",Address=" + address + ",DOB=" + dob + ",Phone number="
+				+ phoneNumber + ",Email=" + eMail + ",Sport=" + sport + ",Disability=" + disability+"]";
+	}
+	
+	
 }

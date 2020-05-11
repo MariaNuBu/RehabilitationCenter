@@ -15,14 +15,13 @@ import java.io.Serializable;
 public class Appointment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	//TODO preguntar que si queeremos que si puedas insertar appoointments esto ya no es elemtne 
 	@XmlTransient
 	private Integer id;
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date;
 	@XmlElement
 	private Time time;
-	@XmlElement
+	@XmlTransient
 	private Patient pat;
 	@XmlElement
 	private Doctor doc;
@@ -124,7 +123,8 @@ public class Appointment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Appointment [ID=" + id + ", Date=" + date + ", Time=" + time + "]";
+		return "Appointment [ID=" + id + ", Date=" + date + ", Time=" + time + ", Patient=" + pat.getName()+ ", "+ pat.geteMail() + ", PhysicalTherapist ="
+				+ pt.getName() + ", "+ pt.geteMail()+"]";
 	}
 
 

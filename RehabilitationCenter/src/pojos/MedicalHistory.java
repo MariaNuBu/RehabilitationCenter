@@ -88,13 +88,14 @@ public class MedicalHistory implements Serializable
 			return false;
 		return true;
 	}
-	
-	public String toString()
-	{
-		String s= "ID: "+this.ID+"\nName: "+this.Name+"\nDOB: "+this.DOB+"\nDiseases: "+this.Diseases+
-				"\nAllergies: "+this.Allergies+"\nSurgeries: "+this.Surgeries+"\nWeight(kg): "+this.WeightKg+"\nHeight(cm): "+this.HeightCm;
-		return s;
+
+	@Override
+	public String toString() {
+		return "MedicalHistory [ID=" + ID + ", Name=" + Name + ", DOB=" + DOB + ", Diseases=" + Diseases
+				+ ", Allergies=" + Allergies + ", Surgeries=" + Surgeries + ", WeightKg=" + WeightKg + ", HeightCm="
+				+ HeightCm + "]";
 	}
+	
 	
 	
 }
