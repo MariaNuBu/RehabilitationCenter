@@ -125,7 +125,7 @@ public class Appointment implements Serializable {
 	@Override
 	public String toString() {
 		return "Appointment [ID=" + id + ", Date=" + date + ", Time=" + time + ", Patient=" + pat.getName()+ ", "+ pat.geteMail() + ", PhysicalTherapist ="
-				+ pt.getName() + ", "+ pt.geteMail()+"]";
+				+ pt.getName() + ", "+ pt.geteMail()+", "+ "Doctor="+ doc.getName()+", "+doc.geteMail()+"]";
 	}
 
 
