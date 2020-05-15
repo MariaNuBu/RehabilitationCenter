@@ -6,4 +6,9 @@
     <eMail>marta@gmail.com</eMail>
     <sport>swim</sport>
     <disability>broken wrist</disability>
+    <appointments>
+        <appointment>
+        <date>2020-08-15</date>
+        </appointment>
+    </appointments>
 </patient>

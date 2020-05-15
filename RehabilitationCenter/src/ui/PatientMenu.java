@@ -156,7 +156,11 @@ public class PatientMenu
 	}
 
 	public  void generateXML(Integer patID,PatientManager pm) throws JAXBException {
+		
+		//TODO pasarle tambien los appointments y la mh cuando obtengo el paciente por el id 
 		Patient patient= pm.getPatient(patID);
+		//QUITAR LUEGO
+		System.out.println("Paciente a marshalear"+patient);
 		//Create JAXBContext
 		JAXBContext context = JAXBContext.newInstance(Patient.class);
 		//Get the marshaller

@@ -2,16 +2,28 @@ package pojos;
 
 import java.io.Serializable;
 import java.sql.Date;
+import javax.xml.bind.annotation.*;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder= {"Diseases","Allergies","Surgeries","WeightKg","HeightCm"})
 
 public class MedicalHistory implements Serializable 
 {
+	@XmlAttribute
 	private Integer ID;
+	@XmlTransient
 	private String Name;
+	@XmlTransient
 	private Date DOB;
+	@XmlElement
 	private String Diseases;
+	@XmlElement
 	private String Allergies;
+	@XmlElement
 	private String Surgeries;
+	@XmlElement
 	private Float WeightKg;
+	@XmlElement
 	private Integer HeightCm;
 	
 	
