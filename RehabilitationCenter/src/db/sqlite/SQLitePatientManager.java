@@ -166,7 +166,7 @@ public class SQLitePatientManager implements PatientManager {
 					String sportType=rs.getString("SportType");
 					String disability=rs.getString("Disability");
 					ptid=rs.getInt("PTID");
-					String sql2="SELECT ID,Name FROM physicalTherapist WHERE ID=?";
+					String sql2="SELECT ID,Name,Email,SportType FROM physicalTherapist WHERE ID=?";
 					PreparedStatement ps2=c.prepareStatement(sql2);
 					ps2.setInt(1, ptid);
 					ResultSet rs2=ps2.executeQuery();
@@ -175,7 +175,9 @@ public class SQLitePatientManager implements PatientManager {
 					{
 						Integer ptID=rs2.getInt("ID");
 						String namePhysical=rs2.getString("Name");
-						physicalTherapist=new PhysicalTherapist(ptID,namePhysical);
+						String ptemail=rs2.getString("Email");
+						String ptsport = rs2.getString("SportType");
+						physicalTherapist=new PhysicalTherapist(ptID,namePhysical,ptemail,ptsport);
 						patient = new Patient(patID, name, address,DOB,phone,email,sportType,disability,physicalTherapist);
 						patientCreated=true;
 					}

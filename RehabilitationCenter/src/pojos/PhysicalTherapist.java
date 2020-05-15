@@ -21,18 +21,20 @@ public class PhysicalTherapist implements Serializable {
 	
 	
 	
-	public PhysicalTherapist(Integer id, String name) {
+	public PhysicalTherapist(Integer id, String name, String typeSport) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.typeSport = typeSport;
 	}
 
 
-	public PhysicalTherapist(Integer id, String name, String typeSport) 
+	public PhysicalTherapist(Integer id, String name,String email, String typeSport) 
 	{
 		super();
 		this.id = id;
 		this.name = name;
+		this.eMail = email;
 		this.typeSport = typeSport;
 	}
 
