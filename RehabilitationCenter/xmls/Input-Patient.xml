@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<patient name="Marta">
+    <dob>2000-08-25</dob>
+    <address>Rivas</address>
+    <phoneNumber>683476061</phoneNumber>
+    <eMail>marta@gmail.com</eMail>
+    <sport>swim</sport>
+    <disability>broken wrist</disability>
+    <appointments>
+        <appointment>
+        <date>2020-08-15</date>
+        </appointment>
+    </appointments>
+</patient>

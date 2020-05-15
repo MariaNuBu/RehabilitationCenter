@@ -3,20 +3,31 @@ package pojos;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
+import javax.xml.bind.annotation.*;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder={"typeSport"})
 public class PhysicalTherapist implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-
+    @XmlTransient
 	private Integer id;
+    @XmlAttribute
 	private String name;
+	@XmlTransient
 	private String address;
+	@XmlTransient
 	private Date dob;
+	@XmlTransient
 	private Integer phoneNumber;
+	@XmlTransient
 	private String eMail;
+	@XmlElement
 	private String typeSport;
+	@XmlTransient
 	private Double salary;
+	@XmlTransient
 	private List <Patient> patients;
 	
 	

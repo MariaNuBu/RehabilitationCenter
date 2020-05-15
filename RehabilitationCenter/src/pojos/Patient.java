@@ -12,7 +12,7 @@ import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "patient")
-@XmlType(propOrder= {"name","dob","address","phoneNumer","eMail","sport","disability","medicalHistory","physicalTherapist","doctors","appointments"})
+@XmlType(propOrder= {"name","dob","address","phoneNumber","eMail","sport","disability",/*"medicalHistory",*/"appointments"})
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,16 +32,20 @@ public class Patient implements Serializable {
 	private String  sport;
 	@XmlElement
 	private String  disability;
-	@XmlElement
+	@XmlTransient
 	private MedicalHistory medicalHistory;
-	@XmlElement
+	@XmlTransient
 	private PhysicalTherapist physicalTerapist;
-	@XmlElement(name = "doctor")
-	@XmlElementWrapper (name = "doctors")
-	private List<Doctor> doctors;
 	@XmlElement(name = "appointment")
 	@XmlElementWrapper (name = "appointments")
 	private List<Appointment> appointments;
+	//TODO los pongo como transient para no mostrarlos en el xml , opinion?
+	//@XmlElement(name = "doctor")
+	//@XmlElementWrapper (name = "doctors")
+	
+	@XmlTransient
+	private List<Doctor> doctors;
+	
 
 	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
 			String disability, PhysicalTherapist physicalTerapist) {

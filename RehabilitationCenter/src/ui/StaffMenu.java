@@ -1,6 +1,7 @@
 package ui;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,6 +10,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 
 import db.interfaces.*;
 import pojos.Doctor;
@@ -23,7 +27,7 @@ public class StaffMenu
 	
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
-	public void staffMenu(DoctorManager dm,PhysicalTherapistManager ptm,PatientManager pm,AppointmentManager am,UserManager um) throws IOException
+	public void staffMenu(DoctorManager dm,PhysicalTherapistManager ptm,PatientManager pm,AppointmentManager am,UserManager um) throws Exception
 	{
 		Boolean loop = true;
 		while(loop)
@@ -32,19 +36,22 @@ public class StaffMenu
 			switch (option)
 			{
 				case 1:
-					Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Back");
+					Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Patient through XML\n3.-Doctor\n4.-Physical Therapist\n5.-Back");
 					switch (role)
 					{
 						case 1:
 							registerPatient(pm,ptm,um);
 							break;
-						case 2:				
+						case 2:
+							registerPatientXML(pm,ptm,um);
+							break;
+						case 3:				
 							registerDoctor(dm,um);
 							break;
-						case 3:
+						case 4:
 							registerPhysicalTherapist(ptm,um);
 							break;
-						case 4:
+						case 5:
 							break;
 					}
 					break;
@@ -70,6 +77,90 @@ public class StaffMenu
 		}			
 	}
 	
+	//TODO añadir el paciente obtenido a la base , os tengo que preguntar 
+	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws Exception {
+		//Create JAXBContext
+		JAXBContext context = JAXBContext.newInstance(Patient.class);
+		//Get the unmarshaller
+		Unmarshaller unmarshal = context.createUnmarshaller();
+		// Unmarshall the Patient from a file 
+	    System.out.println("Type the file name for the XML document (expected in the xmls folder):");
+		String fileName=DataObtention.readLine();
+		File file =new File("./xmls/"+fileName);
+		Patient patient =(Patient) unmarshal.unmarshal(file);
+		//Print the patient 
+		System.out.println("Added to the database:"+patient);
+		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(patient.getSport());
+		if (pts.isEmpty())
+		{
+			System.out.println("No physical therpist specialized in "+patient.getSport());
+			System.out.println("Choose one of those: ");
+			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
+			for (PhysicalTherapist physicalTherapist : pysicals)
+			{
+				System.out.println(physicalTherapist);
+			}
+		}
+		else
+		{
+			for (PhysicalTherapist physicalTherapist : pts)
+			{
+				System.out.println(physicalTherapist);
+			}
+		}
+		
+		Integer ptid=DataObtention.readInt("Introduce the id of the Physical Therapist you want: ");
+		PhysicalTherapist pt=ptm.getPhysicalTherapist(ptid);
+		/*MedicalHistory mhaux=patient.getMedicalHistory();
+		MedicalHistory mh=new MedicalHistory(patient.getName(), patient.getDob(),  mhaux.getDiseases(), mhaux.getAllergies(), mhaux.getSurgeries(), mhaux.getWeightKg(), mhaux.getHeightCm());
+		*/
+		//TODO cuando el XML guarde la mh quitar esto
+		System.out.println("To create the medical history: ");
+		System.out.println("Diseases: ");
+		String diseases= DataObtention.readLine();
+		System.out.println("Allergies: ");
+		String allergies= DataObtention.readLine();
+		System.out.println("Surgeries: ");
+		String surgeries= DataObtention.readLine();
+		Float weightKG=DataObtention.readFloat("Weight(kg): ");
+		Integer height=DataObtention.readInt("Height(cm): ");
+		MedicalHistory mh=new MedicalHistory(patient.getName(), patient.getDob(), diseases, allergies, surgeries, weightKG,height);
+		pm.addPatientandMedicalHistory(patient, pt,mh);
+		//Now we need to create a new user for that patient and check if the role patient has been created and if its not, create it
+		Role patientRole=null;
+		if(um.isCreated("Patient")==false)
+		{
+			patientRole = new Role("Patient");
+			um.createRole(patientRole);
+			//I do this to get the ID of the role I've created
+			patientRole = um.getRoleByName("Patient");
+		}
+		else
+		{
+			patientRole = um.getRoleByName("Patient");
+		}
+		User newpatient = new User();		
+		String userName = patient.geteMail();
+		System.out.println("Choose the password for that user: ");
+		String pass =DataObtention.readLine();
+		MessageDigest md=null;
+		try 
+		{
+			md = MessageDigest.getInstance("SHA-512");
+		} 
+		catch (NoSuchAlgorithmException e) 
+		{			
+			e.printStackTrace();
+		}
+		md.update(pass.getBytes());
+		byte [] hash = md.digest();
+		newpatient = new User(userName,hash,patientRole);
+		um.createUser(newpatient);
+		System.out.println("Register completed succesfully!");
+		
+		
+	}
+
 	public void registerPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws IOException
 	{
 		

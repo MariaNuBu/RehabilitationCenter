@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"date","time","pat","doc","pt"})
+@XmlType(propOrder={"date"/*,"doc","pt"*/})
 public class Appointment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -19,13 +19,14 @@ public class Appointment implements Serializable {
 	private Integer id;
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date;
-	@XmlElement
+	//TODO crear un type adapter para time
+	@XmlTransient
 	private Time time;
 	@XmlTransient
 	private Patient pat;
-	@XmlElement
+	@XmlTransient
 	private Doctor doc;
-	@XmlElement
+	@XmlTransient
 	private PhysicalTherapist pt;
 
 	public Appointment() {
