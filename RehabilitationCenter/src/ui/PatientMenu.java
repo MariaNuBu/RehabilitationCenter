@@ -122,7 +122,7 @@ public class PatientMenu
 		{
 			try
 			{
-				System.out.println("Introduce an hour: hh-mm-ss");
+				System.out.println("Introduce an hour: hh:mm:ss");
 				timeString = DataObtention.readLine();
 				appointmentTime = Time.valueOf(timeString);				
 				timeincorrect=false;
