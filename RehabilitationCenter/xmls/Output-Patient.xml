@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<patient name="Ines">
+    <dob>2000-05-02</dob>
+    <address>piramides</address>
+    <phoneNumber>683571561</phoneNumber>
+    <eMail>ines@gmail.com</eMail>
+    <sport>tenis</sport>
+    <disability>broken leg</disability>
+</patient>

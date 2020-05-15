@@ -151,7 +151,7 @@ public class Main
 		while (true)
 		{
 			PatientMenu patientmenu = new PatientMenu();
-			int option = DataObtention.readInt("Welcome patient, choose an option\n 1.-Change password\n 2.-Read appointments\n 3.-Add appointment\n 4.-Exit");
+			int option = DataObtention.readInt("Welcome patient, choose an option\n 1.-Change password\n 2.-Read appointments\n 3.-Add appointment\n 4.-Generate XML\n 5.-Exit");
 			switch(option)
 			{
 				case 1:
@@ -164,9 +164,12 @@ public class Main
 					patientmenu.addAppointment(patID, pm, ptm, dm, am);
 					break;
 				case 4:
+					patientmenu.generateXML(patID,pm);
+					break;
+				case 5:
 					break;
 			}
-			if(option==4)
+			if(option==5)
 			{
 				break;
 			}

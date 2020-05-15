@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
@@ -20,7 +21,7 @@ import pojos.MedicalHistory;
 import pojos.Patient;
 import pojos.PhysicalTherapist;
 import pojos.users.*;
-
+import javax.xml.bind.*;
 public class PatientMenu
 {
 	private BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
@@ -152,5 +153,22 @@ public class PatientMenu
 			}
 		}
 		return taken;
+	}
+
+	public  void generateXML(Integer patID,PatientManager pm) throws JAXBException {
+		Patient patient= pm.getPatient(patID);
+		//Create JAXBContext
+		JAXBContext context = JAXBContext.newInstance(Patient.class);
+		//Get the marshaller
+		Marshaller marshal = context.createMarshaller();
+		//Pretty formatting 
+		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
+		// Marshall the Patient to a file 
+		File file =new File("./xmls/Output-Patient.xml");
+		marshal.marshal(patient,file);
+		//Marshall the point to the screen
+		marshal.marshal(patient,System.out);
+		
+		
 	}
 }
