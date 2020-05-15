@@ -164,7 +164,7 @@ public class Main
 					patientmenu.addAppointment(patID, pm, ptm, dm, am);
 					break;
 				case 4:
-					patientmenu.generateXML(patID,pm);
+					patientmenu.generateXML(patID,pm,am,ptm,dm);
 					break;
 				case 5:
 					break;

@@ -12,7 +12,7 @@ import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "patient")
-@XmlType(propOrder= {"name","dob","address","phoneNumber","eMail","sport","disability","medicalHistory","appointments"})
+@XmlType(propOrder= {"dob","address","phoneNumber","eMail","sport","disability","medicalHistory","appointments"})
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -46,7 +46,8 @@ public class Patient implements Serializable {
 	@XmlTransient
 	private List<Doctor> doctors;
 	
-
+ 
+	
 	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
 			String disability, PhysicalTherapist physicalTerapist) {
 		super();
@@ -60,6 +61,21 @@ public class Patient implements Serializable {
 		this.disability = disability;
 		this.physicalTerapist = physicalTerapist;
 	}
+	//Constuctor for the marshalling
+	public Patient(Integer id, String name, String address, Date dob, Integer phoneNumber, String eMail, String sport,
+		String disability, MedicalHistory medicalHistory, List<Appointment> appointments) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.address = address;
+	this.dob = dob;
+	this.phoneNumber = phoneNumber;
+	this.eMail = eMail;
+	this.sport = sport;
+	this.disability = disability;
+	this.medicalHistory = medicalHistory;
+	this.appointments = appointments;
+}
 
 	public Patient() {
 		super();

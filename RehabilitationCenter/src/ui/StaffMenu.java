@@ -111,21 +111,6 @@ public class StaffMenu
 		
 		Integer ptid=DataObtention.readInt("Introduce the id of the Physical Therapist you want: ");
 		PhysicalTherapist pt=ptm.getPhysicalTherapist(ptid);
-		/*MedicalHistory mhaux=patient.getMedicalHistory();
-		MedicalHistory mh=new MedicalHistory(patient.getName(), patient.getDob(),  mhaux.getDiseases(), mhaux.getAllergies(), mhaux.getSurgeries(), mhaux.getWeightKg(), mhaux.getHeightCm());
-		*/
-		//TODO cuando el XML guarde la mh quitar esto
-		System.out.println("To create the medical history: ");
-		System.out.println("Diseases: ");
-		String diseases= DataObtention.readLine();
-		System.out.println("Allergies: ");
-		String allergies= DataObtention.readLine();
-		System.out.println("Surgeries: ");
-		String surgeries= DataObtention.readLine();
-		Float weightKG=DataObtention.readFloat("Weight(kg): ");
-		Integer height=DataObtention.readInt("Height(cm): ");
-		MedicalHistory mh=new MedicalHistory(patient.getName(), patient.getDob(), diseases, allergies, surgeries, weightKG,height);
-		pm.addPatientandMedicalHistory(patient, pt,mh);
 		//Now we need to create a new user for that patient and check if the role patient has been created and if its not, create it
 		Role patientRole=null;
 		if(um.isCreated("Patient")==false)

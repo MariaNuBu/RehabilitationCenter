@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<patient name="Marta">
-    <dob>2000-08-25</dob>
-    <address>Rivas</address>
-    <phoneNumber>683476061</phoneNumber>
-    <eMail>marta@gmail.com</eMail>
-    <sport>swim</sport>
-    <disability>broken wrist</disability>
+<patient name="Maria Nuñez">
+    <dob>2000-05-02</dob>
+    <address>Usera</address>
+    <phoneNumber>672321314</phoneNumber>
+    <eMail>maria@gmail.com</eMail>
+    <sport>Tennis</sport>
+    <disability>one-armed</disability>
+    <medicalHistory id="1">
+        <Diseases>broken meniscus</Diseases>
+        <Allergies>banana</Allergies>
+        <Surgeries>none</Surgeries>
+        <WeightKg>50.0</WeightKg>
+        <HeightCm>160</HeightCm>
+    </medicalHistory>
     <appointments>
         <appointment>
-        <date>2020-08-15</date>
+            <date>2020-09-09</date>
+            <doc>
+                <name>Cristina Ubeda</name>
+                <eMail>cris@gmail.com</eMail>
+                <speciality>Orthopedics</speciality>
+            </doc>
+            <pt name="Juan Carlos Serraon">
+                <eMail>jcarlos@gmail.com</eMail>
+                <typeSport>Tennis</typeSport>
+            </pt>
         </appointment>
     </appointments>
 </patient>
