@@ -6,12 +6,12 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"eMail","typeSport"})
+@XmlType(propOrder={"id","eMail","typeSport"})
 public class PhysicalTherapist implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-    @XmlTransient
+    @XmlElement
 	private Integer id;
     @XmlAttribute
 	private String name;

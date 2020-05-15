@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder= {"name","eMail","speciality"})
+@XmlType(propOrder= {"id","name","eMail","speciality"})
 
 
 public class Doctor implements Serializable{
@@ -23,7 +23,7 @@ public class Doctor implements Serializable{
 		this.speciality = speciality;
 	}
 	private static final long serialVersionUID = 1L;
-	@XmlTransient
+	@XmlElement
 	private Integer id;
 	@XmlElement
 	private String name;

@@ -1,5 +1,16 @@
 package xml.utils;
+import java.sql.Time;
 
-public class SQLTimeAdapter {
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+public class SQLTimeAdapter extends XmlAdapter<String, Time> {
+	@Override
+	public String marshal(Time sqlTime) throws Exception {
+		return sqlTime.toString();
+	}
+
+	@Override
+	public Time unmarshal(String timeString) throws Exception {
+		return Time.valueOf(timeString);
+	}
 
 }

@@ -8,6 +8,7 @@ import java.util.*;
 public interface AppointmentManager {
 
 	public void addAppointment(Appointment appointment, Patient patient, Doctor doctot, PhysicalTherapist physicalTherapist);
+	public void addAppointmentFromXML(Appointment appointment, Integer patId);
 	public void modifyAppointment(Appointment appointment);
 	public void deleteAppointment(Appointment appointment);
 	public void readAppointments(Integer docId,PatientManager pm,DoctorManager dm); //para que un medico o pT vea todas sus consultas

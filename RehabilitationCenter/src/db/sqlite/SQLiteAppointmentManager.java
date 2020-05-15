@@ -44,6 +44,27 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		}
 
 	}
+	//To add an appointment from a patient obtained by an XML
+	@Override
+	public void addAppointmentFromXML(Appointment appointment, Integer patID) {
+		try{
+
+			String sql = "INSERT INTO appointment (date,time,PATID, DOCID, PTID)"
+						+"VALUES (?,?,?,?,?)";
+			PreparedStatement prepS = c.prepareStatement(sql);
+			prepS.setDate(1, appointment.getDate());
+			prepS.setTime(2, appointment.getTime());
+			prepS.setInt(3, patID);
+			prepS.setInt(4, appointment.getDoc().getId());
+			prepS.setInt(5, appointment.getPt().getId());
+			prepS.executeUpdate();
+			prepS.close();
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
 
 	@Override
 	public void modifyAppointment(Appointment appointment) {
