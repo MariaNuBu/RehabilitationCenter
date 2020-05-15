@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"typeSport"})
+@XmlType(propOrder={"eMail","typeSport"})
 public class PhysicalTherapist implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,7 +21,7 @@ public class PhysicalTherapist implements Serializable {
 	private Date dob;
 	@XmlTransient
 	private Integer phoneNumber;
-	@XmlTransient
+	@XmlElement
 	private String eMail;
 	@XmlElement
 	private String typeSport;

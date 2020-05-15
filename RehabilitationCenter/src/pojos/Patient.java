@@ -12,7 +12,7 @@ import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "patient")
-@XmlType(propOrder= {"name","dob","address","phoneNumber","eMail","sport","disability",/*"medicalHistory",*/"appointments"})
+@XmlType(propOrder= {"name","dob","address","phoneNumber","eMail","sport","disability","medicalHistory","appointments"})
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public class Patient implements Serializable {
 	private String  sport;
 	@XmlElement
 	private String  disability;
-	@XmlTransient
+	@XmlElement
 	private MedicalHistory medicalHistory;
 	@XmlTransient
 	private PhysicalTherapist physicalTerapist;

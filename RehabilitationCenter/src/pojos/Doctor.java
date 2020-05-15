@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder= {"eMail","speciality"})
@@ -20,9 +23,9 @@ public class Doctor implements Serializable{
 		this.speciality = speciality;
 	}
 	private static final long serialVersionUID = 1L;
-	@XmlAttribute
+	@XmlTransient
 	private Integer id;
-	@XmlAttribute
+	@XmlElement
 	private String name;
 	@XmlTransient
 	private String address;
