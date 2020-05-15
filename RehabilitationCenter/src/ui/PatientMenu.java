@@ -155,12 +155,13 @@ public class PatientMenu
 		return taken;
 	}
 
-	public  void generateXML(Integer patID,PatientManager pm) throws JAXBException {
+	public  void generateXML(Integer patID,PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,DoctorManager dm) throws JAXBException {
 		
 		//TODO pasarle tambien los appointments y la mh cuando obtengo el paciente por el id 
-		Patient patient= pm.getPatient(patID);
-		//QUITAR LUEGO
-		System.out.println("Paciente a marshalear"+patient);
+		Patient p= pm.getPatient(patID);
+		MedicalHistory mh= pm.getMedicalHistory(p);
+		List<Appointment> appointments= am.readPatientsAppointments(patID, pm, ptm, dm);
+		Patient patient2marshall=new Patient(p.getId(),p.getName(),p.getAddress(),p.getDob(),p.getPhoneNumber(),p.geteMail(),p.getSport(),p.getDisability(),mh,appointments);
 		//Create JAXBContext
 		JAXBContext context = JAXBContext.newInstance(Patient.class);
 		//Get the marshaller
@@ -169,9 +170,9 @@ public class PatientMenu
 		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
 		// Marshall the Patient to a file 
 		File file =new File("./xmls/Output-Patient.xml");
-		marshal.marshal(patient,file);
+		marshal.marshal(patient2marshall,file);
 		//Marshall the point to the screen
-		marshal.marshal(patient,System.out);
+		marshal.marshal(patient2marshall,System.out);
 		
 		
 	}
