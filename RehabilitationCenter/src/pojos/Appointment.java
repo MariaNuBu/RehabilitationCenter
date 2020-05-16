@@ -6,12 +6,13 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import xml.utils.SQLDateAdapter;
+import xml.utils.SQLTimeAdapter;
 
 import java.io.Serializable;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"date","doc","pt"})
+@XmlType(propOrder={"date","time","doc","pt"})
 public class Appointment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,7 +21,7 @@ public class Appointment implements Serializable {
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date;
 	//TODO crear un type adapter para time
-	@XmlTransient
+	@XmlJavaTypeAdapter(SQLTimeAdapter.class)
 	private Time time;
 	@XmlTransient
 	private Patient pat;

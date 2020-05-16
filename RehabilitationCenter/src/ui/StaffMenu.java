@@ -15,6 +15,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import db.interfaces.*;
+import pojos.Appointment;
 import pojos.Doctor;
 import pojos.MedicalHistory;
 import pojos.Patient;
@@ -43,7 +44,7 @@ public class StaffMenu
 							registerPatient(pm,ptm,um);
 							break;
 						case 2:
-							registerPatientXML(pm,ptm,um);
+							registerPatientXML(pm,ptm,um,am);
 							break;
 						case 3:				
 							registerDoctor(dm,um);
@@ -78,7 +79,7 @@ public class StaffMenu
 	}
 	
 	//TODO añadir el paciente obtenido a la base , os tengo que preguntar 
-	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws Exception {
+	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am) throws Exception {
 		//Create JAXBContext
 		JAXBContext context = JAXBContext.newInstance(Patient.class);
 		//Get the unmarshaller
@@ -90,6 +91,14 @@ public class StaffMenu
 		Patient patient =(Patient) unmarshal.unmarshal(file);
 		//Print the patient 
 		System.out.println("Added to the database:"+patient);
+		//TODO arreglar para que guarde los appointments desde un xml
+		/*int patId=pm.getLastId();
+		//For each appointment of the patient 
+		List<Appointment>appointments=patient.getAppointments();
+		for(Appointment appointment :appointments) {
+			am.addAppointmentFromXML(appointment, patId);
+		}
+		*/
 		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(patient.getSport());
 		if (pts.isEmpty())
 		{
@@ -108,7 +117,6 @@ public class StaffMenu
 				System.out.println(physicalTherapist);
 			}
 		}
-		
 		Integer ptid=DataObtention.readInt("Introduce the id of the Physical Therapist you want: ");
 		PhysicalTherapist pt=ptm.getPhysicalTherapist(ptid);
 		//Now we need to create a new user for that patient and check if the role patient has been created and if its not, create it
