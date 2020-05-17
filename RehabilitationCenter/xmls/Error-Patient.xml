@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<patient>
+    <dob>2000-05-30</dob>
+    <address>Piramides</address>
+    <phoneNumber>672321314</phoneNumber>
+    <eMail>paloma@gmail.com</eMail>
+    <sport>Tennis</sport>
+    <disability>one-armed</disability>
+    <medicalHistory id="1">
+        <Diseases>broken meniscus</Diseases>
+        <Allergies>banana</Allergies>
+        <Surgeries>none</Surgeries>
+        <WeightKg>50.0</WeightKg>
+        <HeightCm>160</HeightCm>
+    </medicalHistory>
+    <appointments>
+        <appointment>
+            <date>2020-09-09</date>
+            <time>12:00:00</time>
+            <doc>
+                <id>1</id>
+                <name>Cristina Ubeda</name>
+                <eMail>cris@gmail.com</eMail>
+                <speciality>Orthopedics</speciality>
+            </doc>
+            <pt name="Juan Carlos Serraon">
+                <id>1</id>
+                <eMail>jcarlos@gmail.com</eMail>
+                <typeSport>Tennis</typeSport>
+            </pt>
+        </appointment>
+    </appointments>
+</patient>

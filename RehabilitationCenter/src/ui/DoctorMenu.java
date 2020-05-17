@@ -1,9 +1,7 @@
 package ui;
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -19,9 +17,6 @@ import pojos.*;
 
 public class DoctorMenu {
 
-	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
-
-
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss");
 	private static DBManager db;
@@ -32,8 +27,7 @@ public class DoctorMenu {
 	//TODO PONER EL USER NAME
 	public  void doctorMenu(DoctorManager dm,PatientManager pm,String username) throws Exception
 	{
-		String name = DataObtention.readName("Please introduce the name of the patient you want to work with");//reader.readLine();
-
+		String name = DataObtention.readName("Please introduce the name of the patient you want to work with");
 		Integer docID=dm.searchDoctorByEmail(username);
 		ArrayList<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
@@ -61,26 +55,26 @@ public class DoctorMenu {
 					"6. List all of the treatments of your patient \n"+"7. Read one of the treatments of your patient \n"+"0. Back \n");
 			switch (choice) {
 			case 1:
-				ShowMedicalHistory(patID,pm);
+				showMedicalHistory(patID,pm);
 				break;
 			case 2:
-				ModifyMedicalHistory(patID,pm,dm);
+				modifyMedicalHistory(patID,pm,dm);
 				break;
 			case 3:
 				createTreatment(patID,docID,pm,dm);
 				break;
 			case 4:
-				ModifyTreatment(patID,dm);
+				modifyTreatment(patID,dm);
 				break;
 			case 5:
-				DeleteTreatment(patID,dm,pm);
+				deleteTreatment(patID,dm,pm);
 				break;
 			case 6:
-				ListTreatments(patID,dm);
+				listTreatments(patID,dm);
 				//This only shows the ID and the type of the treatment
 				break;
 			case 7:
-				ReadTreatment(patID,dm);
+				readTreatment(patID,dm);
 				//Is used after list to read a specific treatment as we need it's ID
 				break;
 			case 0:
@@ -93,8 +87,8 @@ public class DoctorMenu {
 	 }
  }
 
-	 private static void ModifyMedicalHistory(Integer patID,PatientManager pm,DoctorManager dm) throws NumberFormatException, IOException {
-			ShowMedicalHistory(patID,pm);
+	 private static void modifyMedicalHistory(Integer patID,PatientManager pm,DoctorManager dm) throws NumberFormatException, IOException {
+			showMedicalHistory(patID,pm);
 			Patient p = pm.getPatient(patID);
 			MedicalHistory mhToModify = pm.getMedicalHistory(p);
 			System.out.println("Actual diseases: "+ mhToModify.getDiseases());
@@ -146,7 +140,7 @@ public class DoctorMenu {
 
 
 
-	 private static void ShowMedicalHistory(Integer patID,PatientManager pm){
+	 private static void showMedicalHistory(Integer patID,PatientManager pm){
 		 MedicalHistory mh= new MedicalHistory();
 		 	Patient p = pm.getPatient(patID);
 		 	System.out.println("Patient: \n-----------------------------------\n"+p);
@@ -157,7 +151,7 @@ public class DoctorMenu {
 			}
 
 	private static void createTreatment(Integer patID,Integer docID,PatientManager pm,DoctorManager dm) throws IOException {
-		ListTreatments(patID,dm);
+		listTreatments(patID,dm);
 		System.out.println("For a new treatment:");
 		String type =DataObtention.readName("Type of the new treatment: ");
 		Integer length = DataObtention.readInt("Length of the new treatment: ");
@@ -236,7 +230,7 @@ public class DoctorMenu {
 
 
 
-	private static void ModifyTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
+	private static void modifyTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
 		 List<Treatment>treatmentList= new ArrayList<Treatment>();
 			treatmentList= dm.listTreatments(patID);
 			if(treatmentList.isEmpty())
@@ -276,7 +270,7 @@ public class DoctorMenu {
 			} 
 	 }
 	
-	 private static void ListTreatments(Integer patID,DoctorManager dm) {
+	 private static void listTreatments(Integer patID,DoctorManager dm) {
 		 List<Treatment>treatmentList= new ArrayList<Treatment>();
 			treatmentList= dm.listTreatments(patID);
 			if(treatmentList.isEmpty())
@@ -295,10 +289,10 @@ public class DoctorMenu {
 
 	private static Appointment introduceDateAndTime() throws Exception{
 		System.out.println("Introduce a date: yyyy-mm-dd");
-		String dateString = reader.readLine();
+		String dateString = DataObtention.readLine();
 		Date appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
 		System.out.println("Introduce the time: hh:mm:ss");
-		String timeString =reader.readLine();
+		String timeString =DataObtention.readLine();
 		Time appointmentTime = Time.valueOf(timeString);
 		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
 		return appointment;
@@ -307,7 +301,7 @@ public class DoctorMenu {
 
 
 
-	private static void DeleteTreatment(Integer patID,DoctorManager dm,PatientManager pm) throws NumberFormatException, IOException {
+	private static void deleteTreatment(Integer patID,DoctorManager dm,PatientManager pm) throws NumberFormatException, IOException {
 		 List<Treatment>treatmentList= new ArrayList<Treatment>();
 			treatmentList= dm.listTreatments(patID);
 			if(treatmentList.isEmpty())
@@ -326,7 +320,7 @@ public class DoctorMenu {
 				dm.deleteTreatment(treatmentToDelete,patID);
 			}		
 	}
-	private static void ReadTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
+	private static void readTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
 		System.out.println("-------------------------------------------------------");
 		int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to read :");
 		Treatment treatmentToRead= dm.getTreatment(treatID);

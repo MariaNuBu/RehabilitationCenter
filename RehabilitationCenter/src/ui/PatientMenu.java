@@ -30,7 +30,7 @@ public class PatientMenu
 	public void readAppointments(Integer patID,PatientManager pm,PhysicalTherapistManager ptm,DoctorManager dm,AppointmentManager am)
 	{
 		System.out.println("----CURRENT APPOINTMENTS-----");		
-		List<Appointment> currentAppointments= am.readPatientsAppointments(patID, pm, ptm, dm);
+		List<Appointment> currentAppointments= am.getPatientsAppointments(patID, pm, ptm, dm);
 		if(currentAppointments.isEmpty())
 		{
 			System.out.println("You don't have any appointments yet!");
@@ -160,7 +160,7 @@ public class PatientMenu
 		//TODO pasarle tambien los appointments y la mh cuando obtengo el paciente por el id 
 		Patient p= pm.getPatient(patID);
 		MedicalHistory mh= pm.getMedicalHistory(p);
-		List<Appointment> appointments= am.readPatientsAppointments(patID, pm, ptm, dm);
+		List<Appointment> appointments= am.getPatientsAppointments(patID, pm, ptm, dm);
 		Patient patient2marshall=new Patient(p.getId(),p.getName(),p.getAddress(),p.getDob(),p.getPhoneNumber(),p.geteMail(),p.getSport(),p.getDisability(),mh,appointments);
 		//Create JAXBContext
 		JAXBContext context = JAXBContext.newInstance(Patient.class);

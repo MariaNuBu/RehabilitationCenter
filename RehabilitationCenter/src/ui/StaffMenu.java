@@ -13,15 +13,17 @@ import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import db.interfaces.*;
-import pojos.Appointment;
-import pojos.Doctor;
-import pojos.MedicalHistory;
-import pojos.Patient;
-import pojos.PhysicalTherapist;
-import pojos.users.Role;
-import pojos.users.User;
+import pojos.*;
+import pojos.users.*;
+import xml.utils.CustomErrorHandler;
 
 public class StaffMenu 
 {
@@ -79,15 +81,51 @@ public class StaffMenu
 	}
 	
 	//TODO añadir el paciente obtenido a la base , os tengo que preguntar 
-	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am) throws Exception {
+	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am) throws Exception 
+	{
 		//Create JAXBContext
 		JAXBContext context = JAXBContext.newInstance(Patient.class);
 		//Get the unmarshaller
 		Unmarshaller unmarshal = context.createUnmarshaller();
 		// Unmarshall the Patient from a file 
-	    System.out.println("Type the file name for the XML document (expected in the xmls folder):");
-		String fileName=DataObtention.readLine();
-		File file =new File("./xmls/"+fileName);
+		Boolean incorrect = true;
+		File file = null;
+		while(incorrect)
+		{
+			System.out.println("Type the file name for the XML document (expected in the xmls folder):");
+			String fileName=DataObtention.readLine();
+			file =new File("./xmls/"+fileName);
+			try 
+			{
+	        	// Create a DocumentBuilderFactory
+	            DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();
+	            // Set it up so it validates XML documents
+	            dBF.setValidating(true);
+	            // Create a DocumentBuilder and an ErrorHandler (to check validity)
+	            DocumentBuilder builder = dBF.newDocumentBuilder();
+	            CustomErrorHandler customErrorHandler = new CustomErrorHandler();
+	            builder.setErrorHandler(customErrorHandler);
+	            // Parse the XML file and print out the result
+	            Document doc = builder.parse(file);
+	            incorrect = false;
+		    }
+			catch (ParserConfigurationException ex) 
+			{
+	           System.out.println(file + " error while parsing!");
+	            incorrect = true;
+	        } 
+			catch (SAXException ex) 
+			{
+	            System.out.println(file + " was not well-formed!");	 
+	            incorrect = true;
+	        } 
+			catch (IOException ex)
+			{
+	            System.out.println(file + " was not accesible!");
+	            incorrect = true;
+		    }
+		}
+		
 		Patient patient =(Patient) unmarshal.unmarshal(file);
 		//Print the patient 
 		System.out.println("Added to the database:"+patient);

@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<patient name="Ines de los Mozos">
-    <dob>2000-05-02</dob>
-    <address>Piramides</address>
-    <phoneNumber>672321314</phoneNumber>
-    <eMail>ines@gmail.com</eMail>
-    <sport>Tennis</sport>
-    <disability>one-armed</disability>
-    <medicalHistory id="1">
-        <Diseases>broken meniscus</Diseases>
-        <Allergies>banana</Allergies>
-        <Surgeries>none</Surgeries>
-        <WeightKg>50.0</WeightKg>
-        <HeightCm>160</HeightCm>
+<patient name="Alberto Nuñez">
+    <dob>2000-11-22</dob>
+    <address>Antonio Lopez</address>
+    <phoneNumber>675839482</phoneNumber>
+    <eMail>alberto@gmail.com</eMail>
+    <sport>Muay thai</sport>
+    <disability>blind</disability>
+    <medicalHistory id="2">
+        <Diseases>muscular distension</Diseases>
+        <Allergies>polen</Allergies>
+        <Surgeries>apendicitis</Surgeries>
+        <WeightKg>65.0</WeightKg>
+        <HeightCm>176</HeightCm>
     </medicalHistory>
     <appointments>
         <appointment>
-            <date>2020-09-09</date>
+            <date>2020-07-21</date>
             <time>12:00:00</time>
-            <doc>
+            <doc name="Cristina Ubeda">
                 <id>1</id>
-                <name>Cristina Ubeda</name>
                 <eMail>cris@gmail.com</eMail>
-                <speciality>Orthopedics</speciality>
+                <specialty>Orthopedics</specialty>
+            </doc>
+            <pt name="Juan Carlos Serraon">
+                <id>1</id>
+                <eMail>jcarlos@gmail.com</eMail>
+                <typeSport>Tennis</typeSport>
+            </pt>
+        </appointment>
+        <appointment>
+            <date>2020-09-09</date>
+            <time>13:00:00</time>
+            <doc name="Cristina Ubeda">
+                <id>1</id>
+                <eMail>cris@gmail.com</eMail>
+                <specialty>Orthopedics</specialty>
             </doc>
             <pt name="Juan Carlos Serraon">
                 <id>1</id>

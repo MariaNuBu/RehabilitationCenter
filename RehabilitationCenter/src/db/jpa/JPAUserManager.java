@@ -96,14 +96,6 @@ public class JPAUserManager implements UserManager {
 		em.getTransaction().commit();
 	}
 
-	@Override
-	public Role getRole(int id)
-	{
-		Query q = em.createNativeQuery("SELECT * FROM roles WHERE ID=?",Role.class);
-		q.setParameter(1, id);
-		Role role=(Role) q.getSingleResult();
-		return role;
-	}
 	
 	public Integer getUser(String username)
 	{
@@ -153,14 +145,6 @@ public class JPAUserManager implements UserManager {
 			return false;
 		}
 		
-	}
-
-	@Override
-	public List<Role> getRoles() 
-	{
-		Query q = em.createNativeQuery("SELECT * FROM roles",Role.class);
-		List<Role> roles = (List<Role>)q.getResultList();
-		return roles;
 	}
 
 	@Override

@@ -23,12 +23,8 @@ public class Main
 	private static PatientManager pm;
 	private static PhysicalTherapistManager ptm;
 	private static DoctorManager dm;
-
 	private static AppointmentManager am;
-
-	private static UserManager userManager;
-
-	private static BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
+	private static UserManager userManager;	
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public static void main(String [] args) throws NumberFormatException, IOException,Exception
@@ -43,43 +39,6 @@ public class Main
 		userManager = new JPAUserManager();
 		userManager.connect();
 		
-		/*
-		System.out.println("WELCOME TO OUR PARALIMPICS REHABILITATION CENTER");
-
-		System.out.println("Who are you ?\n1.-Patient\n2.-Doctor\n3.-PhysicalTherapist");
-
-		int option = Integer.parseInt(reader.readLine());
-		switch(option)
-		{
-		case 1:
-			PatientMenu patientMenu=new PatientMenu();
-			try {
-				//TODO poner el menu del patient Menu
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		case 2:
-			try {
-				patientsOrAppointments();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case 3:
-			try
-			{
-				choose();
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			break;
-		}
-		*/
-
 		int option=DataObtention.readInt("What do you wanna do?\n1.-Log in staff\n2.-Log in\n0.-Exit");
 		switch(option)
 		{

@@ -12,13 +12,11 @@ public interface UserManager
 	public void createStaff();
 	public void createUser(User user);
 	public void createRole(Role role);
-	public Role getRole(int id);
-	public List<Role> getRoles();
 	public User checkPassword(String username,String password);
 	public User checkPasswordStaff(String username, String password);
 	public boolean isCreated (String role);
-	public Role getRoleByName(String roleName);
-	public boolean userCreated (String userName);
+	public Role getRoleByName(String rolename);
+	public boolean userCreated (String username);
 	public void changePassword(String username,String password);
 	public void fireWorkers (Integer ID);
 	public Integer getUser(String username);

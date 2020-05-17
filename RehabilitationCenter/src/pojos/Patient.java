@@ -38,11 +38,7 @@ public class Patient implements Serializable {
 	private PhysicalTherapist physicalTerapist;
 	@XmlElement(name = "appointment")
 	@XmlElementWrapper (name = "appointments")
-	private List<Appointment> appointments;
-	//TODO los pongo como transient para no mostrarlos en el xml , opinion?
-	//@XmlElement(name = "doctor")
-	//@XmlElementWrapper (name = "doctors")
-	
+	private List<Appointment> appointments;	
 	@XmlTransient
 	private List<Doctor> doctors;
 	

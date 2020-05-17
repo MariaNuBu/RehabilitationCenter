@@ -9,23 +9,16 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder= {"id","name","eMail","speciality"})
+@XmlType(propOrder= {"id","eMail","specialty"})
 
 
 public class Doctor implements Serializable{
 
-	public Doctor(Integer id, String name, Integer phoneNumber, String eMail, String speciality) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.phoneNumber = phoneNumber;
-		this.eMail = eMail;
-		this.speciality = speciality;
-	}
+	
 	private static final long serialVersionUID = 1L;
 	@XmlElement
 	private Integer id;
-	@XmlElement
+	@XmlAttribute
 	private String name;
 	@XmlTransient
 	private String address;
@@ -36,7 +29,7 @@ public class Doctor implements Serializable{
 	@XmlElement
 	private String eMail;
 	@XmlElement
-	private String speciality;
+	private String specialty;
 	@XmlTransient
 	private Double salary;
 	//private List<Appointment> appointments;
@@ -54,8 +47,16 @@ public class Doctor implements Serializable{
 		this.dob = dob;
 		this.phoneNumber = phoneNumber;
 		this.eMail = eMail;
-		this.speciality = speciality;
+		this.specialty = speciality;
 		this.salary = salary;
+	}
+	public Doctor(Integer id, String name, Integer phoneNumber, String eMail, String speciality) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.eMail = eMail;
+		this.specialty = speciality;
 	}
 	public Doctor(String name, String address, Date dob, Integer phoneNumber, String eMail,
 			String speciality, Double salary) {
@@ -65,7 +66,7 @@ public class Doctor implements Serializable{
 		this.dob = dob;
 		this.phoneNumber = phoneNumber;
 		this.eMail = eMail;
-		this.speciality = speciality;
+		this.specialty = speciality;
 		this.salary = salary;
 	}
 
@@ -109,7 +110,7 @@ public class Doctor implements Serializable{
 	public String toString() 
 	{
 		return "Doctor [ID=" + id + ",Name=" + name + ",DOB=" + dob + ",Address=" + address + ",Phone number="
-				+ phoneNumber + ", Email=" + eMail + ", Specialty=" + speciality + ", Salary=" + salary + "]";
+				+ phoneNumber + ", Email=" + eMail + ", Specialty=" + specialty + ", Salary=" + salary + "]";
 	}
 
 	public Integer getId() {
@@ -149,10 +150,10 @@ public class Doctor implements Serializable{
 		this.eMail = eMail;
 	}
 	public String getSpeciality() {
-		return speciality;
+		return specialty;
 	}
 	public void setSpeciality(String speciality) {
-		this.speciality = speciality;
+		this.specialty = speciality;
 	}
 	public Double getSalary() {
 		return salary;

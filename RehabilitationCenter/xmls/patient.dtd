@@ -1,0 +1,31 @@
+<!DOCTYPE patient [
+	<!ELEMENT patient (dob,address,phoneNumber,eMail,sport,disability,medicalHistory,appointments?)>
+	<!ATTLIST patient name CDATA #REQUIRED>
+	<!ELEMENT dob (#PCDATA)>
+	<!ELEMENT address (#PCDATA)>
+	<!ELEMENT phoneNumber (#PCDATA)>
+	<!ELEMENT eMail (#PCDATA)>
+	<!ELEMENT sport (#PCDATA)>
+	<!ELEMENT disability (#PCDATA)>
+	<!ELEMENT medicalHistory (Diseases,Allergies,Surgeries,WeightKg,HeightCm)>
+	<!ATTLIST medicalHistory id CDATA #REQUIRED>
+	<!ELEMENT Diseases (#PCDATA) >
+	<!ELEMENT Allergies (#PCDATA) >
+	<!ELEMENT Surgeries (#PCDATA) >
+	<!ELEMENT WeightKg (#PCDATA) >
+	<!ELEMENT HeightCm (#PCDATA) >
+	<!ELEMENT appointments (appointment*)>
+	<!ELEMENT appointment (date,time,doc,pt)>
+	<!ELEMENT date (#PCDATA) >
+	<!ELEMENT time (#PCDATA) >
+	<!ELEMENT doc (id,eMail,specialty)>
+	<!ELEMENT id (#PCDATA)>
+	<!ATTLIST doc name CDATA #REQUIRED>
+	<!ELEMENT eMail (#PCDATA)>
+	<!ELEMENT Specialty (#PCDATA) >
+	<!ELEMENT pt (id,eMail,typeSport)>
+	<!ELEMENT id (#PCDATA)>
+	<!ATTLIST pt name CDATA #REQUIRED>
+	<!ELEMENT eMail (#PCDATA) >
+	<!ELEMENT typeSport (#PCDATA)>	
+]>
