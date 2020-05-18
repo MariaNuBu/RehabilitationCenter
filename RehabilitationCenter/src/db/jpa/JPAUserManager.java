@@ -17,6 +17,7 @@ import pojos.users.User;
 public class JPAUserManager implements UserManager {
 
 	private EntityManager em;
+	
 	@Override
 	public void connect()
 	{
@@ -38,10 +39,7 @@ public class JPAUserManager implements UserManager {
 			staff = new Role ("Human Resources");
 			em.persist(staff);
 			em.getTransaction().commit();
-			System.out.println("creado rol");
-		}
-		//SUPUESTAMENTE ESTE BLOQUE NO LO NECESITARÍAMOS PORQUE NOS DEVUELVE DIRECTAMENTE EL ROLE
-		
+		}		
 		User boss=null;
 		Boolean userStaff=userCreated("boss");
 		if(userStaff==false)
@@ -64,8 +62,6 @@ public class JPAUserManager implements UserManager {
 			em.getTransaction().begin();
 			em.persist(boss);
 			em.getTransaction().commit();
-			System.out.println("creado user");
-
 		}
 		else
 		{

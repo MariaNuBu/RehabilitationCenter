@@ -15,8 +15,6 @@ public interface AppointmentManager {
 	public Appointment getAppointment(Integer appointmentID);
 	public LinkedList<ArrayList<Appointment>> checkCurrentAppointments(Integer docID, Integer patID);
 	//public List<Appointment> searchDate (Date date);//para buscar appointments por fecha
-	public void deleteAppointmentDoctor(Integer ID);
-	public void deleteAppointmentPhysicalTherapist(Integer ID);
 	public void readPTAppointments(Integer ptID, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm);
 	public List<Appointment> getPatientsAppointments(Integer patID,PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm);
 	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm);

@@ -24,7 +24,6 @@ public class DoctorMenu {
 	private static AppointmentManager am;
 	private static PatientManager pm;
 
-	//TODO PONER EL USER NAME
 	public  void doctorMenu(DoctorManager dm,PatientManager pm,String username) throws Exception
 	{
 		String name = DataObtention.readName("Please introduce the name of the patient you want to work with");

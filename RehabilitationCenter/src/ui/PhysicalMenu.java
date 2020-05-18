@@ -15,11 +15,7 @@ import pojos.*;
 public class PhysicalMenu
 {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static DBManager db;
-	private static PatientManager pm;
-	private static PhysicalTherapistManager ptm;
-
-	//TODO PONER EL USERNAME
+		
 	public void readTreatment(String username, PhysicalTherapistManager ptm, PatientManager pm) throws IOException
 	{
 		Integer ptID = ptm.searchPTByEmail(username);
@@ -55,7 +51,7 @@ public class PhysicalMenu
 		}
 
 	}
-	//TODO cambiar el user
+	
 	public void checkAppointments(String username, PhysicalTherapistManager ptm, AppointmentManager am, PatientManager pm, DoctorManager dm) throws IOException
 	{
 		Integer ptID = ptm.searchPTByEmail(username);

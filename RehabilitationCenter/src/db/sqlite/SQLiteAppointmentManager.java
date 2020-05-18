@@ -85,7 +85,6 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	//TODO no funciona el delete
 	public void deleteAppointment(Appointment appointment) {
 		try{
 
@@ -195,41 +194,6 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		}
 		return docAndPatAppointments;
 	}
-
-	@Override
-	public void deleteAppointmentDoctor(Integer ID)
-	{
-		try
-		{
-			String sql = "DELETE FROM appointment WHERE DOCID=?";
-			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1,ID);
-			ps.executeUpdate();
-			ps.close();
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void deleteAppointmentPhysicalTherapist(Integer ID)
-	{
-		try
-		{
-			String sql = "DELETE FROM appointment WHERE PTID=?";
-			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1,ID);
-			ps.executeUpdate();
-			ps.close();
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
 
 	@Override
 	public void readPTAppointments(Integer ptId, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm) {

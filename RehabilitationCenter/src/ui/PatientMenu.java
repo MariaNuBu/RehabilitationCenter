@@ -1,9 +1,7 @@
 package ui;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
@@ -24,7 +22,6 @@ import pojos.users.*;
 import javax.xml.bind.*;
 public class PatientMenu
 {
-	private BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public void readAppointments(Integer patID,PatientManager pm,PhysicalTherapistManager ptm,DoctorManager dm,AppointmentManager am)
@@ -157,7 +154,6 @@ public class PatientMenu
 
 	public  void generateXML(Integer patID,PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,DoctorManager dm) throws JAXBException {
 		
-		//TODO pasarle tambien los appointments y la mh cuando obtengo el paciente por el id 
 		Patient p= pm.getPatient(patID);
 		MedicalHistory mh= pm.getMedicalHistory(p);
 		List<Appointment> appointments= am.getPatientsAppointments(patID, pm, ptm, dm);

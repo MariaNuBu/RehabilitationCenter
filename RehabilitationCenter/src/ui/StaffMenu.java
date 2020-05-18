@@ -163,13 +163,8 @@ public class StaffMenu
 		{
 			patientRole = new Role("Patient");
 			um.createRole(patientRole);
-			//I do this to get the ID of the role I've created
-			patientRole = um.getRoleByName("Patient");
 		}
-		else
-		{
-			patientRole = um.getRoleByName("Patient");
-		}
+		patientRole = um.getRoleByName("Patient");
 		User newpatient = new User();		
 		String userName = patient.geteMail();
 		System.out.println("Choose the password for that user: ");
@@ -188,8 +183,6 @@ public class StaffMenu
 		newpatient = new User(userName,hash,patientRole);
 		um.createUser(newpatient);
 		System.out.println("Register completed succesfully!");
-		
-		
 	}
 
 	public void registerPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws IOException
@@ -224,14 +217,14 @@ public class StaffMenu
 			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
 			for (PhysicalTherapist physicalTherapist : pysicals)
 			{
-				System.out.println(physicalTherapist);
+				System.out.println("[ID="+physicalTherapist.getId()+" , Name= "+physicalTherapist.getName()+" ,Sport= "+physicalTherapist.getTypeSport());
 			}
 		}
 		else
 		{
 			for (PhysicalTherapist physicalTherapist : pts)
 			{
-				System.out.println(physicalTherapist);
+				System.out.println("[ID="+physicalTherapist.getId()+" , Name= "+physicalTherapist.getName()+" ,Sport= "+physicalTherapist.getTypeSport());
 			}
 		}
 		
@@ -246,13 +239,8 @@ public class StaffMenu
 		{
 			patientRole = new Role("Patient");
 			um.createRole(patientRole);
-			//I do this to get the ID of the role I've created
-			patientRole = um.getRoleByName("Patient");
 		}
-		else
-		{
-			patientRole = um.getRoleByName("Patient");
-		}
+		patientRole = um.getRoleByName("Patient");
 		User patient = new User();		
 		String userName = email;
 		System.out.println("Choose the password for that user: ");
@@ -270,9 +258,9 @@ public class StaffMenu
 		byte [] hash = md.digest();
 		patient = new User(userName,hash,patientRole);
 		um.createUser(patient);
-		System.out.println("Register completed succesfully!");
-		
+		System.out.println("Register completed succesfully!");		
 	}
+	
 	public void registerDoctor(DoctorManager dm,UserManager um) throws IOException
 	{
 		String name=DataObtention.readName("Name and Surname: ");
@@ -295,13 +283,8 @@ public class StaffMenu
 		{
 			doctorRole = new Role("Doctor");
 			um.createRole(doctorRole);
-			//I do this to get the ID of the role I've created
-			doctorRole = um.getRoleByName("Doctor");
 		}
-		else
-		{
-			doctorRole = um.getRoleByName("Doctor");
-		}
+		doctorRole = um.getRoleByName("Doctor");
 		User doctor = new User();		
 		String userName = email;
 		System.out.println("Choose the password for that user: ");
@@ -320,9 +303,8 @@ public class StaffMenu
 		doctor = new User(userName,hash,doctorRole);
 		um.createUser(doctor);
 		System.out.println("Register completed succesfully!");
-		
-		
 	}
+	
 	public void registerPhysicalTherapist(PhysicalTherapistManager ptm,UserManager um) throws IOException
 	{
 		
@@ -340,24 +322,18 @@ public class StaffMenu
 		Double salary = DataObtention.readDouble("Salary: ");
 		PhysicalTherapist pt = new PhysicalTherapist(name, address, DOB, phone, email, sport, salary);
 		ptm.addPhysicalTherapist(pt);
-		//Now we need to create a new user for that physical therapist and check if the role pysical therapist has been created and if its not, create it
+		//Now we need to create a new user for that physical therapist and check if the role physical therapist has been created and if its not, create it
 		Role physicalTherapistRole=null;
 		//TODO ESTO DA ERROR
 		if(um.isCreated("Physical Therapist")==false)
 		{
 			physicalTherapistRole = new Role("Physical Therapist");
-			um.createRole(physicalTherapistRole);
-			//I do this to get the ID of the role I've created
-			physicalTherapistRole = um.getRoleByName("Physical Therapist");
+			um.createRole(physicalTherapistRole);			
 		}
-		else
-		{
-			physicalTherapistRole = um.getRoleByName("Physical Therapist");
-		}
+		physicalTherapistRole = um.getRoleByName("Physical Therapist");
 		User physicalTherpist = new User();		
 		System.out.println(email);
-		String userName = email;
-		
+		String userName = email;		
 		System.out.println("Choose the password for that user: ");
 		String pass = DataObtention.readLine();
 		MessageDigest md=null;
@@ -388,9 +364,8 @@ public class StaffMenu
 		Doctor tofire = dm.getDoctor(ID);
 		um.fireWorkers(tofire.getId());
 		//probar borrar esto y que borre todo
-		am.deleteAppointmentDoctor(ID);
-		dm.deleteDoctor(ID);
-		
+		//am.deleteAppointmentDoctor(ID);
+		dm.deleteDoctor(ID);		
 	}
 	
 	public void firePhysicalTherapist (PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,UserManager um)
@@ -404,12 +379,8 @@ public class StaffMenu
 		Integer ID = DataObtention.readInt("Introduce the ID of the physical therapist you want to fire");
 		PhysicalTherapist tofire = ptm.getPhysicalTherapist(ID);
 		Integer userID = um.getUser(tofire.geteMail());
-		um.fireWorkers(userID);
-		//TODO probar a borrar esta linea y borrar todas las tablas
-		am.deleteAppointmentPhysicalTherapist(ID);
-		ptm.deletePhysicalTherapist(ID);
-		//We need to reasign a physical therapist to the patients
 		ArrayList<Patient> patients = new ArrayList <Patient>();
+		//We need to reasign a physical therapist to the patients
 		patients = ptm.getAllPatients(ID);
 		for (Patient patient : patients) 
 		{
@@ -421,12 +392,20 @@ public class StaffMenu
 			}
 			for (PhysicalTherapist physicalTherapist : physicalTherapists) 
 			{
-				System.out.println(physicalTherapist);
+				if (physicalTherapist.getId()==ID)
+				{
+					//Do this to avoid showing the physical deleted
+				}
+				else
+				{
+					System.out.println(physicalTherapist);
+				}
 			}
 			Integer newptID = DataObtention.readInt("Type the ID of the physical therapist you want for that patient: ");
 			pm.changePhysicalTherapist(patient,newptID);
 		}
-		
+		um.fireWorkers(userID);
+		ptm.deletePhysicalTherapist(ID);	
 	}
 	
 }
