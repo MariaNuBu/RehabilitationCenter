@@ -21,11 +21,8 @@
 	<!ELEMENT doc (id,eMail,specialty)>
 	<!ELEMENT id (#PCDATA)>
 	<!ATTLIST doc name CDATA #REQUIRED>
-	<!ELEMENT eMail (#PCDATA)>
-	<!ELEMENT Specialty (#PCDATA) >
+	<!ELEMENT specialty (#PCDATA) >
 	<!ELEMENT pt (id,eMail,typeSport)>
-	<!ELEMENT id (#PCDATA)>
 	<!ATTLIST pt name CDATA #REQUIRED>
-	<!ELEMENT eMail (#PCDATA) >
 	<!ELEMENT typeSport (#PCDATA)>	
 ]>

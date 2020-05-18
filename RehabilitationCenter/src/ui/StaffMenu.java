@@ -80,7 +80,6 @@ public class StaffMenu
 		}			
 	}
 	
-	//TODO añadir el paciente obtenido a la base , os tengo que preguntar 
 	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am) throws Exception 
 	{
 		//Create JAXBContext
@@ -129,14 +128,7 @@ public class StaffMenu
 		Patient patient =(Patient) unmarshal.unmarshal(file);
 		//Print the patient 
 		System.out.println("Added to the database:"+patient);
-		//TODO arreglar para que guarde los appointments desde un xml
-		/*int patId=pm.getLastId();
-		//For each appointment of the patient 
-		List<Appointment>appointments=patient.getAppointments();
-		for(Appointment appointment :appointments) {
-			am.addAppointmentFromXML(appointment, patId);
-		}
-		*/
+		System.out.println("----------------------------------------------------------------------");
 		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(patient.getSport());
 		if (pts.isEmpty())
 		{
@@ -157,6 +149,15 @@ public class StaffMenu
 		}
 		Integer ptid=DataObtention.readInt("Introduce the id of the Physical Therapist you want: ");
 		PhysicalTherapist pt=ptm.getPhysicalTherapist(ptid);
+		MedicalHistory mh = new MedicalHistory(patient.getName(),patient.getDob(),patient.getMedicalHistory().getDiseases(),patient.getMedicalHistory().getAllergies(),patient.getMedicalHistory().getSurgeries(),patient.getMedicalHistory().getWeightKg(),patient.getMedicalHistory().getHeightCm());
+		pm.addPatientandMedicalHistory(patient, pt, mh);
+		//Now we insert the appointments
+		Integer patId=pm.getLastId();
+		//For each appointment of the patient 
+		List<Appointment>appointments=patient.getAppointments();
+		for(Appointment appointment :appointments) {
+			am.addAppointmentFromXML(appointment, patId);
+		}				
 		//Now we need to create a new user for that patient and check if the role patient has been created and if its not, create it
 		Role patientRole=null;
 		if(um.isCreated("Patient")==false)
@@ -324,7 +325,6 @@ public class StaffMenu
 		ptm.addPhysicalTherapist(pt);
 		//Now we need to create a new user for that physical therapist and check if the role physical therapist has been created and if its not, create it
 		Role physicalTherapistRole=null;
-		//TODO ESTO DA ERROR
 		if(um.isCreated("Physical Therapist")==false)
 		{
 			physicalTherapistRole = new Role("Physical Therapist");
@@ -363,8 +363,6 @@ public class StaffMenu
 		Integer ID = DataObtention.readInt("Introduce the ID of the doctor you want to fire");
 		Doctor tofire = dm.getDoctor(ID);
 		um.fireWorkers(tofire.getId());
-		//probar borrar esto y que borre todo
-		//am.deleteAppointmentDoctor(ID);
 		dm.deleteDoctor(ID);		
 	}
 	
