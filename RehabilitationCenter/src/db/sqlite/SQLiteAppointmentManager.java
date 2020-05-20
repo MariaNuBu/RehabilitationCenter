@@ -162,39 +162,6 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 
-	@Override
-	public LinkedList<ArrayList<Appointment>> checkCurrentAppointments(Integer docID, Integer patID) {
-		LinkedList<ArrayList<Appointment>> docAndPatAppointments = new LinkedList<ArrayList<Appointment>>();
-		ArrayList<Appointment>docAppointments = new ArrayList<Appointment>();
-		ArrayList<Appointment>patAppointments = new ArrayList<Appointment>();
-		try{
-			String sql = "SELECT * FROM appointment WHERE DOCID=?";
-			PreparedStatement prepS = c.prepareStatement(sql);
-			prepS.setInt(1, docID);
-			ResultSet rs = prepS.executeQuery();
-			while(rs.next()){
-				Date apDate = rs.getDate("Date");
-				Time apTime = rs.getTime("Time");
-				Appointment ap = new Appointment (apDate, apTime);
-				docAppointments.add(ap);
-			}
-			docAndPatAppointments.add(docAppointments);
-			String sql2 = "SELECT * FROM appointment WHERE PATID=?";
-			PreparedStatement prepS2 = c.prepareStatement(sql2);
-			prepS2.setInt(1, patID);
-			ResultSet rs2 = prepS2.executeQuery();
-			while(rs.next()){
-				Date apDate = rs2.getDate("Date");
-				Time apTime = rs2.getTime("Time");
-				Appointment ap = new Appointment(apDate, apTime);
-				patAppointments.add(ap);
-			}
-			docAndPatAppointments.add(patAppointments);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return docAndPatAppointments;
-	}
 
 	@Override
 	public void deleteAppointmentDoctor(Integer ID)
@@ -285,7 +252,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 				PhysicalTherapist pt = new PhysicalTherapist();
 				pt = p.getPhysicalTerapist();
 				Doctor d = new Doctor();
-				d = dm.getDoctor(docID);				
+				d = dm.getDoctor(docID);
 				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
 				appointments.add(appointmentToRead);
 			}
@@ -321,7 +288,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 				PhysicalTherapist pt = new PhysicalTherapist();
 				pt = p.getPhysicalTerapist();
 				Doctor d = new Doctor();
-				d = dm.getDoctor(docID);				
+				d = dm.getDoctor(docID);
 				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
 				appointments.add(appointmentToRead);
 			}
@@ -360,7 +327,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 				PhysicalTherapist pt = new PhysicalTherapist();
 				pt = p.getPhysicalTerapist();
 				Doctor d = new Doctor();
-				d = dm.getDoctor(docID);				
+				d = dm.getDoctor(docID);
 				Appointment appointmentToRead = new Appointment(apID, apDate, apTime,p,d,pt);
 				appointments.add(appointmentToRead);
 			}
@@ -371,7 +338,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		{
 			e.printStackTrace();
 		}
-		return appointments;	
+		return appointments;
 	}
 
 

@@ -24,7 +24,7 @@ public class Main
 	private static PhysicalTherapistManager ptm;
 	private static DoctorManager dm;
 	private static AppointmentManager am;
-	private static UserManager userManager;	
+	private static UserManager userManager;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public static void main(String [] args) throws NumberFormatException, IOException,Exception
@@ -38,7 +38,7 @@ public class Main
 		am = db.getAppointmentManager();
 		userManager = new JPAUserManager();
 		userManager.connect();
-		
+
 		int option=DataObtention.readInt("What do you wanna do?\n1.-Log in staff\n2.-Log in\n0.-Exit");
 		switch(option)
 		{
@@ -50,7 +50,7 @@ public class Main
 					String username = DataObtention.readName("Username: ");
 					System.out.println("Password: ");
 					String pass =DataObtention.readLine();
-					
+
 					try
 					{
 						staff = userManager.checkPasswordStaff(username, pass);
@@ -59,7 +59,7 @@ public class Main
 					{
 						System.out.println("Wrong credentials, please try again");
 					}
-				}				
+				}
 				StaffMenu staffMenu = new StaffMenu();
 				staffMenu.staffMenu(dm,ptm,pm,am,userManager);
 				break;
@@ -80,12 +80,12 @@ public class Main
 					{
 						System.out.println("Wrong credentials, please try again");
 					}
-				}				
+				}
 				if (user.getRole().getRole().equalsIgnoreCase("doctor"))
 				{
 					patientsOrAppointments(username);
 				}
-				else if (user.getRole().getRole().equalsIgnoreCase("patient")) 
+				else if (user.getRole().getRole().equalsIgnoreCase("patient"))
 				{
 					patientChoose(username, pm, dm, ptm, am);
 				}
@@ -93,7 +93,7 @@ public class Main
 				{
 					choose(username);
 				}
-				else 
+				else
 				{
 					System.out.println("Invalid role.");
 				}
@@ -101,7 +101,7 @@ public class Main
 				System.out.println("You have succesfully exit the program. Goodbye!");
 				break;
 		}
-		
+
 	}
 
 	private static void patientChoose(String username, PatientManager pm, DoctorManager dm, PhysicalTherapistManager ptm, AppointmentManager am) throws Exception
@@ -117,7 +117,7 @@ public class Main
 					changePassword(username);
 					break;
 				case 2:
-					patientmenu.readAppointments(patID, pm, ptm, dm,am);					
+					patientmenu.readAppointments(patID, pm, ptm, dm,am);
 					break;
 				case 3:
 					patientmenu.addAppointment(patID, pm, ptm, dm, am);
@@ -134,11 +134,11 @@ public class Main
 			}
 		}
 	}
-	
-	
+
+
 	private static void patientsOrAppointments(String username) throws Exception {
 		while(true){
-		
+
 		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.-Check patients\n "+"2.-Check appointments\n 3.-Change password\n 4.-Exit ");
 		switch(option)
 		{
@@ -146,7 +146,7 @@ public class Main
 				DoctorMenu doctorMenu= new DoctorMenu();
 				try {
 					doctorMenu.doctorMenu(dm,pm,username);
-					
+
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -154,8 +154,8 @@ public class Main
 			case 2:
 				DoctorMenu doctorMenuApp = new DoctorMenu();
 				try{
-					doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username);
-					
+					doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username,ptm);
+
 				}catch(Exception e){
 					e.printStackTrace();
 					}
@@ -173,8 +173,8 @@ public class Main
 		}
 	}
 
-	
-	private static void choose(String username) throws Exception 
+
+	private static void choose(String username) throws Exception
 	{
 		while(true)
 		{
@@ -182,10 +182,10 @@ public class Main
 			PhysicalMenu physicalMenu= new PhysicalMenu();
 			switch(option)
 			{
-				case 1:					
+				case 1:
 					try
 					{
-						physicalMenu.readTreatment(username,ptm,pm);					
+						physicalMenu.readTreatment(username,ptm,pm);
 					}
 					catch(Exception e) {
 						e.printStackTrace();
@@ -193,7 +193,7 @@ public class Main
 					break;
 				case 2:
 					try
-					{	
+					{
 						physicalMenu.checkAppointments(username,ptm,am,pm,dm);
 					}
 					catch(Exception e)
@@ -212,9 +212,9 @@ public class Main
 				break;
 			}
 		}
-		
+
 	}
-	
+
 	private static void changePassword (String username)
 	{
 		try
@@ -225,11 +225,11 @@ public class Main
 				System.out.println("Introduce your current password");
 				String actualpass = DataObtention.readLine();
 				user = userManager.checkPassword(username, actualpass);
-				if (user == null) 
+				if (user == null)
 				{
 					System.out.println("Wrong credentials, please try again!");
 				}
-			}						
+			}
 			System.out.println("Introduce your new password");
 			String newpass = DataObtention.readLine();
 			String checkpass="";
@@ -237,7 +237,7 @@ public class Main
 			{
 				System.out.println("Introduce yout new password again");
 				checkpass=DataObtention.readLine();
-			}					
+			}
 			userManager.changePassword(username,newpass);
 		}
 		catch(Exception e)

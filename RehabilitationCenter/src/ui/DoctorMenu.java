@@ -42,9 +42,9 @@ public class DoctorMenu {
 		doctorSubMenu(patId,docID,pm,dm);
 	}
 
-	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,String userName) throws Exception{
+	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,String userName, PhysicalTherapistManager ptm) throws Exception{
 		int docID = dm.searchDoctorByEmail(userName);
-		doctorAppointmentSubMenu(docID, dm, am, pm);
+		doctorAppointmentSubMenu(docID, dm, am, pm, ptm);
 	}
 
 	private static void doctorSubMenu(Integer patID,Integer docID,PatientManager pm,DoctorManager dm)throws Exception{
@@ -161,7 +161,7 @@ public class DoctorMenu {
 	}
 
 
-	private static void doctorAppointmentSubMenu(Integer docID, DoctorManager dm, AppointmentManager am, PatientManager pm) throws Exception {
+	private static void doctorAppointmentSubMenu(Integer docID, DoctorManager dm, AppointmentManager am, PatientManager pm, PhysicalTherapistManager ptm) throws Exception {
 		while(true){
 
 			int option =DataObtention.readInt("Select one of this options\n "+"1.Read appointments\n "+"2.Add appointment\n "+"3.Modify appointment\n "+"4.Delete appointment\n"+"0.Return ");
@@ -169,55 +169,135 @@ public class DoctorMenu {
 
 			case 1:
 				List<Patient>currentPatients = dm.getDoctorsPatients(docID);
+				if(currentPatients.isEmpty()){
+					System.out.println("You don´t have any patients yet");
+				}else{
 				listCurrentPatients(currentPatients);
-				System.out.println("APPOINTMENTS");
-				am.readAppointments(docID,pm,dm);
+				System.out.println("---CURRENT APPOINTMENTS---");
+				List<Appointment>currentAppointments = am.getDoctorsAppointments(docID, pm, ptm, dm);
+				if(currentAppointments.isEmpty()){
+					System.out.println("You don´t have any appointments yet");
+				}else{
+					for(Appointment appointment : currentAppointments){
+						System.out.println(appointment);
+						}
+					}
+				}
 				break;
 			case 2:
 				List<Patient>currentPatients2 = dm.getDoctorsPatients(docID);
-				listCurrentPatients(currentPatients2);
-				System.out.println("---------------------------");
-				System.out.println("CURRENT APPOINTMENTS");
-				am.readAppointments(docID,pm,dm);
-				Integer patId = DataObtention.readInt("Choose a patients ID for the new appointment");
-				Patient patient = pm.getPatient(patId);
-				PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();
-				Doctor doctor = dm.getDoctor(docID);
-				Appointment appointment = introduceDateAndTime();
-				am.addAppointment(appointment, patient, doctor, physicalTherapist);
+				if(currentPatients2.isEmpty()){
+					System.out.println("You don´t have any patients yet");
+				}else{
+					listCurrentPatients(currentPatients2);
+					System.out.println("---------------------------");
+					System.out.println("CURRENT APPOINTMENTS");
+					List<Appointment>currentAppointments = am.getDoctorsAppointments(docID, pm, ptm, dm);
+					if(currentAppointments.isEmpty()){
+						System.out.println("You don´t have any appointments yet");
+					}else{
+						for(Appointment appointment : currentAppointments){
+							System.out.println(appointment);
+							}
+						}
+					Integer patId = DataObtention.readInt("Choose a patients ID for the new appointment");
+					Patient patient = pm.getPatient(patId);
+					PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();
+					Doctor doctor = dm.getDoctor(docID);
+					Appointment appointment = null;
+					boolean taken;
+					try{
+						appointment = introduceDateAndTime();
+						List<Appointment> ptApps = am.getPhysicalTherapistAppointments(physicalTherapist.getId(), pm, ptm, dm);
+						taken = checkAppointments(ptApps, appointment);
+						while(taken==true){
+							System.out.println("Please try with another appointment");
+							appointment = introduceDateAndTime();
+							taken = checkAppointments(ptApps, appointment);
+						}
+						List<Appointment>patApps = am.getPatientsAppointments(patId, pm, ptm, dm);
+						boolean taken2 = checkAppointments(patApps, appointment);
+						while(taken2 == true){
+							System.out.println("Please try with another appointment");
+							appointment = introduceDateAndTime();
+							taken2 = checkAppointments(patApps, appointment);
+						}
+						am.addAppointment(appointment, patient, doctor, physicalTherapist);
+						System.out.println("Appointment added successfully!");
+					}catch(Exception e){
+						e.printStackTrace();
+						System.out.println("Error while introducing the appointment");
+					}
+				}
 				break;
 			case 3:
 				List<Patient>currentPatients3 = dm.getDoctorsPatients(docID);
-				listCurrentPatients(currentPatients3);
-				System.out.println("CURRENT APPOINTMENTS");
-				am.readAppointments(docID,pm,dm);
-				Integer idAp =DataObtention.readInt("Select the ID of the appointment you want to modify");
-				Appointment appointmentToModify = am.getAppointment(idAp);
-				Appointment modifiedAppointment = modifyAppointment(appointmentToModify);
-				//TODO
-				/*
-				LinkedList<ArrayList<Appointment>> appointmentsToCheck = am.checkCurrentAppointments(docID, appointmentToModify.getPat().getId());
-				boolean taken = checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
-				while(taken=true){
-				modifiedAppointment = modifyAppointment(appointmentToModify);
-				appointmentsToCheck = am.checkCurrentAppointments(docID, appointmentToModify.getPat().getId());
-				taken = checkAppointments(appointmentsToCheck, modifiedAppointment, appointmentToModify);
+				if(currentPatients3.isEmpty()){
+					System.out.println("You don´t have any patients yet");
+				}else{
+					listCurrentPatients(currentPatients3);
+					System.out.println("---------------------------");
+					System.out.println("CURRENT APPOINTMENTS");
+					List<Appointment>currentAppointments = am.getDoctorsAppointments(docID, pm, ptm, dm);
+					if(currentAppointments.isEmpty()){
+						System.out.println("You don´t have any appointments yet");
+					}else{
+						for(Appointment appointment : currentAppointments){
+							System.out.println(appointment);
+							}
+						Integer idAp =DataObtention.readInt("Select the ID of the appointment you want to modify");
+						Appointment appointmentToModify = am.getAppointment(idAp);
+						Patient pat = appointmentToModify.getPat();
+						PhysicalTherapist pt = appointmentToModify.getPt();
+						try{
+						Appointment modifiedAppointment = modifyAppointment(appointmentToModify);
+						List<Appointment> ptApps = am.getPhysicalTherapistAppointments(pt.getId(), pm, ptm, dm);
+						boolean taken = checkAppointments(ptApps, modifiedAppointment);
+						while(taken==true){
+							System.out.println("Please try with another appointment");
+							modifiedAppointment = modifyAppointment(appointmentToModify);
+							taken = checkAppointments(ptApps, modifiedAppointment);
+						}
+						List<Appointment>patApps = am.getPatientsAppointments(pat.getId(), pm, ptm, dm);
+						boolean taken2 = checkAppointments(patApps, modifiedAppointment);
+						while(taken2 == true){
+							System.out.println("Please try with another appointment");
+							modifiedAppointment = modifyAppointment(appointmentToModify);
+							taken2 = checkAppointments(ptApps, modifiedAppointment);
+						}
+						am.modifyAppointment(modifiedAppointment);
+						System.out.println("Appointment added successfully!");
+						}catch(Exception e){
+							e.printStackTrace();
+							System.out.println("Error while introducing the appointment");
+						}
+					}
 				}
-				*/
-				am.modifyAppointment(modifiedAppointment);
 				break;
 			case 4:
 				List<Patient>currentPatients4 = dm.getDoctorsPatients(docID);
-				listCurrentPatients(currentPatients4);
-				System.out.println("CURRENT APPOINTMENTS");
-				am.readAppointments(docID,pm,dm);
-				Integer apID = DataObtention.readInt("Select the ID of the appointment you want to delete");
-				Appointment appointmentToDelete = am.getAppointment(apID);
-				System.out.println("Are you sure you want to delete this appointment?-->Y/N");
-				String answer = DataObtention.readLine();
-				if(answer.equals("Y")){
-					am.deleteAppointment(appointmentToDelete);
+				if(currentPatients4.isEmpty()){
+					System.out.println("You don´t have any patients yet");
+				}else{
+					listCurrentPatients(currentPatients4);
+					System.out.println("CURRENT APPOINTMENTS");
+					List<Appointment>currentAppointments = am.getDoctorsAppointments(docID, pm, ptm, dm);
+					if(currentAppointments.isEmpty()){
+						System.out.println("You don´t have any appointments yet");
+					}else{
+						for(Appointment appointment : currentAppointments){
+							System.out.println(appointment);
+							}
+					Integer apID = DataObtention.readInt("Select the ID of the appointment you want to delete");
+					Appointment appointmentToDelete = am.getAppointment(apID);
+					System.out.println("Are you sure you want to delete this appointment?-->Y/N");
+					String answer = DataObtention.readLine();
+					if(answer.equals("Y")){
+						am.deleteAppointment(appointmentToDelete);
+					}
 				}
+			}
+
 				break;
 			case 0:
 				return;
@@ -267,9 +347,9 @@ public class DoctorMenu {
 				Treatment updatedTreatment= new Treatment(id,newType,intnewLength);
 				dm.modifyTreatment(updatedTreatment);
 				System.out.println("The treatment has been successfully modified");
-			} 
+			}
 	 }
-	
+
 	 private static void listTreatments(Integer patID,DoctorManager dm) {
 		 List<Treatment>treatmentList= new ArrayList<Treatment>();
 			treatmentList= dm.listTreatments(patID);
@@ -283,7 +363,7 @@ public class DoctorMenu {
 				for (Treatment treatment:treatmentList) {
 					System.out.println("ID: "+treatment.getId()+", Type: "+treatment.getType());
 				}
-			}		
+			}
 	 }
 
 
@@ -318,7 +398,7 @@ public class DoctorMenu {
 				int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to delete :");
 				Treatment treatmentToDelete= dm.getTreatment(treatID);
 				dm.deleteTreatment(treatmentToDelete,patID);
-			}		
+			}
 	}
 	private static void readTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException {
 		System.out.println("-------------------------------------------------------");
@@ -363,37 +443,18 @@ public class DoctorMenu {
 		return modifiedAppointment;
 
 	}
-
-	public static boolean checkAppointments(LinkedList<ArrayList<Appointment>>appointments, Appointment modifiedAppointment, Appointment appointmentToModify) throws Exception{
-		boolean appointmentTaken1 = false;
-		boolean appointmentTaken2 = false;
+	private static boolean checkAppointments(List<Appointment>Apps, Appointment appointment) throws Exception{
+		Date dateToCheck = appointment.getDate();
+		Time timeToCheck = appointment.getTime();
 		boolean taken = false;
-		ArrayList<Appointment> doctorsAppointments = appointments.get(0);
-		Date dateToCheck = modifiedAppointment.getDate();
-		Time timeToCheck = modifiedAppointment.getTime();
-		for(int i=0; i<doctorsAppointments.size(); i++){
-			Date date = doctorsAppointments.get(i).getDate();
-			Time time = doctorsAppointments.get(i).getTime();
+		for(Appointment app: Apps){
+			Date date = app.getDate();
+			Time time = app.getTime();
 			if(date.equals(dateToCheck) && time.equals(timeToCheck)){
-				System.out.println("This date is reserved for another appointment");
-				appointmentTaken1 = true;
-				break;
+				System.out.println("Ups, looks like this appointment is not available");
+				taken = true;
 			}
 		}
-		ArrayList<Appointment> patientAppointments = appointments.get(1);
-		for(int j=0; j<patientAppointments.size(); j++){
-			Date date = patientAppointments.get(j).getDate();
-			Time time = patientAppointments.get(j).getTime();
-			if(date.equals(dateToCheck) && time.equals(timeToCheck)){
-				System.out.println("This patient has another appointment, select another date and time");
-				appointmentTaken2 = true;
-				break;
-			}
-		}
-		if(appointmentTaken1 == true || appointmentTaken2 == true){
-			taken = true;
-		}
-
 		return taken;
 	}
 

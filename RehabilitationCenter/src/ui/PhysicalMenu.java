@@ -29,7 +29,7 @@ public class PhysicalMenu
 		patients=ptm.getAllPatients(ptID);
 		if(patients==null)
 		{
-			System.out.println("You don't have patients alredy");
+			System.out.println("You don't have patients yet");
 		}
 		else
 		{
