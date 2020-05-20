@@ -49,8 +49,7 @@ public class Main
 				{
 					String username = DataObtention.readName("Username: ");
 					System.out.println("Password: ");
-					String pass =DataObtention.readLine();
-					
+					String pass =DataObtention.readLine();					
 					try
 					{
 						staff = userManager.checkPasswordStaff(username, pass);

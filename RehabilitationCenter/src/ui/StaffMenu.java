@@ -39,22 +39,20 @@ public class StaffMenu
 			switch (option)
 			{
 				case 1:
-					Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Patient through XML\n3.-Doctor\n4.-Physical Therapist\n5.-Back");
+					Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Back");
 					switch (role)
 					{
 						case 1:
-							registerPatient(pm,ptm,um);
+							howToRegisterPatient(pm,ptm,um,am,dm);
 							break;
 						case 2:
-							registerPatientXML(pm,ptm,um,am);
-							break;
-						case 3:				
 							registerDoctor(dm,um);
 							break;
-						case 4:
+						case 3:				
 							registerPhysicalTherapist(ptm,um);
 							break;
-						case 5:
+						case 4:
+							
 							break;
 					}
 					break;
@@ -78,6 +76,45 @@ public class StaffMenu
 					break;
 			}			
 		}			
+	}
+	
+	public void howToRegisterPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am,DoctorManager dm) throws Exception
+	{
+		checkPTandDoctors(ptm,dm,um);
+		Boolean loop = true;
+		while(loop)
+		{
+			Integer option = DataObtention.readInt("Choose how you want to register the patient: \n1.-Manual\n2.-Through XMLS\n3.-Back");
+			switch (option)
+			{
+				case 1:
+					registerPatient(pm,ptm,um);
+					break;
+				case 2:
+					registerPatientXML(pm,ptm,um,am);
+					break;
+				case 3:
+					loop = false;
+					break;
+			}
+		}
+	}
+	
+	public void checkPTandDoctors (PhysicalTherapistManager ptm, DoctorManager dm, UserManager um) throws Exception
+	{
+		//We create this method in order to check if there are physical therapists and doctors in our database, otherwise it doesn't make sense to introduce patients if no one is going to treat them.
+		List <PhysicalTherapist> therearept = ptm.showAllPhysicalTherapists();
+		if(therearept.isEmpty())
+		{
+			System.out.println("In order to add a patient we need at least one physical therapist introduced in the data base, you'll be redirected to the register of a physical therapist");
+			registerPhysicalTherapist(ptm, um);
+		}
+		List <Doctor> therearedocs = dm.listDoctors();
+		if(therearedocs.isEmpty())
+		{
+			System.out.println("In order to add a patient we need at least one doctor introduced in the data base, you'll be redirected to the register of a doctor");
+			registerDoctor(dm, um);
+		}
 	}
 	
 	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am) throws Exception 
@@ -129,12 +166,12 @@ public class StaffMenu
 		//Print the patient 
 		System.out.println("Added to the database:"+patient);
 		System.out.println("----------------------------------------------------------------------");
-		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(patient.getSport());
+		List<PhysicalTherapist> pts=ptm.showPhysicalTherapists(patient.getSport());
 		if (pts.isEmpty())
 		{
 			System.out.println("No physical therpist specialized in "+patient.getSport());
 			System.out.println("Choose one of those: ");
-			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
+			List<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
 			for (PhysicalTherapist physicalTherapist : pysicals)
 			{
 				System.out.println(physicalTherapist);
@@ -187,8 +224,8 @@ public class StaffMenu
 	}
 
 	public void registerPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws IOException
-	{
-		
+	{		 
+		System.out.println("INTRODUCE DATA OF THE PATIENT");
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
@@ -210,15 +247,15 @@ public class StaffMenu
 		String surgeries= DataObtention.readLine();
 		Float weightKG=DataObtention.readFloat("Weight(kg): ");
 		Integer height=DataObtention.readInt("Height(cm): ");
-		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);
+		List<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);
 		if (pts.isEmpty())
 		{
 			System.out.println("No physical therpist specialized in "+sport);
 			System.out.println("Choose one of those: ");
-			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
+			List<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
 			for (PhysicalTherapist physicalTherapist : pysicals)
 			{
-				System.out.println("[ID="+physicalTherapist.getId()+" , Name= "+physicalTherapist.getName()+" ,Sport= "+physicalTherapist.getTypeSport());
+				System.out.println("[ID="+physicalTherapist.getId()+" , Name= "+physicalTherapist.getName()+" ,Sport= "+physicalTherapist.getTypeSport()+"]");
 			}
 		}
 		else
@@ -264,6 +301,7 @@ public class StaffMenu
 	
 	public void registerDoctor(DoctorManager dm,UserManager um) throws IOException
 	{
+		System.out.println("INTRODUCE DATA OF THE DOCTOR");
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
@@ -308,7 +346,7 @@ public class StaffMenu
 	
 	public void registerPhysicalTherapist(PhysicalTherapistManager ptm,UserManager um) throws IOException
 	{
-		
+		System.out.println("INTRODUCE DATA OF THE PHYSICAL THERAPIST");
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
@@ -377,7 +415,7 @@ public class StaffMenu
 		Integer ID = DataObtention.readInt("Introduce the ID of the physical therapist you want to fire");
 		PhysicalTherapist tofire = ptm.getPhysicalTherapist(ID);
 		Integer userID = um.getUser(tofire.geteMail());
-		ArrayList<Patient> patients = new ArrayList <Patient>();
+		List<Patient> patients = new ArrayList <Patient>();
 		//We need to reasign a physical therapist to the patients
 		patients = ptm.getAllPatients(ID);
 		for (Patient patient : patients) 

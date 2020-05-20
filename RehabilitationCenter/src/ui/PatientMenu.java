@@ -170,6 +170,5 @@ public class PatientMenu
 		//Marshall the point to the screen
 		marshal.marshal(patient2marshall,System.out);
 		
-		
 	}
 }

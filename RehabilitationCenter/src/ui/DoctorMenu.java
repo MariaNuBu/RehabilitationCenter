@@ -18,7 +18,6 @@ import pojos.*;
 public class DoctorMenu {
 
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss");
 	private static DBManager db;
 	private static DoctorManager dm;
 	private static AppointmentManager am;
@@ -28,7 +27,7 @@ public class DoctorMenu {
 	{
 		String name = DataObtention.readName("Please introduce the name of the patient you want to work with");
 		Integer docID=dm.searchDoctorByEmail(username);
-		ArrayList<Patient> patients = dm.SearchByName(name,docID);
+		List<Patient> patients = dm.SearchByName(name,docID);
 		for (Patient patient : patients) {
 			System.out.println(patient);
 		}

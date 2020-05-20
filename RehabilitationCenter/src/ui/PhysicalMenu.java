@@ -21,7 +21,7 @@ public class PhysicalMenu
 		Integer ptID = ptm.searchPTByEmail(username);
 
 		System.out.println("These are your patients");
-		ArrayList<Patient> patients = new ArrayList<Patient>();
+		List<Patient> patients = new ArrayList<Patient>();
 		patients=ptm.getAllPatients(ptID);
 		if(patients==null)
 		{
@@ -35,7 +35,7 @@ public class PhysicalMenu
 			}
 			Integer patientID = DataObtention.readInt("Type the ID of the patient you want to check the treatment");
 			Patient patientChoosen = pm.getPatient(patientID);
-			ArrayList<Treatment> treatments = new ArrayList <Treatment>();
+			List<Treatment> treatments = new ArrayList <Treatment>();
 			treatments=pm.listTreatment(patientChoosen);
 			if (treatments==null)
 			{
