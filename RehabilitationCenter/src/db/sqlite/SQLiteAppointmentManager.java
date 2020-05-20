@@ -85,7 +85,6 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	//TODO no funciona el delete
 	public void deleteAppointment(Appointment appointment) {
 		try{
 

@@ -39,22 +39,20 @@ public class StaffMenu
 			switch (option)
 			{
 				case 1:
-					Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Patient through XML\n3.-Doctor\n4.-Physical Therapist\n5.-Back");
+					Integer role =DataObtention.readInt("Choose the role you want to register: \n1.-Patient\n2.-Doctor\n3.-Physical Therapist\n4.-Back");
 					switch (role)
 					{
 						case 1:
-							registerPatient(pm,ptm,um);
+							howToRegisterPatient(pm,ptm,um,am,dm);
 							break;
 						case 2:
-							registerPatientXML(pm,ptm,um,am);
-							break;
-						case 3:				
 							registerDoctor(dm,um);
 							break;
-						case 4:
+						case 3:				
 							registerPhysicalTherapist(ptm,um);
 							break;
-						case 5:
+						case 4:
+							
 							break;
 					}
 					break;
@@ -80,7 +78,45 @@ public class StaffMenu
 		}			
 	}
 	
-	//TODO añadir el paciente obtenido a la base , os tengo que preguntar 
+	public void howToRegisterPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am,DoctorManager dm) throws Exception
+	{
+		checkPTandDoctors(ptm,dm,um);
+		Boolean loop = true;
+		while(loop)
+		{
+			Integer option = DataObtention.readInt("Choose how you want to register the patient: \n1.-Manual\n2.-Through XMLS\n3.-Back");
+			switch (option)
+			{
+				case 1:
+					registerPatient(pm,ptm,um);
+					break;
+				case 2:
+					registerPatientXML(pm,ptm,um,am);
+					break;
+				case 3:
+					loop = false;
+					break;
+			}
+		}
+	}
+	
+	public void checkPTandDoctors (PhysicalTherapistManager ptm, DoctorManager dm, UserManager um) throws Exception
+	{
+		//We create this method in order to check if there are physical therapists and doctors in our database, otherwise it doesn't make sense to introduce patients if no one is going to treat them.
+		List <PhysicalTherapist> therearept = ptm.showAllPhysicalTherapists();
+		if(therearept.isEmpty())
+		{
+			System.out.println("In order to add a patient we need at least one physical therapist introduced in the data base, you'll be redirected to the register of a physical therapist");
+			registerPhysicalTherapist(ptm, um);
+		}
+		List <Doctor> therearedocs = dm.listDoctors();
+		if(therearedocs.isEmpty())
+		{
+			System.out.println("In order to add a patient we need at least one doctor introduced in the data base, you'll be redirected to the register of a doctor");
+			registerDoctor(dm, um);
+		}
+	}
+	
 	private void registerPatientXML(PatientManager pm,PhysicalTherapistManager ptm,UserManager um,AppointmentManager am) throws Exception 
 	{
 		//Create JAXBContext
@@ -129,20 +165,13 @@ public class StaffMenu
 		Patient patient =(Patient) unmarshal.unmarshal(file);
 		//Print the patient 
 		System.out.println("Added to the database:"+patient);
-		//TODO arreglar para que guarde los appointments desde un xml
-		/*int patId=pm.getLastId();
-		//For each appointment of the patient 
-		List<Appointment>appointments=patient.getAppointments();
-		for(Appointment appointment :appointments) {
-			am.addAppointmentFromXML(appointment, patId);
-		}
-		*/
-		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(patient.getSport());
+		System.out.println("----------------------------------------------------------------------");
+		List<PhysicalTherapist> pts=ptm.showPhysicalTherapists(patient.getSport());
 		if (pts.isEmpty())
 		{
 			System.out.println("No physical therpist specialized in "+patient.getSport());
 			System.out.println("Choose one of those: ");
-			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
+			List<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
 			for (PhysicalTherapist physicalTherapist : pysicals)
 			{
 				System.out.println(physicalTherapist);
@@ -157,19 +186,23 @@ public class StaffMenu
 		}
 		Integer ptid=DataObtention.readInt("Introduce the id of the Physical Therapist you want: ");
 		PhysicalTherapist pt=ptm.getPhysicalTherapist(ptid);
+		MedicalHistory mh = new MedicalHistory(patient.getName(),patient.getDob(),patient.getMedicalHistory().getDiseases(),patient.getMedicalHistory().getAllergies(),patient.getMedicalHistory().getSurgeries(),patient.getMedicalHistory().getWeightKg(),patient.getMedicalHistory().getHeightCm());
+		pm.addPatientandMedicalHistory(patient, pt, mh);
+		//Now we insert the appointments
+		Integer patId=pm.getLastId();
+		//For each appointment of the patient 
+		List<Appointment>appointments=patient.getAppointments();
+		for(Appointment appointment :appointments) {
+			am.addAppointmentFromXML(appointment, patId);
+		}				
 		//Now we need to create a new user for that patient and check if the role patient has been created and if its not, create it
 		Role patientRole=null;
 		if(um.isCreated("Patient")==false)
 		{
 			patientRole = new Role("Patient");
 			um.createRole(patientRole);
-			//I do this to get the ID of the role I've created
-			patientRole = um.getRoleByName("Patient");
 		}
-		else
-		{
-			patientRole = um.getRoleByName("Patient");
-		}
+		patientRole = um.getRoleByName("Patient");
 		User newpatient = new User();		
 		String userName = patient.geteMail();
 		System.out.println("Choose the password for that user: ");
@@ -188,13 +221,11 @@ public class StaffMenu
 		newpatient = new User(userName,hash,patientRole);
 		um.createUser(newpatient);
 		System.out.println("Register completed succesfully!");
-		
-		
 	}
 
 	public void registerPatient(PatientManager pm,PhysicalTherapistManager ptm,UserManager um) throws IOException
-	{
-		
+	{		 
+		System.out.println("INTRODUCE DATA OF THE PATIENT");
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
@@ -216,22 +247,22 @@ public class StaffMenu
 		String surgeries= DataObtention.readLine();
 		Float weightKG=DataObtention.readFloat("Weight(kg): ");
 		Integer height=DataObtention.readInt("Height(cm): ");
-		ArrayList<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);
+		List<PhysicalTherapist> pts=ptm.showPhysicalTherapists(sport);
 		if (pts.isEmpty())
 		{
 			System.out.println("No physical therpist specialized in "+sport);
 			System.out.println("Choose one of those: ");
-			ArrayList<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
+			List<PhysicalTherapist> pysicals=ptm.showAllPhysicalTherapists();
 			for (PhysicalTherapist physicalTherapist : pysicals)
 			{
-				System.out.println(physicalTherapist);
+				System.out.println("[ID="+physicalTherapist.getId()+" , Name= "+physicalTherapist.getName()+" ,Sport= "+physicalTherapist.getTypeSport()+"]");
 			}
 		}
 		else
 		{
 			for (PhysicalTherapist physicalTherapist : pts)
 			{
-				System.out.println(physicalTherapist);
+				System.out.println("[ID="+physicalTherapist.getId()+" , Name= "+physicalTherapist.getName()+" ,Sport= "+physicalTherapist.getTypeSport());
 			}
 		}
 		
@@ -246,13 +277,8 @@ public class StaffMenu
 		{
 			patientRole = new Role("Patient");
 			um.createRole(patientRole);
-			//I do this to get the ID of the role I've created
-			patientRole = um.getRoleByName("Patient");
 		}
-		else
-		{
-			patientRole = um.getRoleByName("Patient");
-		}
+		patientRole = um.getRoleByName("Patient");
 		User patient = new User();		
 		String userName = email;
 		System.out.println("Choose the password for that user: ");
@@ -270,11 +296,12 @@ public class StaffMenu
 		byte [] hash = md.digest();
 		patient = new User(userName,hash,patientRole);
 		um.createUser(patient);
-		System.out.println("Register completed succesfully!");
-		
+		System.out.println("Register completed succesfully!");		
 	}
+	
 	public void registerDoctor(DoctorManager dm,UserManager um) throws IOException
 	{
+		System.out.println("INTRODUCE DATA OF THE DOCTOR");
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
@@ -295,13 +322,8 @@ public class StaffMenu
 		{
 			doctorRole = new Role("Doctor");
 			um.createRole(doctorRole);
-			//I do this to get the ID of the role I've created
-			doctorRole = um.getRoleByName("Doctor");
 		}
-		else
-		{
-			doctorRole = um.getRoleByName("Doctor");
-		}
+		doctorRole = um.getRoleByName("Doctor");
 		User doctor = new User();		
 		String userName = email;
 		System.out.println("Choose the password for that user: ");
@@ -320,12 +342,11 @@ public class StaffMenu
 		doctor = new User(userName,hash,doctorRole);
 		um.createUser(doctor);
 		System.out.println("Register completed succesfully!");
-		
-		
 	}
+	
 	public void registerPhysicalTherapist(PhysicalTherapistManager ptm,UserManager um) throws IOException
 	{
-		
+		System.out.println("INTRODUCE DATA OF THE PHYSICAL THERAPIST");
 		String name=DataObtention.readName("Name and Surname: ");
 		System.out.println("Date of Birth: ");
 		String newDOBDate = DataObtention.readLine();
@@ -340,24 +361,17 @@ public class StaffMenu
 		Double salary = DataObtention.readDouble("Salary: ");
 		PhysicalTherapist pt = new PhysicalTherapist(name, address, DOB, phone, email, sport, salary);
 		ptm.addPhysicalTherapist(pt);
-		//Now we need to create a new user for that physical therapist and check if the role pysical therapist has been created and if its not, create it
+		//Now we need to create a new user for that physical therapist and check if the role physical therapist has been created and if its not, create it
 		Role physicalTherapistRole=null;
-		//TODO ESTO DA ERROR
 		if(um.isCreated("Physical Therapist")==false)
 		{
 			physicalTherapistRole = new Role("Physical Therapist");
-			um.createRole(physicalTherapistRole);
-			//I do this to get the ID of the role I've created
-			physicalTherapistRole = um.getRoleByName("Physical Therapist");
+			um.createRole(physicalTherapistRole);			
 		}
-		else
-		{
-			physicalTherapistRole = um.getRoleByName("Physical Therapist");
-		}
+		physicalTherapistRole = um.getRoleByName("Physical Therapist");
 		User physicalTherpist = new User();		
 		System.out.println(email);
-		String userName = email;
-		
+		String userName = email;		
 		System.out.println("Choose the password for that user: ");
 		String pass = DataObtention.readLine();
 		MessageDigest md=null;
@@ -387,10 +401,7 @@ public class StaffMenu
 		Integer ID = DataObtention.readInt("Introduce the ID of the doctor you want to fire");
 		Doctor tofire = dm.getDoctor(ID);
 		um.fireWorkers(tofire.getId());
-		//probar borrar esto y que borre todo
-		am.deleteAppointmentDoctor(ID);
-		dm.deleteDoctor(ID);
-		
+		dm.deleteDoctor(ID);		
 	}
 	
 	public void firePhysicalTherapist (PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,UserManager um)
@@ -404,12 +415,8 @@ public class StaffMenu
 		Integer ID = DataObtention.readInt("Introduce the ID of the physical therapist you want to fire");
 		PhysicalTherapist tofire = ptm.getPhysicalTherapist(ID);
 		Integer userID = um.getUser(tofire.geteMail());
-		um.fireWorkers(userID);
-		//TODO probar a borrar esta linea y borrar todas las tablas
-		am.deleteAppointmentPhysicalTherapist(ID);
-		ptm.deletePhysicalTherapist(ID);
+		List<Patient> patients = new ArrayList <Patient>();
 		//We need to reasign a physical therapist to the patients
-		ArrayList<Patient> patients = new ArrayList <Patient>();
 		patients = ptm.getAllPatients(ID);
 		for (Patient patient : patients) 
 		{
@@ -421,12 +428,20 @@ public class StaffMenu
 			}
 			for (PhysicalTherapist physicalTherapist : physicalTherapists) 
 			{
-				System.out.println(physicalTherapist);
+				if (physicalTherapist.getId()==ID)
+				{
+					//Do this to avoid showing the physical deleted
+				}
+				else
+				{
+					System.out.println(physicalTherapist);
+				}
 			}
 			Integer newptID = DataObtention.readInt("Type the ID of the physical therapist you want for that patient: ");
 			pm.changePhysicalTherapist(patient,newptID);
 		}
-		
+		um.fireWorkers(userID);
+		ptm.deletePhysicalTherapist(ID);	
 	}
 	
 }

@@ -20,7 +20,7 @@ public class Xml2Html {
 	}
 
 	public static void main(String[] args) {
-		simpleTransform("./xmls/Output-Patient.xml", "./xmls/PatientStyle.xslt", "./xmls/Test2.0.html");
+		simpleTransform("./xmls/Input-Patient.xml", "./xmls/PatientStyle.xslt", "./xmls/Patient.html");
 
 	}
 }

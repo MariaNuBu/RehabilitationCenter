@@ -187,7 +187,7 @@ private Connection c;
 			ResultSet rs=ps.executeQuery();
 			while(rs.next())
 			{
-				int ID=rs.getInt(1);
+				Integer ID=rs.getInt(1);
 				String name=rs.getString(2);
 				String address=rs.getString(3);
 				Date DOB=rs.getDate(4);

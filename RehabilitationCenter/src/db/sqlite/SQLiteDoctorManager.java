@@ -75,7 +75,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 	
 	@Override
 	public void readMH(Integer ID) {
-		MedicalHistory mh = null; //prueba
+		MedicalHistory mh = null; 
 		try {
 			String sql = "SELECT * FROM medicalhistory WHERE ID=?";
 			PreparedStatement ps = c.prepareStatement(sql);
@@ -313,8 +313,8 @@ public class SQLiteDoctorManager implements DoctorManager {
 		return treatment;
 	}
 
-	public ArrayList <Patient> SearchByName(String name,Integer docId){
-		ArrayList <Patient> patientList = new ArrayList<Patient>();
+	public List <Patient> SearchByName(String name,Integer docId){
+		List <Patient> patientList = new ArrayList<Patient>();
 		try {
 			String sql="SELECT * FROM patient AS p JOIN PatientDoctor AS pd ON p.ID=pd.PATID "
 					+ "WHERE p.Name LIKE ? AND pd.DOCID=?";

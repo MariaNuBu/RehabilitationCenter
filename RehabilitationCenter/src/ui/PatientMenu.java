@@ -156,8 +156,7 @@ public class PatientMenu
 	}
 
 	public  void generateXML(Integer patID,PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,DoctorManager dm) throws JAXBException {
-
-		//TODO pasarle tambien los appointments y la mh cuando obtengo el paciente por el id
+		
 		Patient p= pm.getPatient(patID);
 		MedicalHistory mh= pm.getMedicalHistory(p);
 		List<Appointment> appointments= am.getPatientsAppointments(patID, pm, ptm, dm);
@@ -173,7 +172,5 @@ public class PatientMenu
 		marshal.marshal(patient2marshall,file);
 		//Marshall the point to the screen
 		marshal.marshal(patient2marshall,System.out);
-
-
 	}
 }

@@ -15,9 +15,9 @@ public interface DoctorManager {
 	public void deleteTreatment(Treatment t,Integer patID); 
 	public List<Treatment> listTreatments (Integer IDPat);
 	public Treatment readTreatment (Treatment t);
-	public ArrayList <Patient> SearchByName(String name,Integer docID);
+	public List <Patient> SearchByName(String name,Integer docID);
 	public List <Doctor> searchDoctorByName(String name);
-	public List<Patient> getDoctorsPatients(Integer docID); //coge todos los pacientes de un medico
+	public List<Patient> getDoctorsPatients(Integer docID); //get all the patients of a doctor
 	public Doctor getDoctor(int docId);
 	public int getLastId();
 	public void createDoctor (Doctor doc);

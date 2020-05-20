@@ -3,6 +3,7 @@ package gui;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import db.interfaces.DBManager;
 import db.interfaces.PatientManager;
@@ -135,7 +136,7 @@ public class PatientMenuGUI
 			///*
 			showPT.setOnAction(e-> 
 			{
-				ArrayList<PhysicalTherapist> pt= new ArrayList();
+				List<PhysicalTherapist> pt= new ArrayList();
 				//TODO este es el error, lo comento porque no se si da error hacer push con errores
 				String sport=sportField.getText();
 				pt=ptm.showPhysicalTherapists(sport);

@@ -15,17 +15,13 @@ import pojos.*;
 public class PhysicalMenu
 {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static DBManager db;
-	private static PatientManager pm;
-	private static PhysicalTherapistManager ptm;
-
-	//TODO PONER EL USERNAME
+		
 	public void readTreatment(String username, PhysicalTherapistManager ptm, PatientManager pm) throws IOException
 	{
 		Integer ptID = ptm.searchPTByEmail(username);
 
 		System.out.println("These are your patients");
-		ArrayList<Patient> patients = new ArrayList<Patient>();
+		List<Patient> patients = new ArrayList<Patient>();
 		patients=ptm.getAllPatients(ptID);
 		if(patients==null)
 		{
@@ -39,7 +35,7 @@ public class PhysicalMenu
 			}
 			Integer patientID = DataObtention.readInt("Type the ID of the patient you want to check the treatment");
 			Patient patientChoosen = pm.getPatient(patientID);
-			ArrayList<Treatment> treatments = new ArrayList <Treatment>();
+			List<Treatment> treatments = new ArrayList <Treatment>();
 			treatments=pm.listTreatment(patientChoosen);
 			if (treatments==null)
 			{
@@ -55,7 +51,7 @@ public class PhysicalMenu
 		}
 
 	}
-	//TODO cambiar el user
+	
 	public void checkAppointments(String username, PhysicalTherapistManager ptm, AppointmentManager am, PatientManager pm, DoctorManager dm) throws IOException
 	{
 		Integer ptID = ptm.searchPTByEmail(username);

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!DOCTYPE patient [
 	<!ELEMENT patient (dob,address,phoneNumber,eMail,sport,disability,medicalHistory,appointments?)>
 	<!ATTLIST patient name CDATA #REQUIRED>
@@ -21,16 +22,12 @@
 	<!ELEMENT doc (id,eMail,specialty)>
 	<!ELEMENT id (#PCDATA)>
 	<!ATTLIST doc name CDATA #REQUIRED>
-	<!ELEMENT eMail (#PCDATA)>
-	<!ELEMENT Specialty (#PCDATA) >
+	<!ELEMENT specialty (#PCDATA) >
 	<!ELEMENT pt (id,eMail,typeSport)>
-	<!ELEMENT id (#PCDATA)>
 	<!ATTLIST pt name CDATA #REQUIRED>
-	<!ELEMENT eMail (#PCDATA) >
 	<!ELEMENT typeSport (#PCDATA)>	
 ]>
-//TODO PREGUNTAR POR QUE NO PODEMOS METER EL EMAIL Y EL ID DOS VECES AUNQUE SEAN DE COSAS DISTINTAS
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
 <patient name="Daniel Caverzaschi">
     <dob>1993-07-11</dob>
     <address>Alcobendas</address>

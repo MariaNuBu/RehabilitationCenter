@@ -172,24 +172,6 @@ public class SQLiteManager implements DBManager {
 					+ " DOCID			INTEGER REFERENCES doctor(ID))";
 			st8.executeUpdate(sq8);
 			st8.close();
-			Statement st9=c.createStatement();
-			String sq9="CREATE TABLE	IF NOT EXISTS DoctorMedicalHistory"
-					+ "(MHID			INTEGER REFERENCES medicalHistory(ID),"
-					+ " DOCID			INTEGER REFERENCES doctor(ID))";
-			st9.executeUpdate(sq9);
-			st9.close();
-			Statement st10=c.createStatement();
-			String sq10="CREATE TABLE  IF NOT EXISTS PhysicalTherapistMedicalHistory"
-					+ "(MHID			INTEGER REFERENCES medicalHistory(ID),"
-					+ " PTID			INTEGER REFERENCES physicalTherapist(ID))";
-			st10.executeUpdate(sq10);
-			st10.close();
-			Statement st11=c.createStatement();
-			String sq11="CREATE TABLE IF NOT EXISTS  PhysicalTherapistTreatment"
-					+ "(TREATID			INTEGER REFERENCES treatment(ID),"
-					+ " PTID			INTEGER REFERENCES physicalTherapist(ID))";
-			st11.executeUpdate(sq11);
-			st11.close();
 		}
 		catch (SQLException e)
 		{

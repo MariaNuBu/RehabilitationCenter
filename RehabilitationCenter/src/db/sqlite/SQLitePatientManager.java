@@ -22,9 +22,9 @@ public class SQLitePatientManager implements PatientManager {
 	}
 
 	@Override
-	public ArrayList<Patient> searchPatientName(String patientName)
+	public List<Patient> searchPatientName(String patientName)
 	{
-		ArrayList <Patient> p = new ArrayList<Patient>();
+		List <Patient> p = new ArrayList<Patient>();
 		try
 		{
 			String sql="SELECT * FROM patient WHERE name LIKE ?";
@@ -114,9 +114,9 @@ public class SQLitePatientManager implements PatientManager {
 	}
 
 	@Override
-	public ArrayList<Treatment> listTreatment(Patient patient)
+	public List<Treatment> listTreatment(Patient patient)
 	{
-		ArrayList<Treatment> treatments=new ArrayList <Treatment>();
+		List<Treatment> treatments=new ArrayList <Treatment>();
 		try
 		{
 			String sql="SELECT * FROM treatment AS t JOIN PatientTreatment AS pt ON t.ID=pt.TREATID JOIN patient AS p ON p.ID=pt.PATID "
