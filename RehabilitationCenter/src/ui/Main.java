@@ -58,8 +58,14 @@ public class Main
 					{
 						System.out.println("Wrong credentials, please try again");
 					}
-				}				
+				}
+				Boolean boot = true;
+				while(boot)
+				{
+					boot = generateCaptcha();
+				}
 				StaffMenu staffMenu = new StaffMenu();
+				
 				staffMenu.staffMenu(dm,ptm,pm,am,userManager);
 				break;
 			case 2:
@@ -79,7 +85,12 @@ public class Main
 					{
 						System.out.println("Wrong credentials, please try again");
 					}
-				}				
+				}
+				Boolean boot2 = true;
+				while(boot2)
+				{
+					boot2 = generateCaptcha();
+				}
 				if (user.getRole().getRole().equalsIgnoreCase("doctor"))
 				{
 					patientsOrAppointments(username);
@@ -102,7 +113,27 @@ public class Main
 		}
 		
 	}
-
+	private static boolean generateCaptcha ()
+	{
+		
+		String captcha = "";
+		for (int i=0;i<3;i++)
+		{
+			captcha +=(int)(Math.random()*9);
+			//Use the mathfloor to return the maximun entero
+			captcha += (char)(Math.floor(Math.random()*25+97));
+		}
+		System.out.println("Please introduce the characters shown: "+captcha);
+		String introduced = DataObtention.readLine();
+		if(captcha.equals(introduced))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 	private static void patientChoose(String username, PatientManager pm, DoctorManager dm, PhysicalTherapistManager ptm, AppointmentManager am) throws Exception
 	{
 		Integer patID = pm.searchPatientByEmail(username);
