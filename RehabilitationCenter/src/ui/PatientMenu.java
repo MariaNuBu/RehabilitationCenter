@@ -1,7 +1,9 @@
 package ui;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
@@ -22,11 +24,12 @@ import pojos.users.*;
 import javax.xml.bind.*;
 public class PatientMenu
 {
+	private BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public void readAppointments(Integer patID,PatientManager pm,PhysicalTherapistManager ptm,DoctorManager dm,AppointmentManager am)
 	{
-		System.out.println("----CURRENT APPOINTMENTS-----");		
+		System.out.println("----CURRENT APPOINTMENTS-----");
 		List<Appointment> currentAppointments= am.getPatientsAppointments(patID, pm, ptm, dm);
 		if(currentAppointments.isEmpty())
 		{
@@ -40,7 +43,7 @@ public class PatientMenu
 			}
 		}
 	}
-	
+
 	public void addAppointment(Integer patID,PatientManager pm,PhysicalTherapistManager ptm,DoctorManager dm,AppointmentManager am)
 	{
 		readAppointments(patID,pm,ptm,dm,am);
@@ -81,15 +84,15 @@ public class PatientMenu
 				taken2 = checkAppointments(ptApps, appointment);
 			}
 			am.addAppointment(appointment, p, doc, pT);
-			System.out.println("Appointment added succesfully!");
+			System.out.println("Appointment added successfully!");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			System.out.println("Error introducing the appointment");
-		}		
+		}
 	}
-	
+
 	private static Appointment introduceDateAndTime() throws Exception{
 		Boolean dateincorrect = true;
 		Boolean timeincorrect = true;
@@ -98,12 +101,12 @@ public class PatientMenu
 		String timeString="";
 		Time appointmentTime=null;
 		while(dateincorrect)
-		{	
+		{
 			try
 			{
 				System.out.println("Introduce a date: yyyy-mm-dd");
 				dateString = DataObtention.readLine();
-				appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));				
+				appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
 				dateincorrect=false;
 			}
 			catch (DateTimeParseException e)
@@ -113,15 +116,15 @@ public class PatientMenu
 			catch(IllegalArgumentException ex)
 			{
 				System.out.println("Date wrong introduced");
-			}				
-		}	
+			}
+		}
 		while(timeincorrect)
 		{
 			try
 			{
 				System.out.println("Introduce an hour: hh:mm:ss");
 				timeString = DataObtention.readLine();
-				appointmentTime = Time.valueOf(timeString);				
+				appointmentTime = Time.valueOf(timeString);
 				timeincorrect=false;
 			}
 			catch (DateTimeParseException e)
@@ -131,7 +134,7 @@ public class PatientMenu
 			catch(IllegalArgumentException ex)
 			{
 				System.out.println("Time wrong introduced");
-			}	
+			}
 		}
 		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
 		return appointment;
@@ -162,13 +165,12 @@ public class PatientMenu
 		JAXBContext context = JAXBContext.newInstance(Patient.class);
 		//Get the marshaller
 		Marshaller marshal = context.createMarshaller();
-		//Pretty formatting 
+		//Pretty formatting
 		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
-		// Marshall the Patient to a file 
+		// Marshall the Patient to a file
 		File file =new File("./xmls/Output-Patient.xml");
 		marshal.marshal(patient2marshall,file);
 		//Marshall the point to the screen
 		marshal.marshal(patient2marshall,System.out);
-		
 	}
 }
