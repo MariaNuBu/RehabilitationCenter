@@ -1,45 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<patient name="Alberto Nuñez">
-    <dob>2000-11-22</dob>
-    <address>Antonio Lopez</address>
-    <phoneNumber>675839482</phoneNumber>
-    <eMail>alberto@gmail.com</eMail>
-    <sport>Muay thai</sport>
-    <disability>blind</disability>
-    <medicalHistory id="2">
-        <Diseases>muscular distension</Diseases>
-        <Allergies>polen</Allergies>
-        <Surgeries>apendicitis</Surgeries>
-        <WeightKg>65.0</WeightKg>
-        <HeightCm>176</HeightCm>
+<patient name="Inés de los Mozos">
+    <dob>2000-05-02</dob>
+    <address>Glorieta Pirámides</address>
+    <phoneNumber>654783234</phoneNumber>
+    <eMail>ines@gmail.com</eMail>
+    <sport>Basket</sport>
+    <disability>Blind</disability>
+    <medicalHistory id="1">
+        <Diseases>Broken wrist</Diseases>
+        <Allergies>Banana</Allergies>
+        <Surgeries>Apendicitis</Surgeries>
+        <WeightKg>56.0</WeightKg>
+        <HeightCm>158</HeightCm>
     </medicalHistory>
     <appointments>
         <appointment>
-            <date>2020-07-21</date>
+            <date>2020-09-03</date>
             <time>12:00:00</time>
-            <doc name="Cristina Ubeda">
+            <doc name="Víctor Arribas Abril">
                 <id>1</id>
-                <eMail>cris@gmail.com</eMail>
+                <eMail>victor@gmail.com</eMail>
                 <specialty>Orthopedics</specialty>
             </doc>
-            <pt name="Juan Carlos Serraon">
+            <pt name="Juan Carlos Serrano">
                 <id>1</id>
                 <eMail>jcarlos@gmail.com</eMail>
-                <typeSport>Tennis</typeSport>
-            </pt>
-        </appointment>
-        <appointment>
-            <date>2020-09-09</date>
-            <time>13:00:00</time>
-            <doc name="Cristina Ubeda">
-                <id>1</id>
-                <eMail>cris@gmail.com</eMail>
-                <specialty>Orthopedics</specialty>
-            </doc>
-            <pt name="Juan Carlos Serraon">
-                <id>1</id>
-                <eMail>jcarlos@gmail.com</eMail>
-                <typeSport>Tennis</typeSport>
+                <typeSport>Karate</typeSport>
             </pt>
         </appointment>
     </appointments>

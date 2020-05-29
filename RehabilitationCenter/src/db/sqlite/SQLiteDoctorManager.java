@@ -174,21 +174,7 @@ public class SQLiteDoctorManager implements DoctorManager {
 		{
 			e.printStackTrace();
 		}
-		Patient p = pm.getPatient(patientID);
-		try
-		{
-			String sql2="INSERT INTO PhysicalTherapistTreatment (TREATID,PTID) VALUES (?,?)";
-			PreparedStatement ps2 = c.prepareStatement(sql2);
-			ps2.setInt(1, treatmentID);
-			ps2.setInt(2, p.getPhysicalTerapist().getId());
-			ps2.executeUpdate();
-			ps2.close();
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-		
+		Patient p = pm.getPatient(patientID);	
 
 	}
 

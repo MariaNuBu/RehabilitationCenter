@@ -37,7 +37,7 @@ public class PhysicalMenu
 			Patient patientChoosen = pm.getPatient(patientID);
 			List<Treatment> treatments = new ArrayList <Treatment>();
 			treatments=pm.listTreatment(patientChoosen);
-			if (treatments==null)
+			if (treatments.isEmpty())
 			{
 				System.out.println("This patient doesn't have any treatments");
 			}

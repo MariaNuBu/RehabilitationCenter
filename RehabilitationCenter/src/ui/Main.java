@@ -44,7 +44,6 @@ public class Main
 					String username = DataObtention.readName("Username: ");
 					System.out.println("Password: ");
 					String pass =DataObtention.readLine();
-
 					try
 					{
 						staff = userManager.checkPasswordStaff(username, pass);
@@ -116,7 +115,7 @@ public class Main
 		for (int i=0;i<3;i++)
 		{
 			captcha +=(int)(Math.random()*9);
-			//Use the mathfloor to return the maximun entero
+			//Use the mathfloor to return the maximun integer
 			captcha += (char)(Math.floor(Math.random()*25+97));
 		}
 		System.out.println("Please introduce the characters shown: "+captcha);
@@ -261,7 +260,7 @@ public class Main
 			String checkpass="";
 			while(!newpass.equals(checkpass))
 			{
-				System.out.println("Introduce yout new password again");
+				System.out.println("Introduce your new password again");
 				checkpass=DataObtention.readLine();
 			}
 			userManager.changePassword(username,newpass);

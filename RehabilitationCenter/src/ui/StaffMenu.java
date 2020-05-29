@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -227,9 +228,27 @@ public class StaffMenu
 	{		 
 		System.out.println("INTRODUCE DATA OF THE PATIENT");
 		String name=DataObtention.readName("Name and Surname: ");
-		System.out.println("Date of Birth: ");
-		String newDOBDate = DataObtention.readLine();
-		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));
+		Boolean dateincorrect = true;
+		String dateString="";
+		Date DOBDate=null;
+		while(dateincorrect)
+		{
+			try
+			{
+				System.out.println("Date of Birth: yyyy-mm-dd");
+				dateString = DataObtention.readLine();
+				DOBDate = Date.valueOf(LocalDate.parse(dateString, formatter));
+				dateincorrect=false;
+			}
+			catch (DateTimeParseException e)
+			{
+				System.out.println("Date wrong introduced");
+			}
+			catch(IllegalArgumentException ex)
+			{
+				System.out.println("Date wrong introduced");
+			}
+		}
 		System.out.println("Address: ");
 		String address= DataObtention.readLine();
 		System.out.println("Email: ");
@@ -268,8 +287,8 @@ public class StaffMenu
 		
 		Integer ptid=DataObtention.readInt("Introduce the id of the Physical Therapist you want: ");
 		PhysicalTherapist pt=ptm.getPhysicalTherapist(ptid);
-		Patient p=new Patient(name, address, DOB, phone, email, sport, disabilities);
-		MedicalHistory mh=new MedicalHistory(name, DOB, diseases, allergies, surgeries, weightKG, height);
+		Patient p=new Patient(name, address, DOBDate, phone, email, sport, disabilities);
+		MedicalHistory mh=new MedicalHistory(name, DOBDate, diseases, allergies, surgeries, weightKG, height);
 		pm.addPatientandMedicalHistory(p, pt, mh);
 		//Now we need to create a new user for that patient and check if the role patient has been created and if its not, create it
 		Role patientRole=null;
@@ -303,9 +322,27 @@ public class StaffMenu
 	{
 		System.out.println("INTRODUCE DATA OF THE DOCTOR");
 		String name=DataObtention.readName("Name and Surname: ");
-		System.out.println("Date of Birth: ");
-		String newDOBDate = DataObtention.readLine();
-		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));
+		Boolean dateincorrect = true;
+		String dateString="";
+		Date DOBDate=null;
+		while(dateincorrect)
+		{
+			try
+			{
+				System.out.println("Date of Birth: yyyy-mm-dd");
+				dateString = DataObtention.readLine();
+				DOBDate = Date.valueOf(LocalDate.parse(dateString, formatter));
+				dateincorrect=false;
+			}
+			catch (DateTimeParseException e)
+			{
+				System.out.println("Date wrong introduced");
+			}
+			catch(IllegalArgumentException ex)
+			{
+				System.out.println("Date wrong introduced");
+			}
+		}
 		System.out.println("Address: ");
 		String address=DataObtention.readLine();
 		System.out.println("Email: ");
@@ -314,7 +351,7 @@ public class StaffMenu
 		System.out.println("Specialty: ");
 		String specialty= DataObtention.readLine();
 		Double salary = DataObtention.readDouble("Salary: ");
-		Doctor doc = new Doctor(name, address, DOB, phone, email, specialty, salary);
+		Doctor doc = new Doctor(name, address, DOBDate, phone, email, specialty, salary);
 		dm.createDoctor(doc);
 		//Now we need to create a new user for that doctor and check if the role doctor has been created and if its not, create it
 		Role doctorRole=null;
@@ -348,9 +385,27 @@ public class StaffMenu
 	{
 		System.out.println("INTRODUCE DATA OF THE PHYSICAL THERAPIST");
 		String name=DataObtention.readName("Name and Surname: ");
-		System.out.println("Date of Birth: ");
-		String newDOBDate = DataObtention.readLine();
-		Date DOB = Date.valueOf(LocalDate.parse(newDOBDate, formatter));
+		Boolean dateincorrect = true;
+		String dateString="";
+		Date DOBDate=null;
+		while(dateincorrect)
+		{
+			try
+			{
+				System.out.println("Date of Birth: yyyy-mm-dd");
+				dateString = DataObtention.readLine();
+				DOBDate = Date.valueOf(LocalDate.parse(dateString, formatter));
+				dateincorrect=false;
+			}
+			catch (DateTimeParseException e)
+			{
+				System.out.println("Date wrong introduced");
+			}
+			catch(IllegalArgumentException ex)
+			{
+				System.out.println("Date wrong introduced");
+			}
+		}
 		System.out.println("Address: ");
 		String address=DataObtention.readLine();
 		System.out.println("Email: ");
@@ -359,7 +414,7 @@ public class StaffMenu
 		System.out.println("Type of sport: ");
 		String sport=DataObtention.readLine();
 		Double salary = DataObtention.readDouble("Salary: ");
-		PhysicalTherapist pt = new PhysicalTherapist(name, address, DOB, phone, email, sport, salary);
+		PhysicalTherapist pt = new PhysicalTherapist(name, address, DOBDate, phone, email, sport, salary);
 		ptm.addPhysicalTherapist(pt);
 		//Now we need to create a new user for that physical therapist and check if the role physical therapist has been created and if its not, create it
 		Role physicalTherapistRole=null;

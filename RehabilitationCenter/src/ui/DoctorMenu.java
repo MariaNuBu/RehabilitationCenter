@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import javax.xml.bind.ParseConversionEvent;
 
@@ -365,17 +366,53 @@ public class DoctorMenu {
 	 }
 
 
-	private static Appointment introduceDateAndTime() throws Exception{
-		System.out.println("Introduce a date: yyyy-mm-dd");
-		String dateString = DataObtention.readLine();
-		Date appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
-		System.out.println("Introduce the time: hh:mm:ss");
-		String timeString =DataObtention.readLine();
-		Time appointmentTime = Time.valueOf(timeString);
+	 private static Appointment introduceDateAndTime() throws Exception
+	 {
+		Boolean dateincorrect = true;
+		Boolean timeincorrect = true;
+		String dateString="";
+		Date appointmentDate=null;
+		String timeString="";
+		Time appointmentTime=null;
+		while(dateincorrect)
+		{
+			try
+			{
+				System.out.println("Introduce a date: yyyy-mm-dd");
+				dateString = DataObtention.readLine();
+				appointmentDate = Date.valueOf(LocalDate.parse(dateString, formatter));
+				dateincorrect=false;
+			}
+			catch (DateTimeParseException e)
+			{
+				System.out.println("Date wrong introduced");
+			}
+			catch(IllegalArgumentException ex)
+			{
+				System.out.println("Date wrong introduced");
+			}
+		}
+		while(timeincorrect)
+		{
+			try
+			{
+				System.out.println("Introduce an hour: hh:mm:ss");
+				timeString = DataObtention.readLine();
+				appointmentTime = Time.valueOf(timeString);
+				timeincorrect=false;
+			}
+			catch (DateTimeParseException e)
+			{
+				System.out.println("Time wrong introduced");
+			}
+			catch(IllegalArgumentException ex)
+			{
+				System.out.println("Time wrong introduced");
+			}
+		}
 		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
 		return appointment;
-		}
-
+	}
 
 
 
