@@ -12,8 +12,8 @@ import db.interfaces.*;
 import pojos.*;
 
 
-public class SQLitePatientManager implements PatientManager {
-
+public class SQLitePatientManager implements PatientManager
+{
 	private Connection c;
 
 	public SQLitePatientManager(Connection c)
@@ -31,7 +31,6 @@ public class SQLitePatientManager implements PatientManager {
 			PreparedStatement prep=c.prepareStatement(sql);
 			prep.setString(1,  "%" + patientName + "%");
 			ResultSet rs=prep.executeQuery();
-
 			while(rs.next())
 			{
 				int id=rs.getInt("ID");
@@ -47,7 +46,6 @@ public class SQLitePatientManager implements PatientManager {
 				p.add(pat);
 			}
 			prep.close();
-
 		}
 		catch(SQLException e)
 		{
@@ -60,14 +58,17 @@ public class SQLitePatientManager implements PatientManager {
 	public int getLastId()
 	{
 		int id = 0;
-		try {
+		try
+		{
 			String query = "SELECT last_insert_rowid() AS lastId";
 			PreparedStatement p = c.prepareStatement(query);
 			ResultSet rs = p.executeQuery();
 			id = rs.getInt("lastId");
 			p.close();
 
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		return id;
@@ -142,7 +143,7 @@ public class SQLitePatientManager implements PatientManager {
 	}
 
 	@Override
-	public Patient getPatient(Integer id) //returns the patient and his physicalTherapist(id,name)
+	public Patient getPatient(Integer id) //returns the patient and his physicalTherapist(id,name,email and sport)
 	{
 		Patient patient =null;
 		try
@@ -184,12 +185,9 @@ public class SQLitePatientManager implements PatientManager {
 					ps2.close();
 					rs2.close();
 				}
-
 			}
 			rs.close();
 			ps.close();
-
-
 		}
 		catch(SQLException e)
 		{
@@ -248,57 +246,64 @@ public class SQLitePatientManager implements PatientManager {
 	}
 
 	@Override
-	public Integer searchPatientByEmail(String email) {
+	public Integer searchPatientByEmail(String email)
+	{
 		Integer patID = null;
-		try{
+		try
+		{
 
 			String sql = "SELECT ID FROM patient WHERE Email=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setString(1, email);
 			ResultSet rs = prepS.executeQuery();
-			while(rs.next()){
+			while(rs.next())
+			{
 				patID = rs.getInt("ID");
 			}
 			prepS.close();
-
-		}catch(SQLException e){
+		}
+		catch(SQLException e)
+		{
 			e.printStackTrace();
 		}
 		return patID;
 	}
 
 	@Override
-	public boolean checkDoctor(Integer patID, Integer docID) {
+	public boolean checkDoctor(Integer patID, Integer docID) 
+	{
 		ArrayList<Integer>docsIds = new ArrayList<>();
 		boolean inTable = true;
-		try{
-
+		try
+		{
 			String sql = "SELECT * FROM PatientDoctor WHERE PATID=? AND DOCID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, patID);
 			prepS.setInt(2, docID);
 			ResultSet rs = prepS.executeQuery();
-
-			while(rs.next()){
+			while(rs.next())
+			{
 				Integer docId = rs.getInt("DOCID");
 				docsIds.add(docId);
 			}
 			prepS.close();
-
-		}catch(SQLException e){
+		}
+		catch(SQLException e)
+		{
 			e.printStackTrace();
 		}
-		if(docsIds.isEmpty()){
+		if(docsIds.isEmpty())
+		{
 			inTable = false;
 		}
-
 		return inTable;
 	}
 
 	@Override
-	public void addDoctorToPatient(Patient pat, Doctor doc) {
-		try{
-
+	public void addDoctorToPatient(Patient pat, Doctor doc) 
+	{
+		try
+		{
 			String sql = "INSERT INTO PatientDoctor (PATID, DOCID)"
 						+"VALUES (?,?)";
 			PreparedStatement prepS = c.prepareStatement(sql);
@@ -307,10 +312,11 @@ public class SQLitePatientManager implements PatientManager {
 			prepS.executeUpdate();
 			prepS.close();
 
-		}catch(SQLException e){
+		}
+		catch(SQLException e)
+		{
 			e.printStackTrace();
 		}
-
 	}
 }
 

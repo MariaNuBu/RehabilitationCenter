@@ -108,6 +108,7 @@ public class Main
 		}
 
 	}
+	
 	private static boolean generateCaptcha ()
 	{
 		
@@ -129,6 +130,7 @@ public class Main
 			return true;
 		}
 	}
+	
 	private static void patientChoose(String username, PatientManager pm, DoctorManager dm, PhysicalTherapistManager ptm, AppointmentManager am) throws Exception
 	{
 		Integer patID = pm.searchPatientByEmail(username);
@@ -161,43 +163,47 @@ public class Main
 	}
 
 
-	private static void patientsOrAppointments(String username) throws Exception {
-		while(true){
-
-		int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.-Check patients\n "+"2.-Check appointments\n 3.-Change password\n 4.-Exit ");
-		switch(option)
+	private static void patientsOrAppointments(String username) throws Exception 
+	{
+		while(true)
 		{
-			case 1:
-				DoctorMenu doctorMenu= new DoctorMenu();
-				try {
-					doctorMenu.doctorMenu(dm,pm,username);
-
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			case 2:
-				DoctorMenu doctorMenuApp = new DoctorMenu();
-				try{
-					doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username,ptm);
-
-				}catch(Exception e){
-					e.printStackTrace();
+			int option = DataObtention.readInt("Welcome doctor, choose an option\n "+"1.-Check patients\n "+"2.-Check appointments\n 3.-Change password\n 4.-Exit ");
+			switch(option)
+			{
+				case 1:
+					DoctorMenu doctorMenu= new DoctorMenu();
+					try 
+					{
+						doctorMenu.doctorMenu(dm,pm,username);	
 					}
+					catch(Exception e) 
+					{
+						e.printStackTrace();
+					}
+					break;					
+				case 2:
+					DoctorMenu doctorMenuApp = new DoctorMenu();
+					try
+					{
+						doctorMenuApp.doctorAppointmentMenu(dm, am, pm,username,ptm);
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					break;
+				case 3:
+					changePassword(username);
+					break;
+				case 4:
+					break;
+			}
+			if(option==4)
+			{
 				break;
-			case 3:
-				changePassword(username);
-				break;
-			case 4:
-				break;
-		}
-		if(option==4)
-		{
-			break;
-		}
+			}
 		}
 	}
-
 
 	private static void choose(String username) throws Exception
 	{
