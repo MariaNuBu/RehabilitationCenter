@@ -19,15 +19,16 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 
 	private Connection c;
 
-	public SQLiteAppointmentManager(Connection c){
+	public SQLiteAppointmentManager(Connection c)
+	{
 		this.c = c;
 	}
 
-
 	@Override
-	public void addAppointment(Appointment appointment, Patient patient, Doctor doctor, PhysicalTherapist physicalTherapist) {
-		try{
-
+	public void addAppointment(Appointment appointment, Patient patient, Doctor doctor, PhysicalTherapist physicalTherapist)
+	{
+		try
+		{
 			String sql = "INSERT INTO appointment (date, time, PATID, DOCID, PTID)"
 						+"VALUES (?,?,?,?,?)";
 			PreparedStatement prepS = c.prepareStatement(sql);
@@ -39,16 +40,19 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			prepS.executeUpdate();
 			prepS.close();
 
-		}catch(Exception e){
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
-
 	}
+	
 	//To add an appointment from a patient obtained by an XML
 	@Override
-	public void addAppointmentFromXML(Appointment appointment, Integer patID) {
-		try{
-
+	public void addAppointmentFromXML(Appointment appointment, Integer patID) 
+	{
+		try
+		{
 			String sql = "INSERT INTO appointment (date,time,PATID, DOCID, PTID)"
 						+"VALUES (?,?,?,?,?)";
 			PreparedStatement prepS = c.prepareStatement(sql);
@@ -60,16 +64,18 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			prepS.executeUpdate();
 			prepS.close();
 
-		}catch(Exception e){
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
-	public void modifyAppointment(Appointment appointment) {
-		try{
-
+	public void modifyAppointment(Appointment appointment) 
+	{
+		try
+		{
 			String sql = "UPDATE appointment SET date=?, time=? WHERE ID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setDate(1, appointment.getDate());
@@ -78,38 +84,43 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			prepS.executeUpdate();
 			prepS.close();
 
-		}catch(Exception e){
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 
 	}
 
 	@Override
-	public void deleteAppointment(Appointment appointment) {
-		try{
-
+	public void deleteAppointment(Appointment appointment) 
+	{
+		try
+		{
 			String sql = "DELETE FROM appointment WHERE ID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, appointment.getId());
 			prepS.executeUpdate();
 			prepS.close();
-
-		}catch(Exception e){
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 
 	}
 
 	@Override
-	public void readAppointments(Integer docId,PatientManager pm,DoctorManager dm) {
-		try{
-
+	public void readAppointments(Integer docId,PatientManager pm,DoctorManager dm) 
+	{
+		try
+		{
 			String sql = "SELECT * FROM appointment WHERE DOCID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, docId);
 			ResultSet rs = prepS.executeQuery();
-
-			while(rs.next()){
+			while(rs.next())
+			{
 				int apID = rs.getInt(1);
 				Date apDate = rs.getDate(2);
 				Time apTime = rs.getTime(3);
@@ -126,87 +137,56 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 				System.out.println(appointmentToRead.toString()+"PatientsId: "+patID);
 			}
 			prepS.close();
-		}catch(Exception e){
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
-
 	}
 
-
 	@Override
-	public Appointment getAppointment(Integer appointmentID) {
+	public Appointment getAppointment(Integer appointmentID) 
+	{
 		Appointment appointmentToModify = null;
-		try{
+		try
+		{
 
 			String sql = "SELECT * FROM appointment WHERE ID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, appointmentID);
 			ResultSet rs = prepS.executeQuery();
 			boolean dateExists = false;
-			while(rs.next()){
-				if(!dateExists){
+			while(rs.next())
+			{
+				if(!dateExists)
+				{
 					Integer dateID = rs.getInt("ID");
 					Date date = rs.getDate("Date");
 					Time time = rs.getTime("Time");
 					appointmentToModify = new Appointment(dateID, date, time);
 				}
 			}
-
 			prepS.close();
 
-		}catch(Exception e){
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 		return appointmentToModify;
 	}
 
-
-
 	@Override
-	public void deleteAppointmentDoctor(Integer ID)
+	public void readPTAppointments(Integer ptId, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm) 
 	{
 		try
 		{
-			String sql = "DELETE FROM appointment WHERE DOCID=?";
-			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1,ID);
-			ps.executeUpdate();
-			ps.close();
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void deleteAppointmentPhysicalTherapist(Integer ID)
-	{
-		try
-		{
-			String sql = "DELETE FROM appointment WHERE PTID=?";
-			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1,ID);
-			ps.executeUpdate();
-			ps.close();
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-
-	@Override
-	public void readPTAppointments(Integer ptId, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm) {
-		try{
-
 			String sql = "SELECT *FROM appointment WHERE PTID=?";
 			PreparedStatement prepS = c.prepareStatement(sql);
 			prepS.setInt(1, ptId);
 			ResultSet rs = prepS.executeQuery();
-
-			while(rs.next()){
+			while(rs.next())
+			{
 				int apID = rs.getInt(1);
 				Date apDate = rs.getDate(2);
 				Time apTime = rs.getTime(3);
@@ -223,14 +203,16 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 				System.out.println(appointmentToRead+"  PATIENT-->" + p);
 			}
 			prepS.close();
-		}catch(SQLException e){
+		}
+		catch(SQLException e)
+		{
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
-	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm) {
+	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm)
+	{
 		List <Appointment> appointments = new ArrayList<Appointment>();
 		try
 		{
@@ -305,7 +287,8 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 
 
 	@Override
-	public List<Appointment> getDoctorsAppointments(Integer docID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm) {
+	public List<Appointment> getDoctorsAppointments(Integer docID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm) 
+	{
 		List <Appointment> appointments = new ArrayList<Appointment>();
 		try
 		{
@@ -339,12 +322,6 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		}
 		return appointments;
 	}
-
-
-
-
-
-
 
 }
 

@@ -55,8 +55,8 @@ public class PhysicalMenu
 	public void checkAppointments(String username, PhysicalTherapistManager ptm, AppointmentManager am, PatientManager pm, DoctorManager dm) throws IOException
 	{
 		Integer ptID = ptm.searchPTByEmail(username);
-				System.out.println("----CURRENT APPOINTMENTS-------");
-				am.readPTAppointments(ptID, pm, ptm, dm);
+		System.out.println("----CURRENT APPOINTMENTS-------");
+		am.readPTAppointments(ptID, pm, ptm, dm);
 	}
 
 }
