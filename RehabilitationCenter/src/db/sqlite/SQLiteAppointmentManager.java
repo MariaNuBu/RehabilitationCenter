@@ -46,10 +46,10 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	//To add an appointment from a patient obtained by an XML
 	@Override
-	public void addAppointmentFromXML(Appointment appointment, Integer patID) 
+	public void addAppointmentFromXML(Appointment appointment, Integer patID)
 	{
 		try
 		{
@@ -72,7 +72,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void modifyAppointment(Appointment appointment) 
+	public void modifyAppointment(Appointment appointment)
 	{
 		try
 		{
@@ -93,7 +93,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void deleteAppointment(Appointment appointment) 
+	public void deleteAppointment(Appointment appointment)
 	{
 		try
 		{
@@ -111,7 +111,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void readAppointments(Integer docId,PatientManager pm,DoctorManager dm) 
+	public void readAppointments(Integer docId,PatientManager pm,DoctorManager dm)
 	{
 		try
 		{
@@ -145,7 +145,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public Appointment getAppointment(Integer appointmentID) 
+	public Appointment getAppointment(Integer appointmentID,PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm)
 	{
 		Appointment appointmentToModify = null;
 		try
@@ -160,10 +160,20 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 			{
 				if(!dateExists)
 				{
-					Integer dateID = rs.getInt("ID");
-					Date date = rs.getDate("Date");
-					Time time = rs.getTime("Time");
-					appointmentToModify = new Appointment(dateID, date, time);
+					Integer dateID = rs.getInt(1);
+					Date date = rs.getDate(2);
+					Time time = rs.getTime(3);
+					int patID = rs.getInt(4);
+					int docID = rs.getInt(5);
+					int ptID = rs.getInt(6);
+					Patient p = new Patient();
+					p = pm.getPatient(patID);
+					PhysicalTherapist pt = new PhysicalTherapist();
+					pt = ptm.getPhysicalTherapist(ptID);
+					Doctor d = new Doctor();
+					d = dm.getDoctor(docID);
+
+					appointmentToModify = new Appointment(dateID, date, time,p,d,pt);
 				}
 			}
 			prepS.close();
@@ -177,7 +187,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	}
 
 	@Override
-	public void readPTAppointments(Integer ptId, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm) 
+	public void readPTAppointments(Integer ptId, PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm)
 	{
 		try
 		{
@@ -213,6 +223,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 	@Override
 	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm)
 	{
+
 		List <Appointment> appointments = new ArrayList<Appointment>();
 		try
 		{
@@ -246,6 +257,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		}
 		return appointments;
 	}
+
 
 	@Override
 	public List<Appointment> getPatientsAppointments(Integer patId, PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm)
@@ -287,7 +299,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 
 
 	@Override
-	public List<Appointment> getDoctorsAppointments(Integer docID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm) 
+	public List<Appointment> getDoctorsAppointments(Integer docID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm)
 	{
 		List <Appointment> appointments = new ArrayList<Appointment>();
 		try
