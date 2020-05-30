@@ -115,7 +115,7 @@ public class DoctorMenu {
 		String newsurgerie=DataObtention.readLine();
 		if(newsurgerie.equals("")) 
 		{
-			newsurgerie = mhToModify.getAllergies();
+			newsurgerie = mhToModify.getSurgeries();
 		}
 		System.out.println("Actual weight: " + mhToModify.getWeightKg());
 		System.out.println("Type the new weight of the patient or press enter to leave it as it is :");
