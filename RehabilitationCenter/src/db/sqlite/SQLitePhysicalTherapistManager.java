@@ -45,6 +45,7 @@ private Connection c;
 			e.printStackTrace();
 		}
 	}
+	
 	@Override
 	public Integer searchPTByEmail (String email)
 	{
@@ -87,16 +88,13 @@ private Connection c;
 				treatment = new Treatment(id,type,lenght);
 			}
 			ps.close();
-
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-     return treatment;
-	}
-	
-	
+		return treatment;
+	}	
 	
 	@Override
 	public void insertPhysicalTherapist(PhysicalTherapist pt)
@@ -121,7 +119,6 @@ private Connection c;
 			e.printStackTrace();
 		}
 	}
-
 	
 	public ArrayList<PhysicalTherapist> showPhysicalTherapists(String sport) 
 	{
@@ -260,7 +257,6 @@ private Connection c;
 				String sport = rs.getString("SportType");
 				Double salary = rs.getDouble("Salary");
 				PhysicalTherapist pt = new PhysicalTherapist(ID, name,address, DOB, phone, email, sport,salary);
-				//System.out.println(pt);
 				physicalTherapists.add(pt);
 			}
 			ps.close();
