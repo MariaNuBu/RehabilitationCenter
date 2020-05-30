@@ -18,4 +18,5 @@ public interface AppointmentManager {
 	public List<Appointment> getPhysicalTherapistAppointments(Integer ptID,PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm);
 	public List<Appointment> getDoctorsAppointments(Integer docID,PatientManager pm, PhysicalTherapistManager ptm, DoctorManager dm);
 
+
 }

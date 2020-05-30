@@ -228,6 +228,7 @@ public class DoctorMenu {
 								System.out.println(appointment);
 							}
 						}
+
 						Integer patId = DataObtention.readInt("Choose a patients ID for the new appointment");
 						Patient patient = pm.getPatient(patId);
 						PhysicalTherapist physicalTherapist = patient.getPhysicalTerapist();

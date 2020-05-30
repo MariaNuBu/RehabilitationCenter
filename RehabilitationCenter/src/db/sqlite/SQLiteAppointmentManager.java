@@ -258,6 +258,7 @@ public class SQLiteAppointmentManager implements AppointmentManager {
 		return appointments;
 	}
 
+
 	@Override
 	public List<Appointment> getPatientsAppointments(Integer patId, PatientManager pm, PhysicalTherapistManager ptm,DoctorManager dm)
 	{
