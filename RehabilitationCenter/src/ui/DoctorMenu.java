@@ -41,7 +41,7 @@ public class DoctorMenu {
 		{
 			int patId= DataObtention.readInt("Please introduce the id of the patient you want to work with ");
 			doctorSubMenu(patId,docID,pm,dm);
-		}		
+		}
 	}
 
 	public void doctorAppointmentMenu(DoctorManager dm, AppointmentManager am, PatientManager pm,String userName, PhysicalTherapistManager ptm) throws Exception
@@ -52,13 +52,13 @@ public class DoctorMenu {
 
 	private static void doctorSubMenu(Integer patID,Integer docID,PatientManager pm,DoctorManager dm)throws Exception
 	{
-		while (true) 
+		while (true)
 		{
 			int choice = DataObtention.readInt("Hello doctor , what do you want to do ? \n"+"1. Read the Medical History of your patient \n"+
 					"2. Modify the Medical History of your patient \n"+"3. Create a new treatment for your patient \n"+
 					"4. Modify one of the treatments of your patient \n"+"5. Delete one of the treatments of your patient \n"+
 					"6. List all of the treatments of your patient \n"+"7. Read one of the treatments of your patient \n"+"0. Back \n");
-			switch (choice) 
+			switch (choice)
 			{
 				case 1:
 					showMedicalHistory(patID,pm);
@@ -91,7 +91,7 @@ public class DoctorMenu {
 		}
 	}
 
-	 private static void modifyMedicalHistory(Integer patID,PatientManager pm,DoctorManager dm) throws NumberFormatException, IOException 
+	 private static void modifyMedicalHistory(Integer patID,PatientManager pm,DoctorManager dm) throws NumberFormatException, IOException
 	 {
 		showMedicalHistory(patID,pm);
 		Patient p = pm.getPatient(patID);
@@ -99,7 +99,7 @@ public class DoctorMenu {
 		System.out.println("Actual diseases: "+ mhToModify.getDiseases());
 		System.out.println("Type the new disease of the patient or press enter to leave it as it is :");
 		String newdisease= DataObtention.readLine();
-		if(newdisease.equals("")) 
+		if(newdisease.equals(""))
 		{
 			newdisease = mhToModify.getDiseases();
 		}
@@ -113,7 +113,7 @@ public class DoctorMenu {
 		System.out.println("Actual surgeries: "+ mhToModify.getSurgeries());
 		System.out.println("Type the new surgeries of the patient or press enter to leave it as it is :");
 		String newsurgerie=DataObtention.readLine();
-		if(newsurgerie.equals("")) 
+		if(newsurgerie.equals(""))
 		{
 			newsurgerie = mhToModify.getAllergies();
 		}
@@ -125,7 +125,7 @@ public class DoctorMenu {
 		{
 			floatnewWeight = mhToModify.getWeightKg();
 		}
-		else 
+		else
 		{
 			floatnewWeight = Float.parseFloat(newWeight);
 		}
@@ -133,11 +133,11 @@ public class DoctorMenu {
 		System.out.println("Type the new height of the patient or press enter to leave it as it is :");
 		String newHeight = DataObtention.readLine();
 		Integer intnewHeight;
-		if(newHeight.equals("")) 
+		if(newHeight.equals(""))
 		{
 			intnewHeight = mhToModify.getHeightCm();
 		}
-		else 
+		else
 		{
 			intnewHeight = Integer.parseInt(newHeight);
 		}
@@ -161,7 +161,7 @@ public class DoctorMenu {
 		System.out.println(mh);
 	}
 
-	private static void createTreatment(Integer patID,Integer docID,PatientManager pm,DoctorManager dm) throws IOException 
+	private static void createTreatment(Integer patID,Integer docID,PatientManager pm,DoctorManager dm) throws IOException
 	{
 		listTreatments(patID,dm);
 		System.out.println("For a new treatment:");
@@ -173,7 +173,7 @@ public class DoctorMenu {
 	}
 
 
-	private static void doctorAppointmentSubMenu(Integer docID, DoctorManager dm, AppointmentManager am, PatientManager pm, PhysicalTherapistManager ptm) throws Exception 
+	private static void doctorAppointmentSubMenu(Integer docID, DoctorManager dm, AppointmentManager am, PatientManager pm, PhysicalTherapistManager ptm) throws Exception
 	{
 		while(true)
 		{
@@ -286,13 +286,17 @@ public class DoctorMenu {
 								System.out.println(appointment);
 							}
 							Integer idAp =DataObtention.readInt("Select the ID of the appointment you want to modify");
-							Appointment appointmentToModify = am.getAppointment(idAp);
+							Appointment appointmentToModify = am.getAppointment(idAp,pm,ptm,dm);
 							Patient pat = appointmentToModify.getPat();
 							PhysicalTherapist pt = appointmentToModify.getPt();
 							try
 							{
 								Appointment modifiedAppointment = modifyAppointment(appointmentToModify);
 								List<Appointment> ptApps = am.getPhysicalTherapistAppointments(pt.getId(), pm, ptm, dm);
+								for(Appointment appointment : ptApps)
+								{
+									System.out.println(appointment);
+								}
 								boolean taken = checkAppointments(ptApps, modifiedAppointment);
 								while(taken==true)
 								{
@@ -341,7 +345,7 @@ public class DoctorMenu {
 								System.out.println(appointment);
 							}
 							Integer apID = DataObtention.readInt("Select the ID of the appointment you want to delete");
-							Appointment appointmentToDelete = am.getAppointment(apID);
+							Appointment appointmentToDelete = am.getAppointment(apID, pm,ptm,dm);
 							System.out.println("Are you sure you want to delete this appointment?-->Y/N");
 							String answer = DataObtention.readLine();
 							if(answer.equalsIgnoreCase("Y"))
@@ -349,7 +353,7 @@ public class DoctorMenu {
 								am.deleteAppointment(appointmentToDelete);
 							}
 						}
-					}	
+					}
 					break;
 				case 0:
 					return;
@@ -357,7 +361,7 @@ public class DoctorMenu {
 		}
 	}
 
-	private static void modifyTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException 
+	private static void modifyTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException
 	{
 		 List<Treatment>treatmentList= new ArrayList<Treatment>();
 		treatmentList= dm.listTreatments(patID);
@@ -368,7 +372,7 @@ public class DoctorMenu {
 		else
 		{
 			System.out.println("This are the actual treatments of your patient:");
-			for (Treatment treatment:treatmentList) 
+			for (Treatment treatment:treatmentList)
 			{
 				System.out.println(treatment);
 			}
@@ -388,7 +392,7 @@ public class DoctorMenu {
 			System.out.println("Type the new lenght for the treatment or press enter to leave it as it is :");
 			String newLength= DataObtention.readLine();
 			int intnewLength;
-			if(newLength.equals("")) 
+			if(newLength.equals(""))
 			{
 				intnewLength=treatmentToModify.getLenght();
 			}
@@ -414,7 +418,7 @@ public class DoctorMenu {
 		else
 		{
 			System.out.println("This are the actual treatments of your patient:");
-			for (Treatment treatment:treatmentList) 
+			for (Treatment treatment:treatmentList)
 			{
 				System.out.println("ID: "+treatment.getId()+", Type: "+treatment.getType());
 			}
@@ -483,7 +487,7 @@ public class DoctorMenu {
 		else
 		{
 			System.out.println("This are the actual treatments of your patient:");
-			for (Treatment treatment:treatmentList) 
+			for (Treatment treatment:treatmentList)
 			{
 				System.out.println(treatment);
 			}
@@ -493,17 +497,17 @@ public class DoctorMenu {
 			dm.deleteTreatment(treatmentToDelete,patID);
 		}
 	}
-	
-	private static void readTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException 
+
+	private static void readTreatment(Integer patID,DoctorManager dm) throws NumberFormatException, IOException
 	{
 		System.out.println("-------------------------------------------------------");
 		int treatID=DataObtention.readInt("Please, input the ID of the treatment you want to read :");
 		Treatment treatmentToRead= dm.getTreatment(treatID);
-		if(treatmentToRead==null) 
+		if(treatmentToRead==null)
 		{
 			System.out.println("The chosen ID doesn't correspond to any existing treatment ");
 		}
-		else 
+		else
 		{
 			System.out.println(dm.readTreatment(treatmentToRead));
 		}
@@ -524,16 +528,16 @@ public class DoctorMenu {
 		Appointment modifiedAppointment = null;
 		System.out.println("Current date --> "+ appointmentToModify.getDate());
 		System.out.println("Current time --> "+ appointmentToModify.getTime());
-		String newDate = "";
 		Date date=null;
-		boolean dateincorrect = true;		
+		boolean dateincorrect = true;
 		while (dateincorrect)
 		{
 			System.out.println("Introduce new date [yyyy-mm-dd] or press enter");
-			newDate = DataObtention.readLine();
+			String newDate = DataObtention.readLine();
 			if(newDate.equals(""))
 			{
 				date = appointmentToModify.getDate();
+				dateincorrect = false;
 			}
 			else
 			{
@@ -550,12 +554,11 @@ public class DoctorMenu {
 				{
 					System.out.println("Date wrong introduced");
 				}
-			}			
-		}			
-		System.out.println("Introduce new time [HH:mm:ss] or press enter");
+			}
+		}
 		String newTime = "";
 		Time time = null;
-		boolean timeincorrect = true;		
+		boolean timeincorrect = true;
 		while(timeincorrect)
 		{
 			System.out.println("Introduce new time [HH:mm:ss] or press enter");
@@ -563,6 +566,7 @@ public class DoctorMenu {
 			if(newTime.equals(""))
 			{
 				time = appointmentToModify.getTime();
+				timeincorrect = false;
 			}
 			else
 			{
@@ -573,7 +577,7 @@ public class DoctorMenu {
 				}
 				catch (DateTimeParseException e)
 				{
-					System.out.println("Date wrong introduced");
+					System.out.println("Wrong format");
 					System.out.println("Introduce new time [HH:mm:ss] or press enter");
 				}
 				catch(IllegalArgumentException ex)
@@ -581,12 +585,12 @@ public class DoctorMenu {
 					System.out.println("Date wrong introduced");
 					System.out.println("Introduce new time [HH:mm:ss] or press enter");
 				}
-			}				
-		}		
+			}
+		}
 		modifiedAppointment = new Appointment(appointmentToModify.getId(), date, time);
 		return modifiedAppointment;
 	}
-	
+
 	private static boolean checkAppointments(List<Appointment>Apps, Appointment appointment) throws Exception
 	{
 		Date dateToCheck = appointment.getDate();
