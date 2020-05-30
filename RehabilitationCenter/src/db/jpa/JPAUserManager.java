@@ -67,8 +67,7 @@ public class JPAUserManager implements UserManager {
 		{
 			//Don't do anything because the boss has been already created
 		}
-		
-		
+			
 	}
 	@Override
 	public void disconnect() 
@@ -109,7 +108,7 @@ public class JPAUserManager implements UserManager {
 		return role;
 	}
 	@Override
-	public boolean isCreated (String role) //TODO VERIFICAR ESTE METODO CREO QUE CON EL CATCH ESTÁ ARREGLADO
+	public boolean isCreated (String role) 
 	{
 		Role created=null;
 		try
@@ -122,8 +121,7 @@ public class JPAUserManager implements UserManager {
 		catch (NoResultException e)
 		{
 			return false;
-		}			
-		
+		}	
 	}
 	@Override
 	public boolean userCreated (String userName)
@@ -198,7 +196,6 @@ public class JPAUserManager implements UserManager {
 			em.getTransaction().begin();
 			user.setPassword(hash);
 			em.getTransaction().commit();
-			em.close();
 		}
 		catch(Exception e)
 		{
@@ -213,6 +210,5 @@ public class JPAUserManager implements UserManager {
 		em.getTransaction().begin();
 		em.remove(workerFired);
 		em.getTransaction().commit();
-		em.close();
 	}
 }

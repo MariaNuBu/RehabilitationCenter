@@ -10,7 +10,8 @@ import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
 import db.interfaces.PhysicalTherapistManager;
 
-public class SQLiteManager implements DBManager {
+public class SQLiteManager implements DBManager 
+{
 
 	private Connection c;
 	private PatientManager patient;
@@ -64,6 +65,7 @@ public class SQLiteManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
+	
 	@Override
 	public void disconnect()
 	{

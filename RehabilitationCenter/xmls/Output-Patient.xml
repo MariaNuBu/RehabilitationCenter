@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<patient name="Inés de los Mozos">
-    <dob>2000-05-02</dob>
-    <address>Glorieta Pirámides</address>
-    <phoneNumber>654783234</phoneNumber>
-    <eMail>ines@gmail.com</eMail>
-    <sport>Basket</sport>
-    <disability>Blind</disability>
-    <medicalHistory id="1">
-        <Diseases>Broken wrist</Diseases>
-        <Allergies>Banana</Allergies>
-        <Surgeries>Apendicitis</Surgeries>
-        <WeightKg>56.0</WeightKg>
-        <HeightCm>158</HeightCm>
+<patient name="Araceli Vargas">
+    <dob>1976-04-15</dob>
+    <address>Calle Melilla</address>
+    <phoneNumber>654781425</phoneNumber>
+    <eMail>araceli@gmail.com</eMail>
+    <sport>swimming</sport>
+    <disability>deaf</disability>
+    <medicalHistory id="9">
+        <Diseases>broken meniscus</Diseases>
+        <Allergies>none</Allergies>
+        <Surgeries>none</Surgeries>
+        <WeightKg>70.0</WeightKg>
+        <HeightCm>165</HeightCm>
     </medicalHistory>
     <appointments>
         <appointment>
-            <date>2020-09-03</date>
-            <time>12:00:00</time>
-            <doc name="Víctor Arribas Abril">
-                <id>1</id>
-                <eMail>victor@gmail.com</eMail>
-                <specialty>Orthopedics</specialty>
+            <date>2020-06-15</date>
+            <time>12:39:00</time>
+            <doc name="Julio Romero">
+                <id>3</id>
+                <eMail>julio@gmail.com</eMail>
+                <specialty>orthopedics</specialty>
             </doc>
             <pt name="Juan Carlos Serrano">
                 <id>1</id>

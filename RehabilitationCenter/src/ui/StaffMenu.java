@@ -455,8 +455,10 @@ public class StaffMenu
 		}
 		Integer ID = DataObtention.readInt("Introduce the ID of the doctor you want to fire");
 		Doctor tofire = dm.getDoctor(ID);
-		um.fireWorkers(tofire.getId());
+		Integer userID = um.getUser(tofire.geteMail());
+		um.fireWorkers(userID);
 		dm.deleteDoctor(ID);		
+		System.out.println("Doctor fired succesfully!");
 	}
 	
 	public void firePhysicalTherapist (PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,UserManager um)
@@ -497,6 +499,7 @@ public class StaffMenu
 		}
 		um.fireWorkers(userID);
 		ptm.deletePhysicalTherapist(ID);	
+		System.out.println("Physical Therapist fired succesfully!");
 	}
 	
 }

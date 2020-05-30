@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +23,6 @@ import pojos.users.*;
 import javax.xml.bind.*;
 public class PatientMenu
 {
-	private BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public void readAppointments(Integer patID,PatientManager pm,PhysicalTherapistManager ptm,DoctorManager dm,AppointmentManager am)
@@ -58,9 +56,9 @@ public class PatientMenu
 		Doctor doc = dm.getDoctor(docId);
 		PhysicalTherapist pT = p.getPhysicalTerapist();
 		boolean inTable = pm.checkDoctor(patID, docId);
-		if(inTable == false){
+		if(inTable == false)
+		{
 			pm.addDoctorToPatient(p,doc);
-		}else{
 		}
 		Appointment appointment = null;
 		boolean taken;
@@ -93,7 +91,8 @@ public class PatientMenu
 		}
 	}
 
-	private static Appointment introduceDateAndTime() throws Exception{
+	private static Appointment introduceDateAndTime() throws Exception
+	{
 		Boolean dateincorrect = true;
 		Boolean timeincorrect = true;
 		String dateString="";
@@ -138,16 +137,19 @@ public class PatientMenu
 		}
 		Appointment appointment = new Appointment(appointmentDate, appointmentTime);
 		return appointment;
-}
+	}
 
-	private static boolean checkAppointments(List<Appointment>Apps, Appointment appointment) throws Exception{
+	private static boolean checkAppointments(List<Appointment>Apps, Appointment appointment) throws Exception
+	{
 		Date dateToCheck = appointment.getDate();
 		Time timeToCheck = appointment.getTime();
 		boolean taken = false;
-		for(Appointment app: Apps){
+		for(Appointment app: Apps)
+		{
 			Date date = app.getDate();
 			Time time = app.getTime();
-			if(date.equals(dateToCheck) && time.equals(timeToCheck)){
+			if(date.equals(dateToCheck) && time.equals(timeToCheck))
+			{
 				System.out.println("Ups, looks like this appointment is not available");
 				taken = true;
 			}
@@ -155,8 +157,8 @@ public class PatientMenu
 		return taken;
 	}
 
-	public  void generateXML(Integer patID,PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,DoctorManager dm) throws JAXBException {
-		
+	public  void generateXML(Integer patID,PatientManager pm,AppointmentManager am,PhysicalTherapistManager ptm,DoctorManager dm) throws JAXBException 
+	{		
 		Patient p= pm.getPatient(patID);
 		MedicalHistory mh= pm.getMedicalHistory(p);
 		List<Appointment> appointments= am.getPatientsAppointments(patID, pm, ptm, dm);
@@ -173,4 +175,5 @@ public class PatientMenu
 		//Marshall the point to the screen
 		marshal.marshal(patient2marshall,System.out);
 	}
+	
 }
