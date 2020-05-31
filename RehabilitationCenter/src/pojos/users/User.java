@@ -3,6 +3,7 @@ package pojos.users;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ public class User implements Serializable
 	@TableGenerator(name="users", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="users")
 	private Integer ID;
+	@Column(unique = true)
 	private String username;
 	@Lob
 	private byte[]  password;
