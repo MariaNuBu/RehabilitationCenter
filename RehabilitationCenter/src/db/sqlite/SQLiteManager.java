@@ -171,7 +171,7 @@ public class SQLiteManager implements DBManager
 			Statement st8=c.createStatement();
 			String sq8="CREATE TABLE IF NOT EXISTS	PatientDoctor"
 					+ "(PATID			INTEGER REFERENCES patient(ID),"
-					+ " DOCID			INTEGER REFERENCES doctor(ID))";
+					+ " DOCID			INTEGER REFERENCES doctor(ID) ON DELETE CASCADE)";
 			st8.executeUpdate(sq8);
 			st8.close();
 		}

@@ -72,7 +72,7 @@ public class StaffMenu
 					}
 					break;
 				case 3:
-					System.out.println("Hope to see you soon!");
+					Main.exit();					
 					loop = false;
 					break;
 			}			
@@ -456,8 +456,8 @@ public class StaffMenu
 		Integer ID = DataObtention.readInt("Introduce the ID of the doctor you want to fire");
 		Doctor tofire = dm.getDoctor(ID);
 		Integer userID = um.getUser(tofire.geteMail());
-		um.fireWorkers(userID);
-		dm.deleteDoctor(ID);		
+		dm.deleteDoctor(ID);
+		um.fireWorkers(userID);				
 		System.out.println("Doctor fired succesfully!");
 	}
 	
@@ -497,8 +497,8 @@ public class StaffMenu
 			Integer newptID = DataObtention.readInt("Type the ID of the physical therapist you want for that patient: ");
 			pm.changePhysicalTherapist(patient,newptID);
 		}
-		um.fireWorkers(userID);
-		ptm.deletePhysicalTherapist(ID);	
+		ptm.deletePhysicalTherapist(ID);
+		um.fireWorkers(userID);			
 		System.out.println("Physical Therapist fired succesfully!");
 	}
 	

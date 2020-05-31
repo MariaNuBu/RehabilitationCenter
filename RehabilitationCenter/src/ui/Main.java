@@ -33,7 +33,7 @@ public class Main
 		userManager = new JPAUserManager();
 		userManager.connect();
 
-		int option=DataObtention.readInt("What do you wanna do?\n1.-Log in staff\n2.-Log in\n0.-Exit");
+		int option=DataObtention.readInt("What do you wanna do?\n1.-Log in staff\n2.-Log in\n3.-Exit");
 		switch(option)
 		{
 			case 1:
@@ -102,8 +102,8 @@ public class Main
 				{
 					System.out.println("Invalid role.");
 				}
-			case 0 :
-				System.out.println("You have succesfully exit the program. Goodbye!");
+			case 3 :
+				exit();
 				break;
 		}
 
@@ -156,7 +156,7 @@ public class Main
 					break;
 			}
 			if(option==5)
-			{
+			{				
 				break;
 			}
 		}
@@ -276,5 +276,11 @@ public class Main
 			e.printStackTrace();
 		}
 	}
-
+	public static void exit ()
+	{		
+		System.out.println("Closing database...");
+		System.out.println("You have succesfully exit the program. Goodbye!");
+		db.disconnect();
+		userManager.disconnect();
+	}
 }
